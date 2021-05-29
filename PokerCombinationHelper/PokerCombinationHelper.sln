@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30413.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokerCombinationHelper", "PokerCombinationHelper\PokerCombinationHelper.csproj", "{EF1E6F7B-27D2-4C9E-9D16-573431AD67BE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tester", "Tester\Tester.csproj", "{C805B0BE-34BC-4419-BC1D-CA6146FE35A1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EF1E6F7B-27D2-4C9E-9D16-573431AD67BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF1E6F7B-27D2-4C9E-9D16-573431AD67BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF1E6F7B-27D2-4C9E-9D16-573431AD67BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF1E6F7B-27D2-4C9E-9D16-573431AD67BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C805B0BE-34BC-4419-BC1D-CA6146FE35A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C805B0BE-34BC-4419-BC1D-CA6146FE35A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C805B0BE-34BC-4419-BC1D-CA6146FE35A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C805B0BE-34BC-4419-BC1D-CA6146FE35A1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {446F6727-EEF6-46C2-8689-95EFCC0E085F}
+	EndGlobalSection
+EndGlobal
