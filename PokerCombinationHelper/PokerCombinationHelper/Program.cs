@@ -8,34 +8,15 @@ using Checker;
 
 namespace PokerCombinationHelper
 {
-    
     class Program
     {
-        //public static Card[] Deck = Card.GetDeck();
-        //public static int PlayerCount;
-
         static void Main()
         {
 
-            //Console.WriteLine("Введите количество участников =");
-            //PlayerCount = Convert.ToInt32(Console.ReadLine());
-            //Console.WriteLine("Всего игроков =", PlayerCount);
+            List<Card> rnd4Cards = Card.GetCards(1);
 
-            //Card testCard = new Card();
-            //testCard = Card.GetRandomCard();
-            //Console.WriteLine(testCard);
-
-            Card[] testDeck = Card.GetDeck();
-            Console.WriteLine(testDeck);
+            Console.WriteLine(rnd4Cards);
 
         }
-
     }
-
-
-
-    //public static Card[] HandCards = Card.GetCards(2);
-    //public static Card[] BoardCards = Card.GetCards(3);
-
-
 }

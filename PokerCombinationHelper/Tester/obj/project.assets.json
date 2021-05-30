@@ -4648,11 +4648,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\German\\source\\repos\\PokerCombinationHelper\\Tester\\Tester.csproj",
+      "projectUniqueName": "C:\\Users\\German\\projects\\PokerCombinationHelper\\Tester\\Tester.csproj",
       "projectName": "Tester",
-      "projectPath": "C:\\Users\\German\\source\\repos\\PokerCombinationHelper\\Tester\\Tester.csproj",
+      "projectPath": "C:\\Users\\German\\projects\\PokerCombinationHelper\\Tester\\Tester.csproj",
       "packagesPath": "C:\\Users\\German\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\German\\source\\repos\\PokerCombinationHelper\\Tester\\obj\\",
+      "outputPath": "C:\\Users\\German\\projects\\PokerCombinationHelper\\Tester\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\German\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -4669,8 +4669,8 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "projectReferences": {
-            "C:\\Users\\German\\source\\repos\\PokerCombinationHelper\\PokerCombinationHelper\\PokerCombinationHelper.csproj": {
-              "projectPath": "C:\\Users\\German\\source\\repos\\PokerCombinationHelper\\PokerCombinationHelper\\PokerCombinationHelper.csproj"
+            "C:\\Users\\German\\projects\\PokerCombinationHelper\\PokerCombinationHelper\\PokerCombinationHelper.csproj": {
+              "projectPath": "C:\\Users\\German\\projects\\PokerCombinationHelper\\PokerCombinationHelper\\PokerCombinationHelper.csproj"
             }
           }
         }

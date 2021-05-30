@@ -39,11 +39,12 @@ namespace Cards
     {
         public CardValue Value;
         public CardSuit Suit;
-        public static Card[] Deck = Card.GetDeck();
-
-        public static Card[] GetDeck()
+        public static List<Card> Deck = Card.GetDeck();
+        
+        //Объявляем колоду из 52 карт 
+        public static List<Card> GetDeck()
         {
-            Card[] deckMassive = new Card[52];
+            List<Card> deckList = new List<Card>();
             int k = 0;
 
             for (int i = 2; i <= 14; i++)
@@ -53,40 +54,32 @@ namespace Cards
                     Card card1 = new Card();
                     card1.Suit = (CardSuit)j;
                     card1.Value = (CardValue)i;
-                    deckMassive[k] = card1;
+                    deckList.Add(card1);
                     k++;
                 }
             }
-            return deckMassive;
-        }
-        public static Card GetRandomCard()
-        {
-            var rnd = new Random();
-            Card rndCard = new Card();
-
-            int rndNumber = rnd.Next(0, 51);
-            Deck[rndNumber] = rndCard;
-
-
-            return Card { Value = (CardValue)rnd.Next(2, 14), Suit = (CardSuit)rnd.Next(1, 4) };
+            return deckList;
         }
 
-        //public static Card GetRandomCard()
-        //{
-        //    var rnd = new Random();
-        //    return new Card { Value = (CardValue)rnd.Next(2, 14), Suit = (CardSuit)rnd.Next(1, 4) };
-        //}
 
-        public static Card[] GetCards(int count)
+        public static List<Card> GetCards(int count)
         {
-            Card[] boardCards = new Card[count];
+            List<Card> randomedCardList = new List<Card>();
 
-            for (int i = 0; i < boardCards.Length; i++)
+            for (int i = 0; i < count; i++)
             {
-                boardCards[i] = Card.GetRandomCard();
+                var rnd = new Random();
+                int rndIndexRandomedCard = rnd.Next(0, Deck.Count() - 1);
+
+                Card randomedCard = Card.Deck[rndIndexRandomedCard];
+
+                randomedCardList.Add(randomedCard);
+
+                Deck.RemoveAt(rndIndexRandomedCard);
             }
 
-            return boardCards;
+
+            return randomedCardList;
         }
 
 

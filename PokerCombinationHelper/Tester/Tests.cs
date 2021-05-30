@@ -17,13 +17,6 @@ namespace Tester
                 Assert.AreNotEqual(e.Value, null);
             }
         }
-        [Test]
-        public void GetRandomCardTest()
-        {
-            var randomedCard = Card.GetRandomCard();
-            Assert.AreNotEqual(randomedCard.Suit, 0);
-            Assert.AreNotEqual(randomedCard.Value, 0); 
-        }
 
         [Test]
         public void GetCardsTest1()

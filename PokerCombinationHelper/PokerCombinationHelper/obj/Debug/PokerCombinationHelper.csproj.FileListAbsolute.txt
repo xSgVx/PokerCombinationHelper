@@ -7,3 +7,12 @@ C:\Users\German\source\repos\PokerCombinationHelper\PokerCombinationHelper\obj\D
 C:\Users\German\source\repos\PokerCombinationHelper\PokerCombinationHelper\obj\Debug\PokerCombinationHelper.csproj.CoreCompileInputs.cache
 C:\Users\German\source\repos\PokerCombinationHelper\PokerCombinationHelper\obj\Debug\PokerCombinationHelper.exe
 C:\Users\German\source\repos\PokerCombinationHelper\PokerCombinationHelper\obj\Debug\PokerCombinationHelper.pdb
+C:\Users\German\projects\PokerCombinationHelper\PokerCombinationHelper\obj\Debug\PokerCombinationHelper.csprojAssemblyReference.cache
+C:\Users\German\projects\PokerCombinationHelper\PokerCombinationHelper\obj\Debug\PokerCombinationHelper.Properties.Resources.resources
+C:\Users\German\projects\PokerCombinationHelper\PokerCombinationHelper\obj\Debug\PokerCombinationHelper.csproj.GenerateResource.cache
+C:\Users\German\projects\PokerCombinationHelper\PokerCombinationHelper\obj\Debug\PokerCombinationHelper.csproj.CoreCompileInputs.cache
+C:\Users\German\projects\PokerCombinationHelper\PokerCombinationHelper\obj\Debug\PokerCombinationHelper.exe
+C:\Users\German\projects\PokerCombinationHelper\PokerCombinationHelper\obj\Debug\PokerCombinationHelper.pdb
+C:\Users\German\projects\PokerCombinationHelper\PokerCombinationHelper\bin\Debug\PokerCombinationHelper.exe.config
+C:\Users\German\projects\PokerCombinationHelper\PokerCombinationHelper\bin\Debug\PokerCombinationHelper.exe
+C:\Users\German\projects\PokerCombinationHelper\PokerCombinationHelper\bin\Debug\PokerCombinationHelper.pdb

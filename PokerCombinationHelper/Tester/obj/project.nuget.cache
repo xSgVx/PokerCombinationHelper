@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "pp3x+bVrdBSCAmaGdYIWfuRZ+6ZFHXDo0nP64saikVY4wUXxt8aECNyKXkAOaR83xqcBtvkpnMAMEZ1710I++w==",
+  "dgSpecHash": "YrQG/hy7cGb0w/nV5vQtRPYVkFwjIzhQ/Yue3VQwzxKHERNXwgT2n6ed1AbuqC4D7hKxXuEIL+w8d2P/tP5D2Q==",
   "success": true,
-  "projectFilePath": "C:\\Users\\German\\source\\repos\\PokerCombinationHelper\\Tester\\Tester.csproj",
+  "projectFilePath": "C:\\Users\\German\\projects\\PokerCombinationHelper\\Tester\\Tester.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\German\\.nuget\\packages\\microsoft.codecoverage\\16.4.0\\microsoft.codecoverage.16.4.0.nupkg.sha512",
     "C:\\Users\\German\\.nuget\\packages\\microsoft.csharp\\4.0.1\\microsoft.csharp.4.0.1.nupkg.sha512",
