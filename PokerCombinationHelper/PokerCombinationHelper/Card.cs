@@ -5,8 +5,10 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using PokerCombinationHelper;
+using Checker;
 
-namespace PokerCombinationHelper
+namespace Cards
 {
     public enum CardSuit
     {
@@ -32,16 +34,48 @@ namespace PokerCombinationHelper
         [Description("Король")] King = 13,
         [Description("Туз")] Ace = 14,
     }
+
     public class Card
     {
         public CardValue Value;
         public CardSuit Suit;
+        public static Card[] Deck = Card.GetDeck();
 
+        public static Card[] GetDeck()
+        {
+            Card[] deckMassive = new Card[52];
+            int k = 0;
+
+            for (int i = 2; i <= 14; i++)
+            {
+                for (int j = 1; j <= 4; j++)
+                {
+                    Card card1 = new Card();
+                    card1.Suit = (CardSuit)j;
+                    card1.Value = (CardValue)i;
+                    deckMassive[k] = card1;
+                    k++;
+                }
+            }
+            return deckMassive;
+        }
         public static Card GetRandomCard()
         {
             var rnd = new Random();
-            return new Card { Value = (CardValue)rnd.Next(2, 14), Suit = (CardSuit)rnd.Next(1, 4) };
+            Card rndCard = new Card();
+
+            int rndNumber = rnd.Next(0, 51);
+            Deck[rndNumber] = rndCard;
+
+
+            return Card { Value = (CardValue)rnd.Next(2, 14), Suit = (CardSuit)rnd.Next(1, 4) };
         }
+
+        //public static Card GetRandomCard()
+        //{
+        //    var rnd = new Random();
+        //    return new Card { Value = (CardValue)rnd.Next(2, 14), Suit = (CardSuit)rnd.Next(1, 4) };
+        //}
 
         public static Card[] GetCards(int count)
         {
@@ -57,21 +91,5 @@ namespace PokerCombinationHelper
 
 
     }
+
 }
-
-
-
-    //public class Card
-    //{
-    //    public Card(int value, int suit)
-    //    {
-    //        var rnd = new Random();
-
-    //        Value = value = rnd.Next(2, 14);
-    //        Suit = suit = rnd.Next(1, 4);
-    //    }
-    //    public readonly int Value;
-    //    public readonly int Suit;
-
-    //}
-
