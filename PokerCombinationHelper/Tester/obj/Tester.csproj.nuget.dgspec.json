@@ -1,30 +1,30 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\German\\projects\\PokerCombinationHelper\\Tester\\Tester.csproj": {}
+    "C:\\Users\\sorokin\\source\\repos\\pets\\PokerCombinationHelper\\Tester\\Tester.csproj": {}
   },
   "projects": {
-    "C:\\Users\\German\\projects\\PokerCombinationHelper\\PokerCombinationHelper\\PokerCombinationHelper.csproj": {
+    "C:\\Users\\sorokin\\source\\repos\\pets\\PokerCombinationHelper\\PokerCombinationHelper\\PokerCombinationHelper.csproj": {
       "restore": {
-        "projectUniqueName": "C:\\Users\\German\\projects\\PokerCombinationHelper\\PokerCombinationHelper\\PokerCombinationHelper.csproj",
+        "projectUniqueName": "C:\\Users\\sorokin\\source\\repos\\pets\\PokerCombinationHelper\\PokerCombinationHelper\\PokerCombinationHelper.csproj",
         "projectName": "PokerCombinationHelper",
-        "projectPath": "C:\\Users\\German\\projects\\PokerCombinationHelper\\PokerCombinationHelper\\PokerCombinationHelper.csproj"
+        "projectPath": "C:\\Users\\sorokin\\source\\repos\\pets\\PokerCombinationHelper\\PokerCombinationHelper\\PokerCombinationHelper.csproj"
       },
       "frameworks": {
         "net472": {}
       }
     },
-    "C:\\Users\\German\\projects\\PokerCombinationHelper\\Tester\\Tester.csproj": {
+    "C:\\Users\\sorokin\\source\\repos\\pets\\PokerCombinationHelper\\Tester\\Tester.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\German\\projects\\PokerCombinationHelper\\Tester\\Tester.csproj",
+        "projectUniqueName": "C:\\Users\\sorokin\\source\\repos\\pets\\PokerCombinationHelper\\Tester\\Tester.csproj",
         "projectName": "Tester",
-        "projectPath": "C:\\Users\\German\\projects\\PokerCombinationHelper\\Tester\\Tester.csproj",
-        "packagesPath": "C:\\Users\\German\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\German\\projects\\PokerCombinationHelper\\Tester\\obj\\",
+        "projectPath": "C:\\Users\\sorokin\\source\\repos\\pets\\PokerCombinationHelper\\Tester\\Tester.csproj",
+        "packagesPath": "C:\\Users\\sorokin\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\sorokin\\source\\repos\\pets\\PokerCombinationHelper\\Tester\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\German\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\sorokin\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -38,8 +38,8 @@
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "C:\\Users\\German\\projects\\PokerCombinationHelper\\PokerCombinationHelper\\PokerCombinationHelper.csproj": {
-                "projectPath": "C:\\Users\\German\\projects\\PokerCombinationHelper\\PokerCombinationHelper\\PokerCombinationHelper.csproj"
+              "C:\\Users\\sorokin\\source\\repos\\pets\\PokerCombinationHelper\\PokerCombinationHelper\\PokerCombinationHelper.csproj": {
+                "projectPath": "C:\\Users\\sorokin\\source\\repos\\pets\\PokerCombinationHelper\\PokerCombinationHelper\\PokerCombinationHelper.csproj"
               }
             }
           }
@@ -82,7 +82,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.301\\RuntimeIdentifierGraph.json"
         }
       }
     }
