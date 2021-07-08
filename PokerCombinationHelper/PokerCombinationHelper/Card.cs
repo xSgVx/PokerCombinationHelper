@@ -35,12 +35,13 @@ namespace Cards
         [Description("Туз")] Ace = 14,
     }
 
-    public class Card
+    public class Card : IComparable<Card>
     {
         public CardValue Value;
         public CardSuit Suit;
+        public static int GAME_PLAYERS_COUNT;
         public static List<Card> Deck = Card.GetDeck();
-        
+
         //Объявляем колоду из 52 карт 
         public static List<Card> GetDeck()
         {
@@ -51,17 +52,33 @@ namespace Cards
             {
                 for (int j = 1; j <= 4; j++)
                 {
-                    Card card1 = new Card();
-                    card1.Suit = (CardSuit)j;
-                    card1.Value = (CardValue)i;
+                    Card card1 = new Card
+                    {
+                        Suit = (CardSuit)j,
+                        Value = (CardValue)i
+                    };
                     deckList.Add(card1);
                     k++;
                 }
             }
+
+            // В следствии многократного тестирования было замечено, что
+            // метод GetCards выдает подряд идущие карты несмотря на random, 
+            // поэтому был добавлен данный блок, который перемешивает
+            // список (колоду карт) в случайном порядке
+            var rnd = new Random();
+            int n = deckList.Count;
+            while (n > 1)
+            {
+                n--;
+                int x = rnd.Next(n + 1);
+                Card value = deckList[x];
+                deckList[x] = deckList[n];
+                deckList[n] = value;
+            }
+
             return deckList;
         }
-
-
         public static List<Card> GetCards(int count)
         {
             List<Card> randomedCardList = new List<Card>();
@@ -78,11 +95,30 @@ namespace Cards
                 Deck.RemoveAt(rndIndexRandomedCard);
             }
 
-
             return randomedCardList;
         }
 
-
+        public int CompareTo(Card obj)
+        {
+            if (this.Value < obj.Value)
+                return 1;
+            if (this.Value > obj.Value)
+                return -1;
+            else
+                return 0;
+        }
     }
+    //class CardComparer : IComparer<Card>
+    //{
+    //    public int Compare(Card firstCard, Card secondCard)
+    //    {
+    //        if (firstCard.Suit == secondCard.Suit)
+    //            return 1;
+    //        else if (firstCard.Suit != secondCard.Suit)
+    //            return -1;
+    //        else
+    //            return 0;
+    //    }
+    //}
 
 }
