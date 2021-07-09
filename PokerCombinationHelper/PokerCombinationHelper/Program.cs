@@ -13,12 +13,7 @@ namespace PokerCombinationHelper
         static void Main()
         {
 
-            List<Card> randomHand = Card.GetCards(5);
 
-            randomHand.Sort();
-
-            if (CombinationChecker.OnePair(randomHand))
-                Console.WriteLine ("есть пара");
 
 
         }

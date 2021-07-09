@@ -11,18 +11,18 @@ namespace Checker
 {
     public class CombinationChecker
     {
-
         public static Dictionary<List<Card>, int> CheckForEqualCardValue(List<Card> cardList)
         {
             Dictionary<List<Card>, int> equalCardsDict = new Dictionary<List<Card>, int>();
 
-            for (int i = 0; i < cardList.Count - 1;)
+            for (int i = 0; i < cardList.Count;)
             {
                 List<Card> equalCardsArray = new List<Card>();
 
                 equalCardsArray = cardList.FindAll(x => x.Value.Equals(cardList[i].Value));
-                
-                equalCardsDict.Add(equalCardsArray, equalCardsArray.Count);
+
+                if (equalCardsArray.Count > 1)
+                    equalCardsDict.Add(equalCardsArray, equalCardsArray.Count);
 
                 i += equalCardsArray.Count;
             }
@@ -30,5 +30,8 @@ namespace Checker
             if (equalCardsDict.Any()) return equalCardsDict;
             else return null;
         }
+
+
+
     }
 }

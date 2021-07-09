@@ -9,15 +9,6 @@ namespace Tester
     public class Tests
     {
         [Test]
-        public void DeckCount()
-        {
-            var deck = Card.GetDeck();
-
-            Assert.AreNotEqual(deck, null);
-            Assert.AreEqual(deck.Count, 52);
-        }
-
-        [Test]
         public void RepeatedCardsInDeck()
         {
             var deck = Card.GetDeck();
