@@ -5,34 +5,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Cards;
+using System.Collections;
 
 namespace Checker
 {
     public class CombinationChecker
     {
-        public static bool OnePair(List<Card> cardList)
-        {
-            for (int i = 0; i < cardList.Count-1; i++)
-            {
-                if (cardList[i].Value == cardList[i + 1].Value) return true;
-            }
-            
-            return false;
-        }
 
-        public static bool TwoPairs(List<Card> cardList)
+        public static Dictionary<List<Card>, int> CheckForEqualCardValue(List<Card> cardList)
         {
-            int match = 0;
-            foreach(Card card in cardList)
+            Dictionary<List<Card>, int> equalCardsDict = new Dictionary<List<Card>, int>();
+
+            for (int i = 0; i < cardList.Count - 1;)
             {
-                int matchCardValue = 0;
-                matchCardValue += cardList.FindAll(x => x.Value.Equals(card.Value)).Count;
-                if (matchCardValue == 2) match++;
+                List<Card> equalCardsArray = new List<Card>();
+
+                equalCardsArray = cardList.FindAll(x => x.Value.Equals(cardList[i].Value));
+                
+                equalCardsDict.Add(equalCardsArray, equalCardsArray.Count);
+
+                i += equalCardsArray.Count;
             }
 
-            if (match == 4) return true;
-            else return false;
+            if (equalCardsDict.Any()) return equalCardsDict;
+            else return null;
         }
-
     }
 }
