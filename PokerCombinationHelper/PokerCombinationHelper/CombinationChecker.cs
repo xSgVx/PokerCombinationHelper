@@ -11,27 +11,32 @@ namespace Checker
 {
     public class CombinationChecker
     {
-        public static Dictionary<List<Card>, int> CheckForEqualCardValue(List<Card> cardList)
+        public static Dictionary<List<Card>, int> CheckForEqualCardValue(List<Card> cardList, string type)
         {
-            Dictionary<List<Card>, int> equalCardsDict = new Dictionary<List<Card>, int>();
+            Dictionary<List<Card>, int> equalCardDict = new Dictionary<List<Card>, int>();
 
             for (int i = 0; i < cardList.Count;)
             {
                 List<Card> equalCardsArray = new List<Card>();
 
-                equalCardsArray = cardList.FindAll(x => x.Value.Equals(cardList[i].Value));
+                if (type == "Value")
+                {
+                    equalCardsArray = cardList.FindAll(x => x.Value.Equals(cardList[i].Value));
+                }
+                else if (type == "Suit")
+                {
+                    equalCardsArray = cardList.FindAll(x => x.Suit.Equals(cardList[i].Suit));
+                }
+                else throw new Exception("Неверный тип свойства");
 
                 if (equalCardsArray.Count > 1)
-                    equalCardsDict.Add(equalCardsArray, equalCardsArray.Count);
+                    equalCardDict.Add(equalCardsArray, equalCardsArray.Count);
 
                 i += equalCardsArray.Count;
             }
 
-            if (equalCardsDict.Any()) return equalCardsDict;
+            if (equalCardDict.Any()) return equalCardDict;
             else return null;
         }
-
-
-
     }
 }

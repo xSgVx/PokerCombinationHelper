@@ -36,7 +36,7 @@ namespace Tester
 
             cardList.Sort();
 
-            Assert.IsNotNull(CombinationChecker.CheckForEqualCardValue(cardList));
+            Assert.IsNotNull(CombinationChecker.CheckForEqualCardValue(cardList, "Value"));
         }
 
         [Test]
@@ -54,7 +54,7 @@ namespace Tester
 
             cardList.Sort();
 
-            Assert.IsNotNull(CombinationChecker.CheckForEqualCardValue(cardList));
+            Assert.IsNotNull(CombinationChecker.CheckForEqualCardValue(cardList, "Value"));
         }
 
     }
