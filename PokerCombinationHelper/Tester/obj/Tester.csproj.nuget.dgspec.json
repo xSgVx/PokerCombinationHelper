@@ -1,27 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\sorokin\\source\\repos\\pets\\PokerCombinationHelper\\Tester\\Tester.csproj": {}
+    "C:\\Users\\sorokin\\source\\repos\\Combination helper\\PokerCombinationHelper\\Tester\\Tester.csproj": {}
   },
   "projects": {
-    "C:\\Users\\sorokin\\source\\repos\\pets\\PokerCombinationHelper\\PokerCombinationHelper\\PokerCombinationHelper.csproj": {
+    "C:\\Users\\sorokin\\source\\repos\\Combination helper\\PokerCombinationHelper\\PokerCombinationHelper\\PokerCombinationHelper.csproj": {
       "restore": {
-        "projectUniqueName": "C:\\Users\\sorokin\\source\\repos\\pets\\PokerCombinationHelper\\PokerCombinationHelper\\PokerCombinationHelper.csproj",
+        "projectUniqueName": "C:\\Users\\sorokin\\source\\repos\\Combination helper\\PokerCombinationHelper\\PokerCombinationHelper\\PokerCombinationHelper.csproj",
         "projectName": "PokerCombinationHelper",
-        "projectPath": "C:\\Users\\sorokin\\source\\repos\\pets\\PokerCombinationHelper\\PokerCombinationHelper\\PokerCombinationHelper.csproj"
+        "projectPath": "C:\\Users\\sorokin\\source\\repos\\Combination helper\\PokerCombinationHelper\\PokerCombinationHelper\\PokerCombinationHelper.csproj"
       },
       "frameworks": {
         "net472": {}
       }
     },
-    "C:\\Users\\sorokin\\source\\repos\\pets\\PokerCombinationHelper\\Tester\\Tester.csproj": {
+    "C:\\Users\\sorokin\\source\\repos\\Combination helper\\PokerCombinationHelper\\Tester\\Tester.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\sorokin\\source\\repos\\pets\\PokerCombinationHelper\\Tester\\Tester.csproj",
+        "projectUniqueName": "C:\\Users\\sorokin\\source\\repos\\Combination helper\\PokerCombinationHelper\\Tester\\Tester.csproj",
         "projectName": "Tester",
-        "projectPath": "C:\\Users\\sorokin\\source\\repos\\pets\\PokerCombinationHelper\\Tester\\Tester.csproj",
+        "projectPath": "C:\\Users\\sorokin\\source\\repos\\Combination helper\\PokerCombinationHelper\\Tester\\Tester.csproj",
         "packagesPath": "C:\\Users\\sorokin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\sorokin\\source\\repos\\pets\\PokerCombinationHelper\\Tester\\obj\\",
+        "outputPath": "C:\\Users\\sorokin\\source\\repos\\Combination helper\\PokerCombinationHelper\\Tester\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\sorokin\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -38,8 +38,8 @@
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "C:\\Users\\sorokin\\source\\repos\\pets\\PokerCombinationHelper\\PokerCombinationHelper\\PokerCombinationHelper.csproj": {
-                "projectPath": "C:\\Users\\sorokin\\source\\repos\\pets\\PokerCombinationHelper\\PokerCombinationHelper\\PokerCombinationHelper.csproj"
+              "C:\\Users\\sorokin\\source\\repos\\Combination helper\\PokerCombinationHelper\\PokerCombinationHelper\\PokerCombinationHelper.csproj": {
+                "projectPath": "C:\\Users\\sorokin\\source\\repos\\Combination helper\\PokerCombinationHelper\\PokerCombinationHelper\\PokerCombinationHelper.csproj"
               }
             }
           }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using PokerCombinationHelper;
 using Checker;
+
 
 namespace Cards
 {
@@ -108,18 +110,77 @@ namespace Cards
                 return 0;
         }
 
-    }
-    //class CardComparer : IComparer<Card>
-    //{
-    //    public int Compare(Card firstCard, Card secondCard)
-    //    {
-    //        if (firstCard.Suit == secondCard.Suit)
-    //            return 1;
-    //        else if (firstCard.Suit != secondCard.Suit)
-    //            return -1;
-    //        else
-    //            return 0;
-    //    }
-    //}
+        public class Cards : IEnumerable
+        {
+            private Card[] _card;
+            public Cards(Card[] pArray)
+            {
+                _card = new Card[pArray.Length];
 
+                for (int i = 0; i < pArray.Length; i++)
+                {
+                    _card[i] = pArray[i];
+                }
+            }
+
+            // Implementation for the GetEnumerator method.
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return GetEnumerator();
+            }
+
+            public CardsEnum GetEnumerator()
+            {
+                return new CardsEnum(_card);
+            }
+
+        }
+    }
+    public class CardsEnum : IEnumerator
+    {
+        public Card[] _card;
+
+        // Enumerators are positioned before the first element
+        // until the first MoveNext() call.
+        int position = -1;
+
+        public CardsEnum(Card[] list)
+        {
+            _card = list;
+        }
+
+        public bool MoveNext()
+        {
+            position++;
+            return (position < _card.Length);
+        }
+
+        public void Reset()
+        {
+            position = -1;
+        }
+
+        object IEnumerator.Current
+        {
+            get
+            {
+                return Current;
+            }
+        }
+
+        public Card Current
+        {
+            get
+            {
+                try
+                {
+                    return _card[position];
+                }
+                catch (IndexOutOfRangeException)
+                {
+                    throw new InvalidOperationException();
+                }
+            }
+        }
+    }
 }
