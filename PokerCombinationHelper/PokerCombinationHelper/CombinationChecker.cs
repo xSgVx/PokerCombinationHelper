@@ -20,6 +20,8 @@ namespace Checker
             {
                 List<Card> equalCardsArray = new List<Card>();
 
+                //Берем один элемент списка (карту) и ищем повторение
+                //во всем списке по значению величины или масти карты
                 if (type == "Value")
                 {
                     equalCardsArray = inputCardList.FindAll(x => x.Value.Equals(inputCardList[i].Value));
@@ -30,9 +32,12 @@ namespace Checker
                 }
                 else throw new Exception("Неверный тип свойства");
 
+                //Если повторяющихся элементов нет, то equalCardsArray.Count равняется 1,
+                //т.к в списке элемент нашел только себя
                 if (equalCardsArray.Count > 1)
                     equalCardList.Add(equalCardsArray);                    
 
+                //Смещаем индекс массива на количество найденных элементов
                 i += equalCardsArray.Count;
             }
 
@@ -42,6 +47,9 @@ namespace Checker
 
         public static bool CheckForRoyalFlush(List<List<Card>> inputCardList)
         {
+            //На вход данной функции должен поступать выход функции 
+            //CheckForEqualCardValueOrSuit с типом Suit на входе, поэтому
+            //для создания straightFlushList не важно какой будет параметр CardSuit
             List<Card> straightFlushList = new List<Card>()
             {
                 new Card() { Value = (CardValue)14, Suit = (CardSuit)1 },
@@ -85,6 +93,27 @@ namespace Checker
             else return false;
         }
 
+        public static Card Kicker(List<List<Card>> inputCardList)
+        {
+            var kickerList = new List<Card>();
+            
+            foreach (List<Card> cardList in inputCardList)
+            {
+                cardList.Sort();
+                kickerList.Add(cardList[0]);
+            }
+            
+            kickerList.Sort();
+            
+            return kickerList[0];
+        }
+
+        public static Card Kicker(List<Card> inputCardList)
+        {
+            inputCardList.Sort();
+
+            return inputCardList[0];
+        }
 
 
 

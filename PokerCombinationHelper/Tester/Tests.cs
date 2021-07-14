@@ -123,7 +123,7 @@ namespace Tester
                     }
                     Assert.AreEqual(match, 2);
                 }
-            } 
+            }
         }
 
         [Test]
@@ -164,5 +164,44 @@ namespace Tester
             Assert.AreEqual(CombinationChecker.CheckForStraightFlush(equalCardList), true);
         }
 
+        [Test]
+        public void FindKickerInList()
+        {
+            List<Card> cardList = new List<Card>
+            {
+                new Card() { Value = (CardValue)6, Suit = (CardSuit)1 },
+                new Card() { Value = (CardValue)9, Suit = (CardSuit)1 },
+                new Card() { Value = (CardValue)10, Suit = (CardSuit)2 },
+                new Card() { Value = (CardValue)6, Suit = (CardSuit)3 },
+                new Card() { Value = (CardValue)7, Suit = (CardSuit)4 },
+                new Card() { Value = (CardValue)13, Suit = (CardSuit)3 },
+                new Card() { Value = (CardValue)7, Suit = (CardSuit)1 }
+            };
+
+            var requiredCard = new Card() { Value = (CardValue)13, Suit = (CardSuit)3 };
+
+            Assert.AreEqual(CombinationChecker.Kicker(cardList).Value, requiredCard.Value);
+
+        }
+
+        [Test]
+        public void FindKickerInFullHouse()
+        {
+            List<Card> cardList = new List<Card>
+            {
+                new Card() { Value = (CardValue)6, Suit = (CardSuit)1 },
+                new Card() { Value = (CardValue)7, Suit = (CardSuit)1 },
+                new Card() { Value = (CardValue)12, Suit = (CardSuit)2 },
+                new Card() { Value = (CardValue)12, Suit = (CardSuit)3 },
+                new Card() { Value = (CardValue)7, Suit = (CardSuit)4 },
+                new Card() { Value = (CardValue)12, Suit = (CardSuit)1 }
+            };
+
+            var equalCardList = CombinationChecker.CheckForEqualCardValueOrSuit(cardList, "Value");
+
+            var requiredCard = new Card() { Value = (CardValue)12, Suit = (CardSuit)2 };
+
+            Assert.AreEqual(CombinationChecker.Kicker(equalCardList).Value, requiredCard.Value);
+        }
     }
 }
