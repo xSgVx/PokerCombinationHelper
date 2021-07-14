@@ -36,7 +36,42 @@ namespace Tester
                 new Card() { Value = (CardValue)7, Suit = (CardSuit)1 }
             };
 
-            Assert.IsNotNull(CombinationChecker.CheckForEqualCardValueOrSuit(cardList, "Value"));
+            var equalCardList = CombinationChecker.CheckForEqualCardValueOrSuit(cardList, "Value");
+
+            List<Card> requiredList1 = new List<Card>
+            {
+                new Card() { Value = (CardValue)7, Suit = (CardSuit)4 },
+                new Card() { Value = (CardValue)7, Suit = (CardSuit)1 }
+            };
+
+            List<Card> requiredList2 = new List<Card>
+            {
+                new Card() { Value = (CardValue)6, Suit = (CardSuit)1 },
+                new Card() { Value = (CardValue)6, Suit = (CardSuit)3 }
+            };
+
+            for (int i = 0; i < equalCardList.Count; i++)
+            {
+                int match = 0;
+
+                if (i == 0)
+                {
+                    foreach (Card card in requiredList1)
+                    {
+                        match += equalCardList[i].FindAll(x => x.Value.Equals(card.Value) && x.Suit.Equals(card.Suit)).Count;
+                    }
+                    Assert.AreEqual(match, 2);
+                }
+
+                if (i == 1)
+                {
+                    foreach (Card card in requiredList2)
+                    {
+                        match += equalCardList[i].FindAll(x => x.Value.Equals(card.Value) && x.Suit.Equals(card.Suit)).Count;
+                    }
+                    Assert.AreEqual(match, 2);
+                }
+            }
         }
 
         [Test]
@@ -52,29 +87,43 @@ namespace Tester
                 new Card() { Value = (CardValue)10, Suit = (CardSuit)1 }
             };
 
-            Assert.IsNotNull(CombinationChecker.CheckForEqualCardValueOrSuit(cardList, "Value"));
+            var equalCardList = CombinationChecker.CheckForEqualCardValueOrSuit(cardList, "Value");
 
-            //Непонятно в чем ошибка
-            //List<Card> desiredList1 = new List<Card>
-            //{
-            //    new Card() { Value = (CardValue)10, Suit = (CardSuit)2 },
-            //    new Card() { Value = (CardValue)10, Suit = (CardSuit)3 },
-            //    new Card() { Value = (CardValue)10, Suit = (CardSuit)1 }
-            //};
+            List<Card> requiredList1 = new List<Card>
+            {
+                new Card() { Value = (CardValue)10, Suit = (CardSuit)2 },
+                new Card() { Value = (CardValue)10, Suit = (CardSuit)3 },
+                new Card() { Value = (CardValue)10, Suit = (CardSuit)1 }
+            };
 
-            //List<Card> desiredList2 = new List<Card>
-            //{
-            //    new Card() { Value = (CardValue)8, Suit = (CardSuit)1 },
-            //    new Card() { Value = (CardValue)8, Suit = (CardSuit)4 }
-            //};
+            List<Card> requiredList2 = new List<Card>
+            {
+                new Card() { Value = (CardValue)8, Suit = (CardSuit)1 },
+                new Card() { Value = (CardValue)8, Suit = (CardSuit)4 }
+            };
 
-            //Dictionary<List<Card>, int> desiredOutput = new Dictionary<List<Card>, int>
-            //{
-            //    [desiredList1] = 3,
-            //    [desiredList2] = 2
-            //};
+            for (int i = 0; i < equalCardList.Count; i++)
+            {
+                int match = 0;
 
-            //Assert.AreEqual(CombinationChecker.CheckForEqualCardValue(cardList, "Value"), desiredOutput);
+                if (i == 0)
+                {
+                    foreach (Card card in requiredList1)
+                    {
+                        match += equalCardList[i].FindAll(x => x.Value.Equals(card.Value) && x.Suit.Equals(card.Suit)).Count;
+                    }
+                    Assert.AreEqual(match, 3);
+                }
+
+                if (i == 1)
+                {
+                    foreach (Card card in requiredList2)
+                    {
+                        match += equalCardList[i].FindAll(x => x.Value.Equals(card.Value) && x.Suit.Equals(card.Suit)).Count;
+                    }
+                    Assert.AreEqual(match, 2);
+                }
+            } 
         }
 
         [Test]
@@ -91,9 +140,9 @@ namespace Tester
                 new Card() { Value = (CardValue)11, Suit = (CardSuit)1 }
             };
 
-            Dictionary<List<Card>, int> desiredOutput = CombinationChecker.CheckForEqualCardValueOrSuit(cardList, "Suit");
+            List<List<Card>> equalCardList = CombinationChecker.CheckForEqualCardValueOrSuit(cardList, "Suit");
 
-            Assert.AreEqual(CombinationChecker.CheckForRoyalFlush(desiredOutput), true);
+            Assert.AreEqual(CombinationChecker.CheckForRoyalFlush(equalCardList), true);
         }
 
         [Test]
@@ -110,9 +159,9 @@ namespace Tester
                 new Card() { Value = (CardValue)11, Suit = (CardSuit)4 }
             };
 
-            Dictionary<List<Card>, int> desiredOutput = CombinationChecker.CheckForEqualCardValueOrSuit(cardList, "Suit");
+            List<List<Card>> equalCardList = CombinationChecker.CheckForEqualCardValueOrSuit(cardList, "Suit");
 
-            Assert.AreEqual(CombinationChecker.CheckForStraightFlush(desiredOutput), true);
+            Assert.AreEqual(CombinationChecker.CheckForStraightFlush(equalCardList), true);
         }
 
     }

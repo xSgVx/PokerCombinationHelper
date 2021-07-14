@@ -10,37 +10,37 @@ namespace Checker
 {
     public class CombinationChecker
     {
-        public static Dictionary<List<Card>, int> CheckForEqualCardValueOrSuit(List<Card> cardList, string type)
+        public static List<List<Card>> CheckForEqualCardValueOrSuit(List<Card> inputCardList, string type)
         {
-            cardList.Sort();
+            inputCardList.Sort();
 
-            Dictionary<List<Card>, int> equalCardDict = new Dictionary<List<Card>, int>();
+            var equalCardList = new List<List<Card>>();
 
-            for (int i = 0; i < cardList.Count;)
+            for (int i = 0; i < inputCardList.Count;)
             {
                 List<Card> equalCardsArray = new List<Card>();
 
                 if (type == "Value")
                 {
-                    equalCardsArray = cardList.FindAll(x => x.Value.Equals(cardList[i].Value));
+                    equalCardsArray = inputCardList.FindAll(x => x.Value.Equals(inputCardList[i].Value));
                 }
                 else if (type == "Suit")
                 {
-                    equalCardsArray = cardList.FindAll(x => x.Suit.Equals(cardList[i].Suit));
+                    equalCardsArray = inputCardList.FindAll(x => x.Suit.Equals(inputCardList[i].Suit));
                 }
                 else throw new Exception("Неверный тип свойства");
 
                 if (equalCardsArray.Count > 1)
-                    equalCardDict.Add(equalCardsArray, equalCardsArray.Count);
+                    equalCardList.Add(equalCardsArray);                    
 
                 i += equalCardsArray.Count;
             }
 
-            if (equalCardDict.Any()) return equalCardDict;
+            if (equalCardList.Any()) return equalCardList;
             else return null;
         }
 
-        public static bool CheckForRoyalFlush(Dictionary<List<Card>, int> cardDict)
+        public static bool CheckForRoyalFlush(List<List<Card>> inputCardList)
         {
             List<Card> straightFlushList = new List<Card>()
             {
@@ -52,14 +52,15 @@ namespace Checker
             };
 
             int match = 0;
-            foreach (KeyValuePair<List<Card>, int> keyValuePair in cardDict)
+
+            for (int i = 0; i < inputCardList.Count; i++)
             {
                 //Стрит флеш всегда содержит в себе 5 карт
-                if (keyValuePair.Key.Count < 5) return false;
+                if (inputCardList[i].Count < 5) return false;
 
                 foreach (Card card in straightFlushList)
                 {
-                    match += keyValuePair.Key.FindAll(x => x.Value.Equals(card.Value)).Count;
+                    match += inputCardList[i].FindAll(x => x.Value.Equals(card.Value)).Count;
                 }
             }
 
@@ -67,15 +68,15 @@ namespace Checker
             else return false;
         }
 
-        public static bool CheckForStraightFlush(Dictionary<List<Card>, int> cardDict)
+        public static bool CheckForStraightFlush(List<List<Card>> inputCardList)
         {
             int match = 0;
 
-            foreach (KeyValuePair<List<Card>, int> keyValuePair in cardDict)
+            foreach (List<Card> equalCardsList in inputCardList)
             {
-                for (int i = 0; i < keyValuePair.Key.Count - 1; i++)
+                for (int i = 0; i < equalCardsList.Count - 1; i++)
                 {
-                    if ((int)keyValuePair.Key[i].Value == ((int)keyValuePair.Key[i + 1].Value + 1))
+                    if ((int)equalCardsList[i].Value == ((int)equalCardsList[i + 1].Value + 1))
                         match++;
                 }
             }
