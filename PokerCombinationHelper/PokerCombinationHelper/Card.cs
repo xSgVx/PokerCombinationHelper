@@ -41,8 +41,7 @@ namespace Cards
     {
         public CardValue Value;
         public CardSuit Suit;
-        public static int GAME_PLAYERS_COUNT;
-        public static List<Card> Deck = Card.GetDeck();
+        public static List<Card> Deck = GetDeck();
 
         //Объявляем колоду из 52 карт 
         public static List<Card> GetDeck()
