@@ -1,34 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Cards;
-using Player;
-using Board;
-using PokerCombinationHelper;
 
-namespace Game
+namespace PokerCombinationHelper
 {
     class Game
     {
         public static int GAME_PLAYERS_COUNT;
 
+        public static void FirstPlayerCardDistribution()
+        {
+            for (int i = 0; i < GAME_PLAYERS_COUNT; i++)
+            {
+                Player player = new Player
+                {
+                    PlayerName = "Player_" + Convert.ToString(i),
 
-        //public static List<Card> boardDeck;
-        //public static void Start()
-        //{
-        //    public List<Player> 
+                    PlayerDeck = Card.GetCards(2)
+                };
+            }     
+        }
 
-        //    for (int i = 0; i<GAME_PLAYERS_COUNT; i++)
-        //    {
-                
-        //        string playerName = "Player_" + Convert.ToString(i);
+        public static void FirstBoardCardDistribution()
+        {
+            Board gameBoard = new Board();
 
-        //List<Card> playerCards = Card.GetCards(2);
+            gameBoard.BoardCards = Card.GetCards(3);
+        }
 
 
-        //.Add(playerName, playerCards);
     }
 }
 

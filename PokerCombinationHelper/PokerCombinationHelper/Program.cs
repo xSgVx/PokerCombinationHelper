@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Cards;
-using CombinationChecker;
 
 namespace PokerCombinationHelper
 {
@@ -18,8 +12,8 @@ namespace PokerCombinationHelper
             //Game.Start(Game.GAME_PLAYERS_COUNT);
 
             //Console.WriteLine("За столом {0} игроков:", Game.GAME_PLAYERS_COUNT);
-          
-            
+
+
         }
 
     }

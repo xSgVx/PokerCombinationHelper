@@ -1,10 +1,7 @@
 using NUnit.Framework;
-using System;
-using Cards;
-using PokerCombinationHelper;
 using System.Collections.Generic;
 
-namespace Tester
+namespace PokerCombinationHelper
 {
     public class Tests
     {
@@ -161,7 +158,7 @@ namespace Tester
 
             List<List<Card>> equalCardList = CombinationChecker.CombinationChecker.CheckForEqualCardValueOrSuit(cardList, "Suit");
 
-            Assert.AreEqual(CombinationChecker.CombinationChecker.CheckForStraightFlush(equalCardList), true);
+            Assert.AreEqual(CombinationChecker.CombinationChecker.CheckCardSequence(equalCardList), true);
         }
 
         [Test]

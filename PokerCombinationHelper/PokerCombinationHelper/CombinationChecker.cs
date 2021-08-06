@@ -1,10 +1,8 @@
-﻿using Cards;
+﻿
+using PokerCombinationHelper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections;
 
 namespace CombinationChecker
 {
@@ -35,7 +33,7 @@ namespace CombinationChecker
                 //Если повторяющихся элементов нет, то equalCardsArray.Count равняется 1,
                 //т.к в списке элемент нашел только себя
                 if (equalCardsArray.Count > 1)
-                    equalCardList.Add(equalCardsArray);                    
+                    equalCardList.Add(equalCardsArray);
 
                 //Смещаем индекс массива на количество найденных элементов
                 i += equalCardsArray.Count;
@@ -76,7 +74,7 @@ namespace CombinationChecker
             else return false;
         }
 
-        public static bool CheckForStraightFlush(List<List<Card>> inputCardList)
+        public static bool CheckCardSequence(List<List<Card>> inputCardList)
         {
             int match = 0;
 
@@ -96,15 +94,15 @@ namespace CombinationChecker
         public static Card Kicker(List<List<Card>> inputCardList)
         {
             var kickerList = new List<Card>();
-            
+
             foreach (List<Card> cardList in inputCardList)
             {
                 cardList.Sort();
                 kickerList.Add(cardList[0]);
             }
-            
+
             kickerList.Sort();
-            
+
             return kickerList[0];
         }
 
@@ -115,7 +113,37 @@ namespace CombinationChecker
             return inputCardList[0];
         }
 
+        public static void CheckWinner(List<Card> inputCardList)
+        {
 
+            for (int i = 0; i < Game.GAME_PLAYERS_COUNT; i++)
+            {
+                var equalCardValueList = CheckForEqualCardValueOrSuit(inputCardList, "Value");
+                var equalCardSuitList = CheckForEqualCardValueOrSuit(inputCardList, "Suit");
+
+                //Флеш Рояль, Стрит Флеш, Флеш, Стрит, Кикер
+                if (equalCardValueList == null)
+                {
+                    //Стрит, Стрит флеш, Флеш рояль
+                    if (CheckCardSequence(equalCardValueList))
+                    {
+
+                    }
+                    //Флеш, Кикер
+                    else
+                    {
+
+                    }
+                }
+                else
+                {
+
+                }
+
+
+
+            }
+        }
 
     }
 }

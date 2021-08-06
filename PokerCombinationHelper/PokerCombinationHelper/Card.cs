@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 
 
-namespace Cards
+namespace PokerCombinationHelper
 {
     public enum CardSuit
     {

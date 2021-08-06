@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Cards;
+﻿using System.Collections.Generic;
 
-namespace Player
+namespace PokerCombinationHelper
 {
     public class Player
     {
