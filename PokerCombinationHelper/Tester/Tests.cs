@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using System;
 using Cards;
-using Checker;
+using PokerCombinationHelper;
 using System.Collections.Generic;
 
 namespace Tester
@@ -36,7 +36,7 @@ namespace Tester
                 new Card() { Value = (CardValue)7, Suit = (CardSuit)1 }
             };
 
-            var equalCardList = CombinationChecker.CheckForEqualCardValueOrSuit(cardList, "Value");
+            var equalCardList = CombinationChecker.CombinationChecker.CheckForEqualCardValueOrSuit(cardList, "Value");
 
             List<Card> requiredList1 = new List<Card>
             {
@@ -87,7 +87,7 @@ namespace Tester
                 new Card() { Value = (CardValue)10, Suit = (CardSuit)1 }
             };
 
-            var equalCardList = CombinationChecker.CheckForEqualCardValueOrSuit(cardList, "Value");
+            var equalCardList = CombinationChecker.CombinationChecker.CheckForEqualCardValueOrSuit(cardList, "Value");
 
             List<Card> requiredList1 = new List<Card>
             {
@@ -140,9 +140,9 @@ namespace Tester
                 new Card() { Value = (CardValue)11, Suit = (CardSuit)1 }
             };
 
-            List<List<Card>> equalCardList = CombinationChecker.CheckForEqualCardValueOrSuit(cardList, "Suit");
+            List<List<Card>> equalCardList = CombinationChecker.CombinationChecker.CheckForEqualCardValueOrSuit(cardList, "Suit");
 
-            Assert.AreEqual(CombinationChecker.CheckForRoyalFlush(equalCardList), true);
+            Assert.AreEqual(CombinationChecker.CombinationChecker.CheckForRoyalFlush(equalCardList), true);
         }
 
         [Test]
@@ -159,9 +159,9 @@ namespace Tester
                 new Card() { Value = (CardValue)11, Suit = (CardSuit)4 }
             };
 
-            List<List<Card>> equalCardList = CombinationChecker.CheckForEqualCardValueOrSuit(cardList, "Suit");
+            List<List<Card>> equalCardList = CombinationChecker.CombinationChecker.CheckForEqualCardValueOrSuit(cardList, "Suit");
 
-            Assert.AreEqual(CombinationChecker.CheckForStraightFlush(equalCardList), true);
+            Assert.AreEqual(CombinationChecker.CombinationChecker.CheckForStraightFlush(equalCardList), true);
         }
 
         [Test]
@@ -180,7 +180,7 @@ namespace Tester
 
             var requiredCard = new Card() { Value = (CardValue)13, Suit = (CardSuit)3 };
 
-            Assert.AreEqual(CombinationChecker.Kicker(cardList).Value, requiredCard.Value);
+            Assert.AreEqual(CombinationChecker.CombinationChecker.Kicker(cardList).Value, requiredCard.Value);
 
         }
 
@@ -197,11 +197,11 @@ namespace Tester
                 new Card() { Value = (CardValue)12, Suit = (CardSuit)1 }
             };
 
-            var equalCardList = CombinationChecker.CheckForEqualCardValueOrSuit(cardList, "Value");
+            var equalCardList = CombinationChecker.CombinationChecker.CheckForEqualCardValueOrSuit(cardList, "Value");
 
             var requiredCard = new Card() { Value = (CardValue)12, Suit = (CardSuit)2 };
 
-            Assert.AreEqual(CombinationChecker.Kicker(equalCardList).Value, requiredCard.Value);
+            Assert.AreEqual(CombinationChecker.CombinationChecker.Kicker(equalCardList).Value, requiredCard.Value);
         }
     }
 }

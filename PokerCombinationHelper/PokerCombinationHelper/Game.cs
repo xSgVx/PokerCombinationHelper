@@ -4,31 +4,32 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Cards;
+using Player;
+using Board;
+using PokerCombinationHelper;
 
-namespace PokerCombinationHelper
+namespace Game
 {
     class Game
     {
-        public static int GAME_PLAYERS_COUNT { get; set; }
-        public static Dictionary<string, List<Card>> PlayersDecks { get; set; } = new Dictionary<string, List<Card>>();
+        public static int GAME_PLAYERS_COUNT;
+
+
         //public static List<Card> boardDeck;
-        public static Dictionary<string, List<Card>> Start()
-        {
-           //Dictionary<string, List<Card>> playersDecks = new Dictionary<string, List<Card>>();
+        //public static void Start()
+        //{
+        //    public List<Player> 
 
-            for (int i = 0; i < GAME_PLAYERS_COUNT; i++)
-            {
+        //    for (int i = 0; i<GAME_PLAYERS_COUNT; i++)
+        //    {
                 
-                string playerName = "Player_" + Convert.ToString(i);
+        //        string playerName = "Player_" + Convert.ToString(i);
 
-                List<Card> playerCards = Card.GetCards(2);
-
-                PlayersDecks.Add(playerName, playerCards);
-            }
-
-            return PlayersDecks;
-        }
+        //List<Card> playerCards = Card.GetCards(2);
 
 
+        //.Add(playerName, playerCards);
     }
 }
+
+

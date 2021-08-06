@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PokerCombinationHelper.Properties
+namespace Player.Properties
 {
 
 

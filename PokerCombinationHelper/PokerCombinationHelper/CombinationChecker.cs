@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections;
 
-namespace Checker
+namespace CombinationChecker
 {
     public class CombinationChecker
     {
