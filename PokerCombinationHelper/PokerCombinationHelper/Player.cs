@@ -6,6 +6,7 @@ namespace PokerCombinationHelper
     {
         public string PlayerName { get; set; }
         public List<Card> PlayerDeck { get; set; }
+        public PokerHandRankings CombinationValue { get; set; }
 
     }
 }

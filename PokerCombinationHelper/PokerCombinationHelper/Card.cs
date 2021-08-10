@@ -13,7 +13,6 @@ namespace PokerCombinationHelper
         [Description("Буби")] Diamonds = 2,
         [Description("Крести")] Clubs = 3,
         [Description("Пики")] Spades = 4,
-
     }
     public enum CardValue
     {
@@ -31,7 +30,6 @@ namespace PokerCombinationHelper
         [Description("Король")] King = 13,
         [Description("Туз")] Ace = 14,
     }
-
     public class Card : IComparable<Card>
     {
         public CardValue Value;
