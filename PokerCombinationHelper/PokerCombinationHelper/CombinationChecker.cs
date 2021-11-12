@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -21,11 +22,117 @@ namespace PokerCombinationHelper
 
     public class CombinationChecker
     {
+        public static WinnerParams GetPlayerHandRank(List<Card> inputCardList)
+        {
+            inputCardList.Sort();
+
+            List<List<Card>> equalCardValueLists = MakeEqualCardValueOrSuitLists(inputCardList, "Value");
+            List<List<Card>> equalCardSuitLists = MakeEqualCardValueOrSuitLists(inputCardList, "Suit");
+
+            var isRoyalFlush = CheckForRoyalFlush(equalCardSuitLists);
+            if (isRoyalFlush)
+            {
+                return new WinnerParams
+                {
+                    HandRank = (PokerHandRankings)10,
+                    HighCard = HighCard(inputCardList)
+                };
+            }
+
+            var isStraightFlush = (StraightFlushHighCard(equalCardSuitLists) != null);
+            if (isStraightFlush)
+            {
+
+                return new WinnerParams
+                {
+                    HandRank = (PokerHandRankings)9,
+                    HighCard = StraightFlushHighCard(equalCardSuitLists)
+                };
+            }
+
+            var isFourOfAKind = FourOfAKindHighCard(equalCardValueLists) != null;
+            if (isFourOfAKind)
+            {
+                return new WinnerParams
+                {
+                    HandRank = (PokerHandRankings)8,
+                    HighCard = FourOfAKindHighCard(equalCardValueLists)
+                };
+            }
+            var isFullHouse = EqualPairsHighCard(equalCardValueLists, 1, 3) != null && EqualPairsHighCard(equalCardValueLists, 1, 2) != null;
+            if (isFullHouse)
+            {
+                return new WinnerParams
+                {
+                    HandRank = (PokerHandRankings)7,
+                    HighCard = EqualPairsHighCard(equalCardValueLists, 1, 3)
+                };
+            }
+
+            var isFlush = HighCard(equalCardSuitLists) != null;
+            if (isFlush)
+            {
+                return new WinnerParams
+                {
+                    HandRank = (PokerHandRankings)6,
+                    HighCard = HighCard(equalCardSuitLists)
+                };
+            }
+
+            var isStraight = StraightHighCard(inputCardList, 5) != null;
+            if (isStraight)
+            {
+                return new WinnerParams
+                {
+                    HandRank = (PokerHandRankings)5,
+                    HighCard = StraightHighCard(inputCardList, 5)
+                };
+            }
+
+            var isThreeOfAKind = EqualPairsHighCard(equalCardValueLists, 1, 3) != null;
+            if (isThreeOfAKind)
+            {
+                return new WinnerParams
+                {
+                    HandRank = (PokerHandRankings)4,
+                    HighCard = EqualPairsHighCard(equalCardValueLists, 1, 3)
+                };
+            }
+
+            var isTwoPairs = EqualPairsHighCard(equalCardValueLists, 2, 2) != null;
+            if (isTwoPairs)
+            {
+                return new WinnerParams
+                {
+                    HandRank = (PokerHandRankings)3,
+                    HighCard = EqualPairsHighCard(equalCardValueLists, 2, 2)
+                };
+            }
+
+            var isPair = EqualPairsHighCard(equalCardValueLists, 1, 2) != null;
+            if (isPair)
+            {
+                return new WinnerParams
+                {
+                    HandRank = (PokerHandRankings)2,
+                    HighCard = EqualPairsHighCard(equalCardValueLists, 1, 2)
+                };
+            }
+
+            var isHighCard = HighCard(inputCardList);
+            return new WinnerParams
+            {
+                HandRank = (PokerHandRankings)1,
+                HighCard = HighCard(inputCardList)
+            };
+
+        }
+
         public static List<List<Card>> MakeEqualCardValueOrSuitLists(List<Card> inputCardList, string type)
         {
             inputCardList.Sort();
 
-            var equalCardList = new List<List<Card>>();
+            List<List<Card>> equalCardsLists = new List<List<Card>>();
 
             for (int i = 0; i < inputCardList.Count;)
             {
@@ -47,16 +154,16 @@ namespace PokerCombinationHelper
                 //т.к в списке элемент нашел только себя
                 if (equalCardsArray.Count > 1)
                 {
-                    equalCardList.Add(equalCardsArray);
+                    equalCardsLists.Add(equalCardsArray);
                 }
 
                 //Смещаем индекс массива на количество найденных элементов
                 i += equalCardsArray.Count;
             }
 
-            if (equalCardList.Any())
+            if (equalCardsLists.Any())
             {
-                return equalCardList;
+                return equalCardsLists;
             }
             else
             {
@@ -64,7 +171,7 @@ namespace PokerCombinationHelper
             }
         }
 
-        private static bool CheckForRoyalFlush(List<List<Card>> inputCardList)
+        private static bool CheckForRoyalFlush(List<List<Card>> inputCardLists)
         {
             //На вход данной функции должен поступать выход функции 
             //CheckForEqualCardValueOrSuit с типом Suit на входе, поэтому
@@ -80,17 +187,17 @@ namespace PokerCombinationHelper
 
             int match = 0;
 
-            for (int i = 0; i < inputCardList.Count; i++)
+            for (int i = 0; i < inputCardLists.Count; i++)
             {
                 //Стрит флеш всегда содержит в себе 5 карт
-                if (inputCardList[i].Count < 5)
+                if (inputCardLists[i].Count < 5)
                 {
                     return false;
                 }
 
                 foreach (Card card in straightFlushList)
                 {
-                    match += inputCardList[i].FindAll(x => x.Value.Equals(card.Value)).Count;
+                    match += inputCardLists[i].FindAll(x => x.Value.Equals(card.Value)).Count;
                 }
             }
 
@@ -104,20 +211,9 @@ namespace PokerCombinationHelper
             }
         }
 
-        private static bool CheckForStraightFlush(List<List<Card>> inputCardList)
+        private static int IncreasingSequenceCardsCount(List<Card> inputCardList)
         {
-            foreach (var equalCardsList in inputCardList)
-            {
-                if (CardSequenceCount(equalCardsList) == 4)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        private static int CardSequenceCount(List<Card> inputCardList)
-        {
+            inputCardList.Sort();
             int match = 1;
 
             for (int i = 0; i < inputCardList.Count - 1; i++)
@@ -131,174 +227,112 @@ namespace PokerCombinationHelper
             return match;
         }
 
-        private static bool CheckFourOfAKind(List<List<Card>> inputCardList)
+        private static int EqualSequenceCardsCount(List<Card> inputCardList)
         {
+            inputCardList.Sort();
+            int match = 1;
 
-            for (int i = 0; i < inputCardList[i].Count; i++)
+            for (int i = 0; i < inputCardList.Count - 1; i++)
             {
-                //Проверка на 4 элемента в листе
-                if (inputCardList[i].Count != 4)
+                if ((int)inputCardList[i].Value == ((int)inputCardList[i + 1].Value))
                 {
-                    continue;
-                }
-
-                int match = 0;
-
-                foreach (Card card in inputCardList[i])
-                {
-                    match += inputCardList[i].FindAll(x => x.Value.Equals(card.Value)).Count;
-                }
-
-                if (match == 4)
-                {
-                    return true;
+                    match++;
                 }
             }
 
-            return false;
+            return match;
         }
 
-        private static bool CheckThreeOfAKind(List<List<Card>> inputCardList)
+        private static Card StraightFlushHighCard(List<List<Card>> inputCardsLists)
         {
-            foreach (List<Card> equalCardsList in inputCardList)
+            foreach (var equalCardsList in inputCardsLists)
             {
-                if (CardSequenceCount(equalCardsList) == 3)
+                if (IncreasingSequenceCardsCount(equalCardsList) == 5)
                 {
-                    return true;
+                    return HighCard(equalCardsList);
+                }
+            }
+            return null;
+        }
+
+        private static Card EqualPairsHighCard(List<List<Card>> inputCardLists, int neededMatchCount, int neededCardCount)
+        {
+            Card highCard = null;
+            int match = 0;
+
+            foreach (List<Card> equalCardsList in inputCardLists)
+            {
+                if (EqualSequenceCardsCount(equalCardsList) == neededCardCount)
+                {
+                    highCard = HighCard(equalCardsList);
+                    match++;
                 }
             }
 
-            return false;
+            if (match == neededMatchCount)
+            {
+                return highCard;
+            }
+            else
+            {
+                return null;
+            }
         }
 
-        private static bool CheckThreeOfAKind(List<Card> inputCardList)
+        private static Card FourOfAKindHighCard(List<List<Card>> inputCardLists)
         {
-            if (CardSequenceCount(inputCardList) == 3)
+            foreach (List<Card> equalCardsList in inputCardLists)
             {
-                return true;
+                if (EqualSequenceCardsCount(equalCardsList) == 4)
+                {
+                    return HighCard(equalCardsList);
+                }
             }
 
-            return false;
+            return null;
         }
 
-        private static bool CheckFullHouse(List<List<Card>> inputCardList)
+        private static Card StraightHighCard(List<Card> inputCardLists, int n)
         {
-            if (CheckThreeOfAKind(inputCardList))
+            inputCardLists.Sort();
+
+            if (IncreasingSequenceCardsCount(inputCardLists) == n)
             {
-                foreach (List<Card> equalCardsList in inputCardList)
+                for (int i = 0; i < inputCardLists.Count; i++)
                 {
-                    if (CardSequenceCount(equalCardsList) == 3)
+                    if ((int)inputCardLists[i].Value == (int)(inputCardLists[i + 1].Value + 1))
+                    {
+                        return inputCardLists[i];
+                    }
+                    else
                     {
                         continue;
                     }
-
-                    if (CardSequenceCount(equalCardsList) == 2)
-                    {
-                        return true;
-                    }
                 }
             }
 
-            return false;
+            return null;
         }
 
-        private static bool CheckFlush(List<List<Card>> inputCardList)
+        private static Card HighCard(List<List<Card>> inputCardLists)
         {
-            foreach (List<Card> equalCardsList in inputCardList)
+            foreach (List<Card> equalCardsList in inputCardLists)
             {
                 if (equalCardsList.Count == 5)
                 {
-                    return true;
+                    return HighCard(equalCardsList);
                 }
             }
 
-            return false;
+            return null;
         }
 
-        public static Card Kicker(List<List<Card>> inputCardList)
-        {
-            var kickerList = new List<Card>();
-
-            foreach (List<Card> cardList in inputCardList)
-            {
-                cardList.Sort();
-                kickerList.Add(cardList[0]);
-            }
-
-            kickerList.Sort();
-
-            return kickerList[0];
-        }
-
-        public static Card Kicker(List<Card> inputCardList)
+        public static Card HighCard(List<Card> inputCardList)
         {
             inputCardList.Sort();
 
             return inputCardList[0];
         }
 
-        public static PokerHandRankings GetPlayerHandRank(List<Card> inputCardList)
-        {
-
-            var equalCardValueList = MakeEqualCardValueOrSuitLists(inputCardList, "Value");
-            var equalCardSuitList = MakeEqualCardValueOrSuitLists(inputCardList, "Suit");
-
-            //Флеш рояль
-            if (CheckForRoyalFlush(equalCardSuitList))
-            {
-                return (PokerHandRankings)10;
-            }
-
-            //Стрит-флеш
-            if (CheckForStraightFlush(equalCardSuitList))
-            {
-                return (PokerHandRankings)9;
-            }
-
-            //Каре
-            if (CheckFourOfAKind(equalCardValueList))
-            {
-                return (PokerHandRankings)8;
-            }
-
-            //Фулл-хаус
-            if (CheckFullHouse(equalCardValueList))
-            {
-                return (PokerHandRankings)7;
-            }
-
-            //Флеш
-            if (CheckFlush(equalCardSuitList))
-            {
-                return (PokerHandRankings)6;
-            }
-
-            //Стрит
-            if (CardSequenceCount(inputCardList) == 5)
-            {
-                return (PokerHandRankings)5;
-            }
-
-            //Тройка
-            if (CheckThreeOfAKind(inputCardList))
-            {
-                return (PokerHandRankings)4;
-            }
-
-            //Две пары
-            if (equalCardValueList.Count >= 2)
-            {
-                return (PokerHandRankings)3;
-            }
-
-            //Пара
-            if (equalCardValueList.Count == 1)
-            {
-                return (PokerHandRankings)2;
-            }
-
-            return (PokerHandRankings)1;
-
-        }
     }
 }

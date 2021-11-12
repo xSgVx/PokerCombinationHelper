@@ -4643,19 +4643,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\sorokin\\.nuget\\packages\\": {}
+    "C:\\Users\\German\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\sorokin\\source\\repos\\Combination helper\\PokerCombinationHelper\\Tester\\Tester.csproj",
+      "projectUniqueName": "C:\\Users\\German\\poker\\PokerCombinationHelper\\Tester\\Tester.csproj",
       "projectName": "Tester",
-      "projectPath": "C:\\Users\\sorokin\\source\\repos\\Combination helper\\PokerCombinationHelper\\Tester\\Tester.csproj",
-      "packagesPath": "C:\\Users\\sorokin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\sorokin\\source\\repos\\Combination helper\\PokerCombinationHelper\\Tester\\obj\\",
+      "projectPath": "C:\\Users\\German\\poker\\PokerCombinationHelper\\Tester\\Tester.csproj",
+      "packagesPath": "C:\\Users\\German\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\German\\poker\\PokerCombinationHelper\\Tester\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\sorokin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\German\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -4669,8 +4669,8 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "projectReferences": {
-            "C:\\Users\\sorokin\\source\\repos\\Combination helper\\PokerCombinationHelper\\PokerCombinationHelper\\PokerCombinationHelper.csproj": {
-              "projectPath": "C:\\Users\\sorokin\\source\\repos\\Combination helper\\PokerCombinationHelper\\PokerCombinationHelper\\PokerCombinationHelper.csproj"
+            "C:\\Users\\German\\poker\\PokerCombinationHelper\\PokerCombinationHelper\\PokerCombinationHelper.csproj": {
+              "projectPath": "C:\\Users\\German\\poker\\PokerCombinationHelper\\PokerCombinationHelper\\PokerCombinationHelper.csproj"
             }
           }
         }
@@ -4713,7 +4713,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.301\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.402\\RuntimeIdentifierGraph.json"
       }
     }
   }
