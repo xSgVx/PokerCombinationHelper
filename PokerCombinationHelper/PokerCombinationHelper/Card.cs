@@ -30,7 +30,7 @@ namespace PokerCombinationHelper
         [Description("Король")] King = 13,
         [Description("Туз")] Ace = 14,
     }
-    public class Card : IComparable<Card>
+    public class Card : IComparable<Card>, IEquatable<Card>
     {
         public CardValue Value;
         public CardSuit Suit;
@@ -95,11 +95,19 @@ namespace PokerCombinationHelper
         public int CompareTo(Card obj)
         {
             if (this.Value < obj.Value)
-                return 1;
-            if (this.Value > obj.Value)
                 return -1;
+            if (this.Value > obj.Value)
+                return 1;
             else
                 return 0;
+        }
+
+        public bool Equals(Card other)
+        {
+            if (other == null) 
+                return false;
+
+            return (other.Suit == this.Suit) && (other.Value == this.Value);
         }
 
         public class Cards : IEnumerable
