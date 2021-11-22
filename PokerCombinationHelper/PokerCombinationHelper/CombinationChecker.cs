@@ -182,12 +182,12 @@ namespace PokerCombinationHelper
 
         private static bool CheckForRoyalFlush(List<List<Card>> inputCardLists)
         {
-            try
-            {
-                //На вход данной функции должен поступать выход функции 
-                //CheckForEqualCardValueOrSuit с типом Suit на входе, поэтому
-                //для создания straightFlushList не важно какой будет параметр CardSuit
-                List<Card> straightFlushList = new List<Card>()
+            if (inputCardLists == null) return false;
+
+            //На вход данной функции должен поступать выход функции 
+            //CheckForEqualCardValueOrSuit с типом Suit на входе, поэтому
+            //для создания straightFlushList не важно какой будет параметр CardSuit
+            List<Card> straightFlushList = new List<Card>()
             {
                 new Card() { Value = (CardValue)14, Suit = (CardSuit)1 },
                 new Card() { Value = (CardValue)13, Suit = (CardSuit)2 },
@@ -196,33 +196,30 @@ namespace PokerCombinationHelper
                 new Card() { Value = (CardValue)10, Suit = (CardSuit)1 },
             };
 
-                int match = 0;
+            int match = 0;
 
-                for (int i = 0; i < inputCardLists.Count; i++)
+            for (int i = 0; i < inputCardLists.Count; i++)
+            {
+                //Стрит флеш всегда содержит в себе 5 карт
+                if (inputCardLists[i].Count < 5)
                 {
-                    //Стрит флеш всегда содержит в себе 5 карт
-                    if (inputCardLists[i].Count < 5)
-                    {
-                        return false;
-                    }
-
-                    foreach (Card card in straightFlushList)
-                    {
-                        match += inputCardLists[i].FindAll(x => x.Value.Equals(card.Value)).Count;
-                    }
+                    return false;
                 }
 
-                return match == 5;
+                foreach (Card card in straightFlushList)
+                {
+                    match += inputCardLists[i].FindAll(x => x.Value.Equals(card.Value)).Count;
+                }
             }
-            catch
-            {
-                return false;
-            }
+
+            return match == 5;
         }
 
         public static int IncreasingSequenceCardsCount(List<Card> inputCardList)
         {
+            
             int match = 1;
+            int maxMatch = 0;
 
             for (int i = 0; i < inputCardList.Count - 1; i++)
             {
@@ -230,13 +227,23 @@ namespace PokerCombinationHelper
                 {
                     match++;
                 }
-                else if ((int)inputCardList[i + 1].Value == ((int)inputCardList[i].Value))
-                    continue;
-                else 
-                    match = 0;
+                else
+                {
+                    if (maxMatch < match)
+                    {
+                        maxMatch = match;
+                        match = 1;
+                    }
+                }
             }
-
-            return match;
+            if (match > maxMatch)
+            {
+                return match;
+            }
+            else
+            {
+                return maxMatch;
+            }
         }
 
         public static int EqualSequenceCardsCount(List<Card> inputCardList)
@@ -256,52 +263,43 @@ namespace PokerCombinationHelper
             return match;
         }
 
-        public static Card StraightFlushHighCard(List<List<Card>> inputCardsLists)
+        public static Card StraightFlushHighCard(List<List<Card>> inputCardLists)
         {
-            try
-            {
-                foreach (var equalCardsList in inputCardsLists)
-                {
-                    if (IncreasingSequenceCardsCount(equalCardsList) == 5)
-                    {
-                        return HighCard(equalCardsList);
-                    }
-                }
+            if (inputCardLists == null) return null;
 
-                return null;
-            }
-            catch
+            foreach (var equalCardsList in inputCardLists)
             {
-                return null;
+                if (IncreasingSequenceCardsCount(equalCardsList) == 5)
+                {
+                    return HighCard(equalCardsList);
+                }
             }
+
+            return null;
+
         }
 
         public static Card EqualPairsHighCard(List<List<Card>> inputCardLists, int neededMatchCount, int neededCardCount)
         {
-            try
+            if (inputCardLists == null) return null;
+
+            Card highCard = null;
+            int match = 0;
+
+            foreach (List<Card> equalCardsList in inputCardLists)
             {
-                Card highCard = null;
-                int match = 0;
-
-                foreach (List<Card> equalCardsList in inputCardLists)
+                if (EqualSequenceCardsCount(equalCardsList) == neededCardCount)
                 {
-                    if (EqualSequenceCardsCount(equalCardsList) == neededCardCount)
-                    {
-                        highCard = HighCard(equalCardsList);
-                        match++;
-                    }
-                }
-
-                if (match == neededMatchCount)
-                {
-                    return highCard;
-                }
-                else
-                {
-                    return null;
+                    highCard = HighCard(equalCardsList);
+                    match++;
                 }
             }
-            catch
+
+            if (match == neededMatchCount)
+            {
+                return highCard;
+            }
+            else
             {
                 return null;
             }
@@ -309,42 +307,37 @@ namespace PokerCombinationHelper
 
         public static Card FourOfAKindHighCard(List<List<Card>> inputCardLists)
         {
-            try
-            {
-                foreach (List<Card> equalCardsList in inputCardLists)
-                {
-                    if (EqualSequenceCardsCount(equalCardsList) == 4)
-                    {
-                        return HighCard(equalCardsList);
-                    }
-                }
+            if (inputCardLists == null) return null;
 
-                return null;
-            }
-            catch
+            foreach (List<Card> equalCardsList in inputCardLists)
             {
-                return null;
+                if (EqualSequenceCardsCount(equalCardsList) == 4)
+                {
+                    return HighCard(equalCardsList);
+                }
             }
-       }
+
+            return null;
+        }
 
         public static Card StraightHighCard(List<Card> inputCardList)
         {
+            var straightList = new List<Card>();
+            
+
             if (IncreasingSequenceCardsCount(inputCardList) >= 5)
             {
-                for (int i = 0; i < inputCardList.Count - 1; i++)
-                {
-                    try
-                    {
-                        while ((int)inputCardList[i + 1].Value != (int)(inputCardList[i].Value + 1))
-                        {
-                            inputCardList.RemoveAt(i + 1);
-                        }
-                    }
-                    catch
-                    {
-                        continue;
-                    }
-                }
+                var prevCard = inputCardList.Last();
+                var maxCard = inputCardList.Last();
+                var straightFound = true;
+
+                //for (int i = inputCardList.Count - 2; i >= 0; i--)
+                //{
+                    
+                //    if ()
+                //}
+                
+                
                 return HighCard(inputCardList);
             }
             return null;
@@ -352,22 +345,17 @@ namespace PokerCombinationHelper
 
         public static Card HighCard(List<List<Card>> inputCardLists)
         {
-            try
-            {
-                foreach (List<Card> equalCardsList in inputCardLists)
-                {
-                    if (equalCardsList.Count == 5)
-                    {
-                        return HighCard(equalCardsList);
-                    }
-                }
+            if (inputCardLists == null) return null;
 
-                return null;
-            }
-            catch
+            foreach (List<Card> equalCardsList in inputCardLists)
             {
-                return null;
+                if (equalCardsList.Count == 5)
+                {
+                    return HighCard(equalCardsList);
+                }
             }
+
+            return null;
         }
 
         public static Card HighCard(List<Card> inputCardList)

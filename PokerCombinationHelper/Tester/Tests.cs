@@ -21,7 +21,7 @@ namespace PokerCombinationHelper
         }
 
         [Test]
-        public void FindKickerInList()
+        public void FindHighCardInList()
         {
             List<Card> cardList = new List<Card>
             {
