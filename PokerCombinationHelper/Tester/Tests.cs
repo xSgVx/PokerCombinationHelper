@@ -233,6 +233,33 @@ namespace PokerCombinationHelper
         }
 
         [Test]
+        public void StraightWithAceTest()
+        {
+            List<Card> cardList = new List<Card>
+            {
+                new Card() { Value = (CardValue)2, Suit = CardSuit.Spades },
+                new Card() { Value = (CardValue)3, Suit = CardSuit.Diamonds },
+                new Card() { Value = (CardValue)5, Suit = CardSuit.Hearts },
+                new Card() { Value = (CardValue)4, Suit = CardSuit.Hearts },
+                new Card() { Value = (CardValue)8, Suit = CardSuit.Spades },
+                new Card() { Value = (CardValue)14, Suit = CardSuit.Diamonds },
+                new Card() { Value = (CardValue)13, Suit = CardSuit.Spades }
+            };
+
+            var winnerParams = new WinnerParams
+            {
+                HandRank = PokerHandRankings.Straight,
+                HighCard = new Card
+                {
+                    Suit = CardSuit.Diamonds,
+                    Value = (CardValue)14
+                }
+            };
+
+            Assert.AreEqual(winnerParams, CombinationChecker.GetPlayerHandRank(cardList));
+        }
+
+        [Test]
         public void ThreeOfAKindTest()
         {
             List<Card> cardList = new List<Card>

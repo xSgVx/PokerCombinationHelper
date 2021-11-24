@@ -73,6 +73,7 @@ namespace PokerCombinationHelper
 
             return deckList;
         }
+
         public static List<Card> GetCards(int count)
         {
             List<Card> randomedCardList = new List<Card>();
@@ -136,6 +137,20 @@ namespace PokerCombinationHelper
 
         }
     }
+
+    class CardComparer : EqualityComparer<Card>
+    {
+        public override bool Equals(Card x, Card y)
+        {
+            return (x.Value.Equals(y.Value));
+        }
+
+        public override int GetHashCode(Card obj)
+        {
+            return obj.Value.GetHashCode();
+        }
+    }
+
     public class CardsEnum : IEnumerator
     {
         public Card[] _card;

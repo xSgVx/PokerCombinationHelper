@@ -170,14 +170,7 @@ namespace PokerCombinationHelper
                 i += equalCardsArray.Count;
             }
 
-            if (equalCardsLists.Any())
-            {
-                return equalCardsLists;
-            }
-            else
-            {
-                return null;
-            }
+            return equalCardsLists.Any() ? equalCardsLists : null;
         }
 
         private static bool CheckForRoyalFlush(List<List<Card>> inputCardLists)
@@ -213,13 +206,22 @@ namespace PokerCombinationHelper
             }
 
             return match == 5;
+
+            //for (int i = 0; i < inputCardLists.Count; i++)
+            //{
+            //    if (inputCardLists[i].Where(inputCardListCard => straightFlushList.Any(straightFlushListCard => straightFlushListCard.Value == inputCardListCard.Value)).Distinct(new CardComparer()).ToList().Count == 5)
+            //    {
+            //        return true;
+            //    }
+            //}
+            //return false;  
         }
 
         public static int IncreasingSequenceCardsCount(List<Card> inputCardList)
         {
-            
             int match = 1;
             int maxMatch = 0;
+            inputCardList = inputCardList.Distinct(new CardComparer()).ToList();
 
             for (int i = 0; i < inputCardList.Count - 1; i++)
             {
@@ -236,14 +238,8 @@ namespace PokerCombinationHelper
                     }
                 }
             }
-            if (match > maxMatch)
-            {
-                return match;
-            }
-            else
-            {
-                return maxMatch;
-            }
+
+            return (match > maxMatch) ?  match : maxMatch;
         }
 
         public static int EqualSequenceCardsCount(List<Card> inputCardList)
@@ -276,7 +272,6 @@ namespace PokerCombinationHelper
             }
 
             return null;
-
         }
 
         public static Card EqualPairsHighCard(List<List<Card>> inputCardLists, int neededMatchCount, int neededCardCount)
@@ -295,14 +290,7 @@ namespace PokerCombinationHelper
                 }
             }
 
-            if (match == neededMatchCount)
-            {
-                return highCard;
-            }
-            else
-            {
-                return null;
-            }
+            return (match == neededMatchCount) ? highCard : null;
         }
 
         public static Card FourOfAKindHighCard(List<List<Card>> inputCardLists)
@@ -322,24 +310,62 @@ namespace PokerCombinationHelper
 
         public static Card StraightHighCard(List<Card> inputCardList)
         {
-            var straightList = new List<Card>();
-            
+            List<Card> aceCardList = new List<Card>
+            {
+                new Card() { Value = (CardValue)2, Suit = CardSuit.Spades },
+                new Card() { Value = (CardValue)3, Suit = CardSuit.Diamonds },
+                new Card() { Value = (CardValue)4, Suit = CardSuit.Hearts },
+                new Card() { Value = (CardValue)5, Suit = CardSuit.Spades },
+                new Card() { Value = (CardValue)14, Suit = CardSuit.Diamonds },
+            };
+
+            //var query = (from inputCardListCard in inputCardList
+            //            join aceCardListCard in aceCardList
+            //            on inputCardListCard.Value equals aceCardListCard.Value
+            //            select inputCardListCard).Distinct(new CardComparer()).ToList();
+
+            //if (query.Count == 5)
+            //{
+            //    return HighCard(inputCardList);
+            //}    
+
+            if (inputCardList.Where(inputCardListCard => aceCardList.Any(aceCardListCard => aceCardListCard.Value == inputCardListCard.Value)).Distinct(new CardComparer()).ToList().Count == 5)
+            {
+                return HighCard(inputCardList);
+            }
 
             if (IncreasingSequenceCardsCount(inputCardList) >= 5)
             {
                 var prevCard = inputCardList.Last();
                 var maxCard = inputCardList.Last();
-                var straightFound = true;
+                var straightCount = 0;
 
-                //for (int i = inputCardList.Count - 2; i >= 0; i--)
-                //{
-                    
-                //    if ()
-                //}
-                
-                
-                return HighCard(inputCardList);
+                for (int i = inputCardList.Count - 1; i >= 0; i--)
+                {
+                    if ((int)prevCard.Value == (int)inputCardList[i].Value + 1)
+                    {
+                        straightCount++;
+                    }
+                    else
+                    {
+                        if (prevCard.Value == inputCardList[i].Value)
+                        {
+                            continue;
+                        }
+
+                        straightCount = 0;
+                        maxCard = inputCardList[i];
+                    }
+
+                    prevCard = inputCardList[i];
+
+                    if (straightCount == 4)
+                    {
+                        return maxCard;
+                    }
+                }
             }
+
             return null;
         }
 
