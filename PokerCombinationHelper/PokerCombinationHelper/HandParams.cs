@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace PokerCombinationHelper
 {
-    public class WinnerParams : IEquatable <WinnerParams>
+    public class HandParams : IEquatable <HandParams>
     {
         public PokerHandRankings HandRank;
         public Card HighCard;
 
-        public bool Equals(WinnerParams other)
+        public bool Equals(HandParams other)
         {
             // If parameter is null return false.
             if (other == null)

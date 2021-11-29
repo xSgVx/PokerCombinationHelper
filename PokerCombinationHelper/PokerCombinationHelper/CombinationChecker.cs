@@ -14,7 +14,7 @@ namespace PokerCombinationHelper
         [Description("Фулл хаус")] FullHouse = 7,
         [Description("Флеш")] Flush = 6,
         [Description("Стрит")] Straight = 5,
-        [Description("Сет")] ThreeOfAKind = 4,
+        [Description("Сет (Тройка)")] ThreeOfAKind = 4,
         [Description("Две пары")] TwoPair = 3,
         [Description("Пара")] Pair = 2,
         [Description("Старшая карта")] HighCard = 1,
@@ -28,7 +28,29 @@ namespace PokerCombinationHelper
 
     public class CombinationChecker
     {
-        public static WinnerParams GetPlayerHandRank(List<Card> inputCardList)
+        public static Player GetWinner(List<Player> playersList)
+        {
+            if (playersList == null) return null;
+
+            var winner = playersList.Last();
+
+            for (int i = 0; i < playersList.Count - 1; i++)
+            {
+                if (playersList[i].HandParams.HandRank > playersList[i + 1].HandParams.HandRank)
+                {
+                    winner = playersList[i];
+                }
+                else if (playersList[i].HandParams.HandRank == playersList[i + 1].HandParams.HandRank)
+                {
+                
+                    winner = (playersList[i].HandParams.HighCard.Value > playersList[i + 1].HandParams.HighCard.Value) ? (playersList[i]) : (playersList[i + 1]);
+                    
+                }
+            }
+            return winner;
+        }
+
+        public static HandParams GetPlayerHandParams(List<Card> inputCardList)
         {
             inputCardList.Sort();
 
@@ -38,7 +60,7 @@ namespace PokerCombinationHelper
             var isRoyalFlush = CheckForRoyalFlush(equalCardSuitLists);
             if (isRoyalFlush)
             {
-                return new WinnerParams
+                return new HandParams
                 {
                     HandRank = PokerHandRankings.RoyalFlush,
                     HighCard = HighCard(inputCardList)
@@ -49,7 +71,7 @@ namespace PokerCombinationHelper
             if (straightFlush != null)
             {
 
-                return new WinnerParams
+                return new HandParams
                 {
                     HandRank = PokerHandRankings.StraightFlush,
                     HighCard = straightFlush
@@ -59,7 +81,7 @@ namespace PokerCombinationHelper
             var fourOfAKind = FourOfAKindHighCard(equalCardValueLists);
             if (fourOfAKind != null)
             {
-                return new WinnerParams
+                return new HandParams
                 {
                     HandRank = PokerHandRankings.FourOfAKind,
                     HighCard = fourOfAKind
@@ -69,7 +91,7 @@ namespace PokerCombinationHelper
             var fullHouse = EqualPairsHighCard(equalCardValueLists, 1, 3) != null && EqualPairsHighCard(equalCardValueLists, 1, 2) != null;
             if (fullHouse)
             {
-                return new WinnerParams
+                return new HandParams
                 {
                     HandRank = PokerHandRankings.FullHouse,
                     HighCard = EqualPairsHighCard(equalCardValueLists, 1, 3)
@@ -79,7 +101,7 @@ namespace PokerCombinationHelper
             var flush = HighCard(equalCardSuitLists);
             if (flush != null)
             {
-                return new WinnerParams
+                return new HandParams
                 {
                     HandRank = PokerHandRankings.Flush,
                     HighCard = flush
@@ -89,7 +111,7 @@ namespace PokerCombinationHelper
             var straight = StraightHighCard(inputCardList);
             if (straight != null)
             {
-                return new WinnerParams
+                return new HandParams
                 {
                     HandRank = PokerHandRankings.Straight,
                     HighCard = straight
@@ -99,7 +121,7 @@ namespace PokerCombinationHelper
             var threeOfAKind = EqualPairsHighCard(equalCardValueLists, 1, 3);
             if (threeOfAKind != null)
             {
-                return new WinnerParams
+                return new HandParams
                 {
                     HandRank = PokerHandRankings.ThreeOfAKind,
                     HighCard = threeOfAKind
@@ -109,7 +131,7 @@ namespace PokerCombinationHelper
             var twoPairs = EqualPairsHighCard(equalCardValueLists, 2, 2);
             if (twoPairs != null)
             {
-                return new WinnerParams
+                return new HandParams
                 {
                     HandRank = PokerHandRankings.TwoPair,
                     HighCard = twoPairs
@@ -119,7 +141,7 @@ namespace PokerCombinationHelper
             var pair = EqualPairsHighCard(equalCardValueLists, 1, 2);
             if (pair != null)
             {
-                return new WinnerParams
+                return new HandParams
                 {
                     HandRank = PokerHandRankings.Pair,
                     HighCard = pair
@@ -127,7 +149,7 @@ namespace PokerCombinationHelper
             }
 
             var isHighCard = HighCard(inputCardList);
-            return new WinnerParams
+            return new HandParams
             {
                 HandRank = PokerHandRankings.HighCard,
                 HighCard = HighCard(inputCardList)
@@ -239,7 +261,7 @@ namespace PokerCombinationHelper
                 }
             }
 
-            return (match > maxMatch) ?  match : maxMatch;
+            return (match > maxMatch) ? match : maxMatch;
         }
 
         public static int EqualSequenceCardsCount(List<Card> inputCardList)

@@ -3,32 +3,49 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-
+using System.Reflection;
 
 namespace PokerCombinationHelper
 {
+    public static class EnumExtension
+    {
+        public static string GetDescription(this Enum enumElement)
+        {
+            Type type = enumElement.GetType();
+
+            MemberInfo[] memInfo = type.GetMember(enumElement.ToString());
+            if (memInfo != null && memInfo.Length > 0)
+            {
+                object[] attrs = memInfo[0].GetCustomAttributes(typeof(DescriptionAttribute), false);
+                if (attrs != null && attrs.Length > 0)
+                    return ((DescriptionAttribute)attrs[0]).Description;
+            }
+
+            return enumElement.ToString();
+        }
+    }
     public enum CardSuit
     {
-        [Description("Черви")] Hearts = 1,
-        [Description("Буби")] Diamonds = 2,
-        [Description("Крести")] Clubs = 3,
-        [Description("Пики")] Spades = 4,
+        [Description("\u2665")] Hearts = 1,
+        [Description("\u2666")] Diamonds = 2,
+        [Description("\u2663")] Clubs = 3,
+        [Description("\u2660")] Spades = 4,
     }
     public enum CardValue
     {
-        [Description("Двойка")] Two = 2,
-        [Description("Тройка")] Three = 3,
-        [Description("Четверка")] Four = 4,
-        [Description("Пятерка")] Five = 5,
-        [Description("Шестерка")] Six = 6,
-        [Description("Семерка")] Seven = 7,
-        [Description("Восьмерка")] Eight = 8,
-        [Description("Девятка")] Nine = 9,
-        [Description("Десятка")] Ten = 10,
-        [Description("Валет")] Jack = 11,
-        [Description("Дама")] Queen = 12,
-        [Description("Король")] King = 13,
-        [Description("Туз")] Ace = 14,
+        [Description("2")] Two = 2,
+        [Description("3")] Three = 3,
+        [Description("4")] Four = 4,
+        [Description("5")] Five = 5,
+        [Description("6")] Six = 6,
+        [Description("7")] Seven = 7,
+        [Description("8")] Eight = 8,
+        [Description("9")] Nine = 9,
+        [Description("10")] Ten = 10,
+        [Description("J")] Jack = 11,
+        [Description("Q")] Queen = 12,
+        [Description("K")] King = 13,
+        [Description("A")] Ace = 14,
     }
     public class Card : IComparable<Card>, IEquatable<Card>
     {
@@ -105,7 +122,7 @@ namespace PokerCombinationHelper
 
         public bool Equals(Card other)
         {
-            if (other == null) 
+            if (other == null)
                 return false;
 
             return (other.Suit == this.Suit) && (other.Value == this.Value);

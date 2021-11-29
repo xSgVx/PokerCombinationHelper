@@ -55,7 +55,7 @@ namespace PokerCombinationHelper
             };
 
 
-            var winnerParams = new WinnerParams
+            var winnerParams = new HandParams
             {
                 HandRank = PokerHandRankings.RoyalFlush,
                 HighCard = new Card
@@ -65,7 +65,7 @@ namespace PokerCombinationHelper
                 }
             };
 
-            Assert.AreEqual(winnerParams, CombinationChecker.GetPlayerHandRank(cardList));
+            Assert.AreEqual(winnerParams, CombinationChecker.GetPlayerHandParams(cardList));
         }
 
         [Test]
@@ -83,7 +83,7 @@ namespace PokerCombinationHelper
             };
 
 
-            var winnerParams = new WinnerParams
+            var winnerParams = new HandParams
             {
                 HandRank = PokerHandRankings.StraightFlush,
                 HighCard = new Card
@@ -93,7 +93,7 @@ namespace PokerCombinationHelper
                 }
             };
 
-            Assert.AreEqual(winnerParams, CombinationChecker.GetPlayerHandRank(cardList));
+            Assert.AreEqual(winnerParams, CombinationChecker.GetPlayerHandParams(cardList));
         }
 
         [Test]
@@ -111,7 +111,7 @@ namespace PokerCombinationHelper
             };
 
 
-            var winnerParams = new WinnerParams
+            var winnerParams = new HandParams
             {
                 HandRank = PokerHandRankings.FourOfAKind,
                 HighCard = new Card
@@ -121,7 +121,7 @@ namespace PokerCombinationHelper
                 }
             };
 
-            Assert.AreEqual(winnerParams, CombinationChecker.GetPlayerHandRank(cardList));
+            Assert.AreEqual(winnerParams, CombinationChecker.GetPlayerHandParams(cardList));
         }
 
         [Test]
@@ -138,7 +138,7 @@ namespace PokerCombinationHelper
                 new Card() { Value = (CardValue)10, Suit = CardSuit.Clubs }
             };
 
-            var winnerParams = new WinnerParams
+            var winnerParams = new HandParams
             {
                 HandRank = PokerHandRankings.FullHouse,
                 HighCard = new Card
@@ -148,7 +148,7 @@ namespace PokerCombinationHelper
                 }
             };
 
-            Assert.AreEqual(winnerParams, CombinationChecker.GetPlayerHandRank(cardList));
+            Assert.AreEqual(winnerParams, CombinationChecker.GetPlayerHandParams(cardList));
         }
 
         [Test]
@@ -165,7 +165,7 @@ namespace PokerCombinationHelper
                 new Card() { Value = (CardValue)10, Suit = CardSuit.Clubs }
             };
 
-            var winnerParams = new WinnerParams
+            var winnerParams = new HandParams
             {
                 HandRank = PokerHandRankings.FullHouse,
                 HighCard = new Card
@@ -175,7 +175,7 @@ namespace PokerCombinationHelper
                 }
             };
 
-            Assert.AreEqual(winnerParams, CombinationChecker.GetPlayerHandRank(cardList));
+            Assert.AreEqual(winnerParams, CombinationChecker.GetPlayerHandParams(cardList));
         }
 
         [Test]
@@ -192,7 +192,7 @@ namespace PokerCombinationHelper
                 new Card() { Value = (CardValue)10, Suit = CardSuit.Hearts }
             };
 
-            var winnerParams = new WinnerParams
+            var winnerParams = new HandParams
             {
                 HandRank = PokerHandRankings.Flush,
                 HighCard = new Card
@@ -202,7 +202,7 @@ namespace PokerCombinationHelper
                 }
             };
 
-            Assert.AreEqual(winnerParams, CombinationChecker.GetPlayerHandRank(cardList));
+            Assert.AreEqual(winnerParams, CombinationChecker.GetPlayerHandParams(cardList));
         }
 
         [Test]
@@ -219,7 +219,7 @@ namespace PokerCombinationHelper
                 new Card() { Value = (CardValue)5, Suit = CardSuit.Spades }
             };
 
-            var winnerParams = new WinnerParams
+            var winnerParams = new HandParams
             {
                 HandRank = PokerHandRankings.Straight,
                 HighCard = new Card
@@ -229,7 +229,7 @@ namespace PokerCombinationHelper
                 }
             };
 
-            Assert.AreEqual(winnerParams, CombinationChecker.GetPlayerHandRank(cardList));
+            Assert.AreEqual(winnerParams, CombinationChecker.GetPlayerHandParams(cardList));
         }
 
         [Test]
@@ -246,7 +246,7 @@ namespace PokerCombinationHelper
                 new Card() { Value = (CardValue)13, Suit = CardSuit.Spades }
             };
 
-            var winnerParams = new WinnerParams
+            var winnerParams = new HandParams
             {
                 HandRank = PokerHandRankings.Straight,
                 HighCard = new Card
@@ -256,7 +256,7 @@ namespace PokerCombinationHelper
                 }
             };
 
-            Assert.AreEqual(winnerParams, CombinationChecker.GetPlayerHandRank(cardList));
+            Assert.AreEqual(winnerParams, CombinationChecker.GetPlayerHandParams(cardList));
         }
 
         [Test]
@@ -273,7 +273,7 @@ namespace PokerCombinationHelper
                 new Card() { Value = (CardValue)5, Suit = CardSuit.Spades }
             };
 
-            var winnerParams = new WinnerParams
+            var winnerParams = new HandParams
             {
                 HandRank = PokerHandRankings.ThreeOfAKind,
                 HighCard = new Card
@@ -283,7 +283,7 @@ namespace PokerCombinationHelper
                 }
             };
 
-            Assert.AreEqual(winnerParams, CombinationChecker.GetPlayerHandRank(cardList));
+            Assert.AreEqual(winnerParams, CombinationChecker.GetPlayerHandParams(cardList));
         }
 
         [Test]
@@ -300,7 +300,7 @@ namespace PokerCombinationHelper
                 new Card() { Value = (CardValue)2, Suit = CardSuit.Spades }
             };
 
-            var winnerParams = new WinnerParams
+            var winnerParams = new HandParams
             {
                 HandRank = PokerHandRankings.TwoPair,
                 HighCard = new Card
@@ -310,7 +310,7 @@ namespace PokerCombinationHelper
                 }
             };
 
-            Assert.AreEqual(winnerParams, CombinationChecker.GetPlayerHandRank(cardList));
+            Assert.AreEqual(winnerParams, CombinationChecker.GetPlayerHandParams(cardList));
         }
 
         [Test]
@@ -327,7 +327,7 @@ namespace PokerCombinationHelper
                 new Card() { Value = (CardValue)2, Suit = CardSuit.Spades }
             };
 
-            var winnerParams = new WinnerParams
+            var winnerParams = new HandParams
             {
                 HandRank = PokerHandRankings.Pair,
                 HighCard = new Card
@@ -337,7 +337,7 @@ namespace PokerCombinationHelper
                 }
             };
 
-            Assert.AreEqual(winnerParams, CombinationChecker.GetPlayerHandRank(cardList));
+            Assert.AreEqual(winnerParams, CombinationChecker.GetPlayerHandParams(cardList));
         }
 
         [Test]
@@ -354,7 +354,7 @@ namespace PokerCombinationHelper
                 new Card() { Value = (CardValue)2, Suit = CardSuit.Spades }
             };
 
-            var winnerParams = new WinnerParams
+            var winnerParams = new HandParams
             {
                 HandRank = PokerHandRankings.HighCard,
                 HighCard = new Card
@@ -364,7 +364,7 @@ namespace PokerCombinationHelper
                 }
             };
 
-            Assert.AreEqual(winnerParams, CombinationChecker.GetPlayerHandRank(cardList));
+            Assert.AreEqual(winnerParams, CombinationChecker.GetPlayerHandParams(cardList));
         }
 
     }
