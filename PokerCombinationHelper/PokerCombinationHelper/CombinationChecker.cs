@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace PokerCombinationHelper
 {
-    public enum PokerHandRankings
+    public enum ComboRanks
     {
         [Description("Флеш рояль")] RoyalFlush = 10,
         [Description("Стрит флеш")] StraightFlush = 9,
@@ -28,25 +28,67 @@ namespace PokerCombinationHelper
 
     public class CombinationChecker
     {
-        public static Player GetWinner(List<Player> playersList)
+        public static Player GetWinner(List<Player> playersList, List<Card> boardCards)
         {
             if (playersList == null) return null;
 
-            var winner = playersList.Last();
+            int match = 0;
+            Player winner = null;
+            HandParams boardParams = CombinationChecker.GetPlayerHandParams(boardCards);
+            List<HandParams> allCardsParams = new List<HandParams>();
 
+            for (int i = 0; i < playersList.Count; i++)
+            {
+                var allCards = playersList[i].PlayerCards.Concat(boardCards).ToList();
+                //var allCardsParams = CombinationChecker.GetPlayerHandParams(allCards);
+                allCardsParams.Add(CombinationChecker.GetPlayerHandParams(allCards));
+
+                if ((boardParams.ComboRank == allCardsParams[i].ComboRank) && (boardParams.HighCard.Value == allCardsParams[i].HighCard.Value))
+                {
+                    match++;
+                }
+
+                if (match == playersList.Count - 1)
+                {
+                    playersList.ForEach(x => x.HandParams.ComboRank = boardParams.ComboRank);
+                    playersList.ForEach(x => x.HandParams.HighCard = CombinationChecker.HighCard(x.PlayerCards));
+                }
+
+                //if ((i == playersList.Count - 1) && (match != playersList.Count))
+                //{
+                //    playersList.ForEach(x => x.HandParams.ComboRank = allCardsParams.ComboRank);
+                //    playersList.ForEach(x => x.HandParams.HighCard = allCardsParams.HighCard);
+                //}
+            }
+
+            if (match != playersList.Count)
+            {
+                for (int i = 0; i < playersList.Count; i++)
+                {
+                    playersList[i].HandParams = allCardsParams[i];
+                }
+            }
+            
             for (int i = 0; i < playersList.Count - 1; i++)
             {
-                if (playersList[i].HandParams.HandRank > playersList[i + 1].HandParams.HandRank)
+                if (playersList[i].HandParams.ComboRank > playersList[i + 1].HandParams.ComboRank)
                 {
                     winner = playersList[i];
                 }
-                else if (playersList[i].HandParams.HandRank == playersList[i + 1].HandParams.HandRank)
+
+                if (playersList[i].HandParams.ComboRank == playersList[i + 1].HandParams.ComboRank)
                 {
-                
-                    winner = (playersList[i].HandParams.HighCard.Value > playersList[i + 1].HandParams.HighCard.Value) ? (playersList[i]) : (playersList[i + 1]);
-                    
+                    if (playersList[i].HandParams.HighCard.Value > playersList[i + 1].HandParams.HighCard.Value)
+                    {
+                        winner = playersList[i];
+                    }
+                    else if (playersList[i].HandParams.HighCard.Value == playersList[i + 1].HandParams.HighCard.Value)
+                    {
+                        winner = null;
+                    }
                 }
             }
+
             return winner;
         }
 
@@ -62,7 +104,7 @@ namespace PokerCombinationHelper
             {
                 return new HandParams
                 {
-                    HandRank = PokerHandRankings.RoyalFlush,
+                    ComboRank = ComboRanks.RoyalFlush,
                     HighCard = HighCard(inputCardList)
                 };
             }
@@ -73,7 +115,7 @@ namespace PokerCombinationHelper
 
                 return new HandParams
                 {
-                    HandRank = PokerHandRankings.StraightFlush,
+                    ComboRank = ComboRanks.StraightFlush,
                     HighCard = straightFlush
                 };
             }
@@ -83,7 +125,7 @@ namespace PokerCombinationHelper
             {
                 return new HandParams
                 {
-                    HandRank = PokerHandRankings.FourOfAKind,
+                    ComboRank = ComboRanks.FourOfAKind,
                     HighCard = fourOfAKind
                 };
             }
@@ -93,7 +135,7 @@ namespace PokerCombinationHelper
             {
                 return new HandParams
                 {
-                    HandRank = PokerHandRankings.FullHouse,
+                    ComboRank = ComboRanks.FullHouse,
                     HighCard = EqualPairsHighCard(equalCardValueLists, 1, 3)
                 };
             }
@@ -103,7 +145,7 @@ namespace PokerCombinationHelper
             {
                 return new HandParams
                 {
-                    HandRank = PokerHandRankings.Flush,
+                    ComboRank = ComboRanks.Flush,
                     HighCard = flush
                 };
             }
@@ -113,7 +155,7 @@ namespace PokerCombinationHelper
             {
                 return new HandParams
                 {
-                    HandRank = PokerHandRankings.Straight,
+                    ComboRank = ComboRanks.Straight,
                     HighCard = straight
                 };
             }
@@ -123,7 +165,7 @@ namespace PokerCombinationHelper
             {
                 return new HandParams
                 {
-                    HandRank = PokerHandRankings.ThreeOfAKind,
+                    ComboRank = ComboRanks.ThreeOfAKind,
                     HighCard = threeOfAKind
                 };
             }
@@ -133,7 +175,7 @@ namespace PokerCombinationHelper
             {
                 return new HandParams
                 {
-                    HandRank = PokerHandRankings.TwoPair,
+                    ComboRank = ComboRanks.TwoPair,
                     HighCard = twoPairs
                 };
             }
@@ -143,7 +185,7 @@ namespace PokerCombinationHelper
             {
                 return new HandParams
                 {
-                    HandRank = PokerHandRankings.Pair,
+                    ComboRank = ComboRanks.Pair,
                     HighCard = pair
                 };
             }
@@ -151,7 +193,7 @@ namespace PokerCombinationHelper
             var isHighCard = HighCard(inputCardList);
             return new HandParams
             {
-                HandRank = PokerHandRankings.HighCard,
+                ComboRank = ComboRanks.HighCard,
                 HighCard = HighCard(inputCardList)
             };
 

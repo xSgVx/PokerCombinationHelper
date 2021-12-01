@@ -8,7 +8,7 @@ namespace PokerCombinationHelper
 {
     public class HandParams : IEquatable <HandParams>
     {
-        public PokerHandRankings HandRank;
+        public ComboRanks ComboRank;
         public Card HighCard;
 
         public bool Equals(HandParams other)
@@ -19,7 +19,7 @@ namespace PokerCombinationHelper
                 return false;
             }
 
-            return (other.HandRank == this.HandRank) && (other.HighCard.Equals(this.HighCard) );
+            return (other.ComboRank == this.ComboRank) && (other.HighCard.Equals(this.HighCard) );
         }
 
     }

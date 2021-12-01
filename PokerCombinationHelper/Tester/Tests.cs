@@ -57,7 +57,7 @@ namespace PokerCombinationHelper
 
             var winnerParams = new HandParams
             {
-                HandRank = PokerHandRankings.RoyalFlush,
+                ComboRank = ComboRanks.RoyalFlush,
                 HighCard = new Card
                 {
                     Suit = CardSuit.Clubs,
@@ -85,7 +85,7 @@ namespace PokerCombinationHelper
 
             var winnerParams = new HandParams
             {
-                HandRank = PokerHandRankings.StraightFlush,
+                ComboRank = ComboRanks.StraightFlush,
                 HighCard = new Card
                 {
                     Suit = CardSuit.Diamonds,
@@ -113,7 +113,7 @@ namespace PokerCombinationHelper
 
             var winnerParams = new HandParams
             {
-                HandRank = PokerHandRankings.FourOfAKind,
+                ComboRank = ComboRanks.FourOfAKind,
                 HighCard = new Card
                 {
                     Suit = CardSuit.Hearts,
@@ -140,7 +140,7 @@ namespace PokerCombinationHelper
 
             var winnerParams = new HandParams
             {
-                HandRank = PokerHandRankings.FullHouse,
+                ComboRank = ComboRanks.FullHouse,
                 HighCard = new Card
                 {
                     Suit = CardSuit.Hearts,
@@ -167,7 +167,7 @@ namespace PokerCombinationHelper
 
             var winnerParams = new HandParams
             {
-                HandRank = PokerHandRankings.FullHouse,
+                ComboRank = ComboRanks.FullHouse,
                 HighCard = new Card
                 {
                     Suit = CardSuit.Hearts,
@@ -194,7 +194,7 @@ namespace PokerCombinationHelper
 
             var winnerParams = new HandParams
             {
-                HandRank = PokerHandRankings.Flush,
+                ComboRank = ComboRanks.Flush,
                 HighCard = new Card
                 {
                     Suit = CardSuit.Hearts,
@@ -221,7 +221,7 @@ namespace PokerCombinationHelper
 
             var winnerParams = new HandParams
             {
-                HandRank = PokerHandRankings.Straight,
+                ComboRank = ComboRanks.Straight,
                 HighCard = new Card
                 {
                     Suit = CardSuit.Diamonds,
@@ -248,7 +248,7 @@ namespace PokerCombinationHelper
 
             var winnerParams = new HandParams
             {
-                HandRank = PokerHandRankings.Straight,
+                ComboRank = ComboRanks.Straight,
                 HighCard = new Card
                 {
                     Suit = CardSuit.Diamonds,
@@ -275,7 +275,7 @@ namespace PokerCombinationHelper
 
             var winnerParams = new HandParams
             {
-                HandRank = PokerHandRankings.ThreeOfAKind,
+                ComboRank = ComboRanks.ThreeOfAKind,
                 HighCard = new Card
                 {
                     Suit = CardSuit.Diamonds,
@@ -302,7 +302,7 @@ namespace PokerCombinationHelper
 
             var winnerParams = new HandParams
             {
-                HandRank = PokerHandRankings.TwoPair,
+                ComboRank = ComboRanks.TwoPair,
                 HighCard = new Card
                 {
                     Suit = CardSuit.Diamonds,
@@ -329,7 +329,7 @@ namespace PokerCombinationHelper
 
             var winnerParams = new HandParams
             {
-                HandRank = PokerHandRankings.Pair,
+                ComboRank = ComboRanks.Pair,
                 HighCard = new Card
                 {
                     Suit = CardSuit.Diamonds,
@@ -356,7 +356,7 @@ namespace PokerCombinationHelper
 
             var winnerParams = new HandParams
             {
-                HandRank = PokerHandRankings.HighCard,
+                ComboRank = ComboRanks.HighCard,
                 HighCard = new Card
                 {
                     Suit = CardSuit.Hearts,
