@@ -23,6 +23,8 @@ namespace PokerCombinationHelper
                     else break;
                 }
 
+                Card.Deck = Card.GetDeck();
+
                 var playersList = PlayerCardDistribution(playersCount, 2);
 
                 foreach (var player in playersList)
@@ -50,9 +52,8 @@ namespace PokerCombinationHelper
                 }
                 else
                 {
-                    Console.WriteLine($"\nПобедитель игрок {winner.PlayerName} c комбинацией {winner.HandParams.ComboRank.GetDescription()}\nРука победителя: ");
-                    winner.PlayerCards.Sort();
-                    winner.PlayerCards.ForEach((card) => Console.Write($"{card.Value.GetDescription()}{card.Suit.GetDescription()}, "));
+                    Console.Write($"\nПобедитель игрок {winner.PlayerName} c комбинацией {winner.HandParams.ComboRank.GetDescription()}: ");
+                    winner.HandParams.Combo.ForEach(card => Console.Write($"{card.Value.GetDescription()}{card.Suit.GetDescription()}, "));
                     Console.WriteLine("\nВведите N чтобы выйти из программы, или любую кнопку чтобы начать заново");
                     if (Console.ReadLine() == "N") break;
                 }                

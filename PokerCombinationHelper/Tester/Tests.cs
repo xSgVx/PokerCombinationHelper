@@ -62,6 +62,14 @@ namespace PokerCombinationHelper
                 {
                     Suit = CardSuit.Clubs,
                     Value = CardValue.Ace
+                },
+                Combo = new List<Card>
+                {
+                    new Card() { Value = CardValue.Jack, Suit = CardSuit.Clubs },
+                    new Card() { Value = (CardValue)12, Suit = CardSuit.Clubs },
+                    new Card() { Value = (CardValue)14, Suit = CardSuit.Clubs },
+                    new Card() { Value = (CardValue)13, Suit = CardSuit.Clubs },
+                    new Card() { Value = (CardValue)10, Suit = CardSuit.Clubs }
                 }
             };
 
@@ -90,6 +98,14 @@ namespace PokerCombinationHelper
                 {
                     Suit = CardSuit.Diamonds,
                     Value = (CardValue)10
+                },
+                Combo = new List<Card>
+                {
+                    new Card() { Value = CardValue.Six, Suit = CardSuit.Diamonds },
+                    new Card() { Value = (CardValue)8, Suit = CardSuit.Diamonds },
+                    new Card() { Value = (CardValue)9, Suit = CardSuit.Diamonds },
+                    new Card() { Value = (CardValue)10, Suit = CardSuit.Diamonds },
+                    new Card() { Value = (CardValue)7, Suit = CardSuit.Diamonds }
                 }
             };
 
@@ -107,7 +123,7 @@ namespace PokerCombinationHelper
                 new Card() { Value = CardValue.Ace, Suit = CardSuit.Spades },
                 new Card() { Value = (CardValue)9, Suit = CardSuit.Spades },
                 new Card() { Value = CardValue.Ace, Suit = CardSuit.Clubs },
-                new Card() { Value = CardValue.Ace, Suit = CardSuit.Clubs }
+                new Card() { Value = CardValue.Ace, Suit = CardSuit.Diamonds }
             };
 
 
@@ -118,6 +134,13 @@ namespace PokerCombinationHelper
                 {
                     Suit = CardSuit.Hearts,
                     Value = (CardValue)14
+                },
+                Combo = new List<Card>
+                {
+                    new Card() { Value = CardValue.Ace, Suit = CardSuit.Hearts },
+                    new Card() { Value = CardValue.Ace, Suit = CardSuit.Spades },
+                    new Card() { Value = CardValue.Ace, Suit = CardSuit.Clubs },
+                    new Card() { Value = CardValue.Ace, Suit = CardSuit.Clubs }
                 }
             };
 
@@ -145,6 +168,14 @@ namespace PokerCombinationHelper
                 {
                     Suit = CardSuit.Hearts,
                     Value = (CardValue)2
+                },
+                Combo = new List<Card>
+                {
+                    new Card() { Value = (CardValue)2, Suit = CardSuit.Hearts },
+                    new Card() { Value = (CardValue)2, Suit = CardSuit.Diamonds },
+                    new Card() { Value = (CardValue)2, Suit = CardSuit.Clubs },
+                    new Card() { Value = (CardValue)10, Suit = CardSuit.Spades },
+                    new Card() { Value = (CardValue)10, Suit = CardSuit.Clubs }
                 }
             };
 
@@ -172,7 +203,15 @@ namespace PokerCombinationHelper
                 {
                     Suit = CardSuit.Hearts,
                     Value = (CardValue)10
-                }
+                },
+                 Combo = new List<Card>
+                 {
+                     new Card() { Value = (CardValue)10, Suit = CardSuit.Hearts },
+                     new Card() { Value = (CardValue)10, Suit = CardSuit.Spades },
+                     new Card() { Value = (CardValue)10, Suit = CardSuit.Clubs },
+                     new Card() { Value = (CardValue)2, Suit = CardSuit.Diamonds },
+                     new Card() { Value = (CardValue)2, Suit = CardSuit.Clubs }
+                 }
             };
 
             Assert.AreEqual(winnerParams, CombinationChecker.GetPlayerHandParams(cardList));
@@ -199,6 +238,14 @@ namespace PokerCombinationHelper
                 {
                     Suit = CardSuit.Hearts,
                     Value = (CardValue)11
+                },
+                Combo = new List<Card>
+                {
+                    new Card() { Value = (CardValue)2, Suit = CardSuit.Diamonds },
+                    new Card() { Value = (CardValue)2, Suit = CardSuit.Hearts },
+                    new Card() { Value = (CardValue)6, Suit = CardSuit.Hearts },
+                    new Card() { Value = (CardValue)7, Suit = CardSuit.Hearts },
+                    new Card() { Value = (CardValue)9, Suit = CardSuit.Spades }
                 }
             };
 
@@ -226,6 +273,14 @@ namespace PokerCombinationHelper
                 {
                     Suit = CardSuit.Diamonds,
                     Value = (CardValue)7
+                },
+                Combo = new List<Card>
+                {
+                    new Card() { Value = (CardValue)3, Suit = CardSuit.Spades },
+                    new Card() { Value = (CardValue)4, Suit = CardSuit.Hearts },
+                    new Card() { Value = (CardValue)5, Suit = CardSuit.Spades },
+                    new Card() { Value = (CardValue)6, Suit = CardSuit.Spades },
+                    new Card() { Value = (CardValue)7, Suit = CardSuit.Diamonds }
                 }
             };
 
@@ -253,6 +308,14 @@ namespace PokerCombinationHelper
                 {
                     Suit = CardSuit.Diamonds,
                     Value = (CardValue)14
+                },
+                Combo = new List<Card>()
+                {
+                    new Card() { Value = (CardValue)2, Suit = CardSuit.Spades },
+                    new Card() { Value = (CardValue)3, Suit = CardSuit.Diamonds },
+                    new Card() { Value = (CardValue)5, Suit = CardSuit.Hearts },
+                    new Card() { Value = (CardValue)4, Suit = CardSuit.Hearts },
+                    new Card() { Value = (CardValue)14, Suit = CardSuit.Diamonds }
                 }
             };
 
@@ -269,7 +332,7 @@ namespace PokerCombinationHelper
                 new Card() { Value = CardValue.Jack, Suit = CardSuit.Hearts },
                 new Card() { Value = (CardValue)4, Suit = CardSuit.Hearts },
                 new Card() { Value = (CardValue)6, Suit = CardSuit.Spades },
-                new Card() { Value = (CardValue)5, Suit = CardSuit.Diamonds },
+                new Card() { Value = (CardValue)5, Suit = CardSuit.Hearts },
                 new Card() { Value = (CardValue)5, Suit = CardSuit.Spades }
             };
 
@@ -280,6 +343,12 @@ namespace PokerCombinationHelper
                 {
                     Suit = CardSuit.Diamonds,
                     Value = (CardValue)5
+                },
+                Combo = new List<Card>
+                {
+                    new Card() { Value = (CardValue)5, Suit = CardSuit.Diamonds },
+                    new Card() { Value = (CardValue)5, Suit = CardSuit.Hearts },
+                    new Card() { Value = (CardValue)5, Suit = CardSuit.Spades }
                 }
             };
 
@@ -307,6 +376,13 @@ namespace PokerCombinationHelper
                 {
                     Suit = CardSuit.Diamonds,
                     Value = (CardValue)8
+                }, 
+                Combo = new List<Card>
+                {
+                    new Card() { Value = (CardValue)2, Suit = CardSuit.Spades },
+                    new Card() { Value = (CardValue)8, Suit = CardSuit.Diamonds },
+                    new Card() { Value = (CardValue)8, Suit = CardSuit.Diamonds },
+                    new Card() { Value = (CardValue)2, Suit = CardSuit.Spades }
                 }
             };
 
@@ -334,6 +410,11 @@ namespace PokerCombinationHelper
                 {
                     Suit = CardSuit.Diamonds,
                     Value = (CardValue)2
+                },
+                Combo = new List<Card>
+                {
+                    new Card() { Value = (CardValue)2, Suit = CardSuit.Diamonds },
+                    new Card() { Value = (CardValue)2, Suit = CardSuit.Spades }
                 }
             };
 
@@ -361,6 +442,10 @@ namespace PokerCombinationHelper
                 {
                     Suit = CardSuit.Hearts,
                     Value = (CardValue)11
+                },
+                Combo = new List<Card>
+                {
+                    new Card() { Value = CardValue.Jack, Suit = CardSuit.Hearts }
                 }
             };
 

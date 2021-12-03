@@ -155,7 +155,7 @@ namespace PokerCombinationHelper
         }
     }
 
-    class CardComparer : EqualityComparer<Card>
+    class CardValueComparer : EqualityComparer<Card>
     {
         public override bool Equals(Card x, Card y)
         {
@@ -168,6 +168,19 @@ namespace PokerCombinationHelper
         }
     }
 
+    class CardSuitValueComparer : EqualityComparer<Card>
+    {
+        public override bool Equals(Card x, Card y)
+        {
+            return (x.Value.Equals(y.Value) && x.Suit.Equals(y.Suit));
+        }
+
+        public override int GetHashCode(Card obj)
+        {
+            //return obj.Value.GetHashCode() + obj.Suit.GetHashCode();
+            return obj.GetHashCode();
+        }
+    }
     public class CardsEnum : IEnumerator
     {
         public Card[] _card;

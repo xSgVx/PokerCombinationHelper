@@ -10,6 +10,7 @@ namespace PokerCombinationHelper
     {
         public ComboRanks ComboRank;
         public Card HighCard;
+        public List<Card> Combo;
 
         public bool Equals(HandParams other)
         {
