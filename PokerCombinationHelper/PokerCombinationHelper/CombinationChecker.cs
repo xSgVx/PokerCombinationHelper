@@ -18,6 +18,7 @@ namespace PokerCombinationHelper
         [Description("Две пары")] TwoPair = 3,
         [Description("Пара")] Pair = 2,
         [Description("Старшая карта")] HighCard = 1,
+        [Description("Ничья")] Draw = 0,
     }
 
     public enum CardParams
@@ -37,10 +38,12 @@ namespace PokerCombinationHelper
             HandParams boardParams = CombinationChecker.GetPlayerHandParams(boardCards);
             List<HandParams> allCardsParams = new List<HandParams>();
 
+            //Блок для случая, в котором комбо находится на столе, а в руках у игроков пусто
+            //В таком случае победитель определяется по старшей карте в руке
             for (int i = 0; i < playersList.Count; i++)
             {
                 var allCards = playersList[i].PlayerCards.Concat(boardCards).ToList();
-                //var allCardsParams = CombinationChecker.GetPlayerHandParams(allCards);
+
                 allCardsParams.Add(CombinationChecker.GetPlayerHandParams(allCards));
 
                 if ((boardParams.ComboRank == allCardsParams[i].ComboRank) && (boardParams.HighCard.Value == allCardsParams[i].HighCard.Value))
@@ -54,7 +57,6 @@ namespace PokerCombinationHelper
                     playersList.ForEach(x => x.HandParams.HighCard = CombinationChecker.HighCard(x.PlayerCards));
                 }
             }
-
             if (match != playersList.Count)
             {
                 for (int i = 0; i < playersList.Count; i++)
@@ -63,23 +65,21 @@ namespace PokerCombinationHelper
                 }
             }
 
-            for (int i = 0; i < playersList.Count - 1; i++)
+            playersList = playersList.OrderByDescending(x => x.HandParams.ComboRank).ToList();
+            winner = playersList.First();
+            playersList.RemoveAt(0);
+            
+            if  (playersList.Any(player => player.HandParams.ComboRank == winner.HandParams.ComboRank))
             {
-                if (playersList[i].HandParams.ComboRank > playersList[i + 1].HandParams.ComboRank)
+                if (playersList.Any(player2 => player2.HandParams.HighCard != winner.HandParams.HighCard))
                 {
-                    winner = playersList[i];
+                    var list = new List<Player>();
+                    list = playersList.FindAll(x => x.HandParams.ComboRank == winner.HandParams.ComboRank && x.HandParams.HighCard != winner.HandParams.HighCard);
+                    winner = list.OrderByDescending(x => x.HandParams.HighCard).First();
                 }
-
-                if (playersList[i].HandParams.ComboRank == playersList[i + 1].HandParams.ComboRank)
+                else  if (playersList.Any(player2 => player2.HandParams.HighCard == winner.HandParams.HighCard))
                 {
-                    if (playersList[i].HandParams.HighCard.Value > playersList[i + 1].HandParams.HighCard.Value)
-                    {
-                        winner = playersList[i];
-                    }
-                    else if (playersList[i].HandParams.HighCard.Value == playersList[i + 1].HandParams.HighCard.Value)
-                    {
-                        winner = null;
-                    }
+                    winner.HandParams.ComboRank = ComboRanks.Draw;
                 }
             }
             return winner;
@@ -106,7 +106,6 @@ namespace PokerCombinationHelper
             var straightFlush = StraightFlushlist(equalCardSuitLists);
             if (straightFlush != null)
             {
-
                 return new HandParams
                 {
                     ComboRank = ComboRanks.StraightFlush,
@@ -256,7 +255,6 @@ namespace PokerCombinationHelper
                 new Card() { Value = (CardValue)10, Suit = (CardSuit)1 },
             };
 
-            //int match = 0;
             var straightFlushCombo = new List<Card>();
 
             for (int i = 0; i < inputCardLists.Count; i++)
@@ -277,62 +275,27 @@ namespace PokerCombinationHelper
 
         public static List<Card> IncreasingSequenceCardsList(List<Card> inputCardList)
         {
-            int match = 1;
-            int maxMatch = 0;
-            List<Card> increasingCardsList = new List<Card>();
-
-            inputCardList = inputCardList.Distinct(new CardValueComparer()).ToList();
-
-            for (int i = 0; i < inputCardList.Count - 1; i++)
-            { 
-                if ((int)inputCardList[i + 1].Value == ((int)inputCardList[i].Value + 1))
-                {
-                    match++;
-                    increasingCardsList.Add(inputCardList[i]);
-                    increasingCardsList.Add(inputCardList[i + 1]);
-                }
-                else
-                {
-
-                    if ((maxMatch > match) || (increasingCardsList.Count < 8))
-                    {
-                        increasingCardsList.Clear();
-                    }
-
-                    if (maxMatch < match)
-                    {
-                        maxMatch = match;
-                        match = 1;
-                    }
-                }
-            }
-
-            increasingCardsList = increasingCardsList.Distinct(new CardSuitValueComparer()).ToList();
-
-            return (increasingCardsList.Count >= 5) ? increasingCardsList : null;
-        }
-
-        public static List<Card> EqualSequenceCardsList(List<Card> inputCardList)
-        {
-            int match = 1;
-            var equalCardsList = new List<Card>();
-
-            for (int i = 0; i < inputCardList.Count - 1; i++)
+            inputCardList = inputCardList.Distinct(new CardValueComparer ()).ToList();
+            
+            foreach (Card card in inputCardList)
             {
-                if ((int)inputCardList[i].Value == ((int)inputCardList[i + 1].Value))
+                var matchList = new List<Card>();
+
+                matchList.Add(card);
+
+                for (int i = 1; i <= 4; i++)
                 {
-                    match++;
-                    equalCardsList.Add(inputCardList[i]);
-                    equalCardsList.Add(inputCardList[i + 1]);
+                    if (!inputCardList.Any(card2 => card2.Value == card.Value + i))
+                        break;
+                    matchList.Add(inputCardList.First(card2 => card2.Value == card.Value + i));
                 }
-                else
+
+                if (matchList.Count == 5)
                 {
-                    match = 1;
-                    equalCardsList.Clear();
+                    return matchList;
                 }
             }
-
-            return equalCardsList.Distinct(new CardSuitValueComparer()).ToList();
+            return null;
         }
 
         public static List<Card> StraightFlushlist(List<List<Card>> inputCardLists)
@@ -348,7 +311,6 @@ namespace PokerCombinationHelper
                     return increasingCardsList;
                 }
             }
-
             return null;
         }
 
@@ -361,15 +323,12 @@ namespace PokerCombinationHelper
 
             foreach (List<Card> equalCardsList in inputCardLists)
             {
-                var pair = EqualSequenceCardsList(equalCardsList);
-
-                if (pair.Count == neededCardCount)
+                if (equalCardsList.Count == neededCardCount)
                 {
                     match++;
-                    pairsLists = pairsLists.Concat(pair).ToList();
+                    pairsLists = pairsLists.Concat(equalCardsList).ToList();
                 }
             }
-
             return (match == neededMatchCount) ? pairsLists : null;
         }
 
@@ -379,14 +338,11 @@ namespace PokerCombinationHelper
 
             foreach (List<Card> equalCardsList in inputCardLists)
             {
-                var cardList = EqualSequenceCardsList(equalCardsList);
-
-                if (cardList.Count == 4)
+                if (equalCardsList.Count == 4)
                 {
-                    return cardList;
+                    return equalCardsList;
                 }
             }
-
             return null;
         }
 
@@ -425,7 +381,7 @@ namespace PokerCombinationHelper
 
             var increasingCardsList = IncreasingSequenceCardsList(inputCardList);
 
-            if ((increasingCardsList != null) && (increasingCardsList.Count >= 5))
+            if ((increasingCardsList != null))
             {
                 return increasingCardsList;
             }

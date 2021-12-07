@@ -11,16 +11,19 @@ namespace PokerCombinationHelper
             while (true)
             {
                 int playersCount = 0;
+                Console.WriteLine("Введите количество игроков, от 2 до 10 = ");
 
                 while (true)
                 {
-                    Console.WriteLine("Введите количество игроков, от 2 до 10 = ");
-                    playersCount = Convert.ToInt32(Console.ReadLine());
-                    if (playersCount < 2 || playersCount > 10)
+                    if (int.TryParse(Console.ReadLine(), out playersCount))
                     {
-                        Console.WriteLine("Неверное число");
+                        if (playersCount < 2 || playersCount > 10)
+                        {
+                            Console.WriteLine("Неверное число, введите число от 2 до 10 = ");
+                        }
+                        else break;
                     }
-                    else break;
+                    else Console.WriteLine("Неверный символ, введите число от 2 до 10 = ");
                 }
 
                 Card.Deck = Card.GetDeck();
