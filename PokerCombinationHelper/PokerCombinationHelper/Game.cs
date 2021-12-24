@@ -47,9 +47,9 @@ namespace PokerCombinationHelper
 
                 var winner = CombinationChecker.GetWinner(playersList, board.BoardCards);
 
-                if (winner == null)
+                if (winner.HandParams.ComboRank == ComboRanks.Draw)
                 {
-                    Console.WriteLine("\nНичья, т.к у игроков одинаковые комбинации, начать заново?");
+                    Console.WriteLine($"\nНичья, т.к у игроков {winner.PlayerName} одинаковые комбинации {winner.PlayerCards}, начать заново?");
                     Console.WriteLine("Введите N чтобы выйти из программы, или любую кнопку чтобы начать заново");
                     if (Console.ReadLine() == "N") break;
                 }

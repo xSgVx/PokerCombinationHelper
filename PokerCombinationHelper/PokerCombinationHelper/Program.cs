@@ -6,10 +6,7 @@ namespace PokerCombinationHelper
     {
         static void Main()
         {
-
             Game.Start();
-
-
         }
 
     }

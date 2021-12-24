@@ -5,6 +5,571 @@ namespace PokerCombinationHelper
 {
     public class Tests
     {
+
+        [Test]
+        public void GetWinnerTest9()
+        {
+            List<Card> boardCards = new List<Card>
+            {
+                new Card() { Value = (CardValue)4, Suit = CardSuit.Spades },
+                new Card() { Value = (CardValue)5, Suit = CardSuit.Clubs  },
+                new Card() { Value = (CardValue)6, Suit = CardSuit.Spades },
+                new Card() { Value = (CardValue)7, Suit = CardSuit.Hearts },
+                new Card() { Value = (CardValue)9, Suit = CardSuit.Hearts }
+            };
+
+            var playersList = new List<Player>
+            {
+                new Player()
+                {
+                    PlayerCards = new List<Card>()
+                    {
+                        new Card() { Value = (CardValue)8, Suit = CardSuit.Clubs },
+                        new Card() { Value = (CardValue)12, Suit = CardSuit.Hearts }
+                    },
+                    PlayerName = "Player_0"
+                },
+
+                new Player()
+                {
+                    PlayerCards = new List<Card>()
+                    {
+                        new Card() { Value = (CardValue)11, Suit = CardSuit.Spades },
+                        new Card() { Value = (CardValue)13, Suit = CardSuit.Hearts }
+                    },
+                    PlayerName = "Player_1"
+                },
+
+                new Player()
+                {
+                    PlayerCards = new List<Card>()
+                    {
+                        new Card() { Value = (CardValue)3, Suit = CardSuit.Clubs },
+                        new Card() { Value = (CardValue)7, Suit = CardSuit.Clubs }
+                    },
+                    PlayerName = "Player_2"
+                },
+
+                new Player()
+                {
+                    PlayerCards = new List<Card>()
+                    {
+                        new Card() { Value = (CardValue)8, Suit = CardSuit.Spades },
+                        new Card() { Value = (CardValue)2, Suit = CardSuit.Spades }
+                    },
+                    PlayerName = "Player_3"
+                },
+            };
+
+            var winnerParams = new HandParams
+            {
+                ComboRank = ComboRanks.Straight,
+                HighCard = new Card
+                {
+                    Suit = CardSuit.Spades,
+                    Value = CardValue.Eight
+                },
+                Combo = new List<Card>
+                {
+                    new Card() { Value = (CardValue)4, Suit = CardSuit.Spades },
+                    new Card() { Value = (CardValue)5, Suit = CardSuit.Clubs },
+                    new Card() { Value = (CardValue)6, Suit = CardSuit.Spades },
+                    new Card() { Value = (CardValue)7, Suit = CardSuit.Hearts },
+                    new Card() { Value = (CardValue)8, Suit = CardSuit.Spades }
+                }
+            };
+
+            Assert.AreEqual(winnerParams, CombinationChecker.GetWinner(playersList, boardCards).HandParams);
+        }
+
+        [Test]
+        public void GetWinnerTest8()
+        {
+            List<Card> boardCards = new List<Card>
+            {
+                new Card() { Value = (CardValue)4, Suit = CardSuit.Spades },
+                new Card() { Value = (CardValue)8, Suit = CardSuit.Diamonds  },
+                new Card() { Value = (CardValue)10, Suit = CardSuit.Diamonds },
+                new Card() { Value = (CardValue)13, Suit = CardSuit.Clubs },
+                new Card() { Value = (CardValue)13, Suit = CardSuit.Diamonds }
+            };
+
+            var playersList = new List<Player>
+            {
+                new Player()
+                {
+                    PlayerCards = new List<Card>()
+                    {   
+                        new Card() { Value = (CardValue)7, Suit = CardSuit.Spades },
+                        new Card() { Value = (CardValue)10, Suit = CardSuit.Clubs }
+                    },  
+                    PlayerName = "Player_0"
+                },  
+
+                new Player()
+                {
+                    PlayerCards = new List<Card>()
+                    {
+                        new Card() { Value = (CardValue)9, Suit = CardSuit.Diamonds },
+                        new Card() { Value = (CardValue)4, Suit = CardSuit.Clubs }
+                    },
+                    PlayerName = "Player_1"
+                },
+
+                new Player()
+                {
+                    PlayerCards = new List<Card>()
+                    {
+                        new Card() { Value = (CardValue)13, Suit = CardSuit.Hearts },
+                        new Card() { Value = (CardValue)9, Suit = CardSuit.Spades }
+                    },
+                    PlayerName = "Player_2"
+                },
+
+                new Player()
+                {
+                    PlayerCards = new List<Card>()
+                    {
+                        new Card() { Value = (CardValue)12, Suit = CardSuit.Clubs },
+                        new Card() { Value = (CardValue)13, Suit = CardSuit.Spades }
+                    },
+                    PlayerName = "Player_3"
+                },
+
+                new Player()
+                {
+                    PlayerCards = new List<Card>()
+                    {
+                        new Card() { Value = (CardValue)9, Suit = CardSuit.Clubs},
+                        new Card() { Value = (CardValue)8, Suit = CardSuit.Clubs}
+                    },
+                    PlayerName = "Player_4"
+                }
+            };
+
+            var winnerParams = new HandParams
+            {
+                ComboRank = ComboRanks.ThreeOfAKind,
+                HighCard = new Card
+                {
+                    Suit = CardSuit.Spades,
+                    Value = CardValue.King
+                },
+                Combo = new List<Card>
+                {
+                    new Card() { Value = (CardValue)8, Suit = CardSuit.Clubs },
+                    new Card() { Value = (CardValue)8, Suit = CardSuit.Hearts },
+                    new Card() { Value = (CardValue)13, Suit = CardSuit.Diamonds },
+                    new Card() { Value = (CardValue)13, Suit = CardSuit.Spades },
+                    new Card() { Value = (CardValue)13, Suit = CardSuit.Hearts }
+                }
+            };
+
+            Assert.AreEqual(winnerParams, CombinationChecker.GetWinner(playersList, boardCards).HandParams);
+        }
+
+        [Test]
+        public void GetWinnerTest7()
+        {
+            List<Card> boardCards = new List<Card>
+            {
+                new Card() { Value = (CardValue)3, Suit = CardSuit.Diamonds },
+                new Card() { Value = (CardValue)5, Suit = CardSuit.Diamonds },
+                new Card() { Value = (CardValue)13, Suit = CardSuit.Diamonds },
+                new Card() { Value = (CardValue)13, Suit = CardSuit.Spades },
+                new Card() { Value = (CardValue)13, Suit = CardSuit.Hearts }
+            };
+
+            var playersList = new List<Player>
+            {
+                new Player()
+                {
+                    PlayerCards = new List<Card>()
+                    {
+                        new Card() { Value = (CardValue)3, Suit = CardSuit.Clubs },
+                        new Card() { Value = (CardValue)12, Suit = CardSuit.Hearts }
+                    },
+                    PlayerName = "Player_0"
+                },
+
+                new Player()
+                {
+                    PlayerCards = new List<Card>()
+                    {
+                        new Card() { Value = (CardValue)3, Suit = CardSuit.Hearts },
+                        new Card() { Value = (CardValue)4, Suit = CardSuit.Clubs }
+                    },
+                    PlayerName = "Player_1"
+                },
+
+                new Player()
+                {
+                    PlayerCards = new List<Card>()
+                    {
+                        new Card() { Value = (CardValue)8, Suit = CardSuit.Clubs },
+                        new Card() { Value = (CardValue)8, Suit = CardSuit.Hearts }
+                    },
+                    PlayerName = "Player_2"
+                },
+
+                new Player()
+                {
+                    PlayerCards = new List<Card>()
+                    {
+                        new Card() { Value = (CardValue)9, Suit = CardSuit.Spades },
+                        new Card() { Value = (CardValue)14, Suit = CardSuit.Hearts }
+                    },
+                    PlayerName = "Player_3"
+                },
+
+                new Player()
+                {
+                    PlayerCards = new List<Card>()
+                    {
+                        new Card() { Value = (CardValue)10, Suit = CardSuit.Spades },
+                        new Card() { Value = (CardValue)12, Suit = CardSuit.Spades }
+                    },
+                    PlayerName = "Player_4"
+                }
+            };
+
+            var winnerParams = new HandParams
+            {
+                ComboRank = ComboRanks.FullHouse,
+                HighCard = new Card
+                {
+                    Suit = CardSuit.Clubs,
+                    Value = CardValue.Eight
+                },
+                Combo = new List<Card>
+                {
+                    new Card() { Value = (CardValue)8, Suit = CardSuit.Clubs },
+                    new Card() { Value = (CardValue)8, Suit = CardSuit.Hearts },
+                    new Card() { Value = (CardValue)13, Suit = CardSuit.Diamonds },
+                    new Card() { Value = (CardValue)13, Suit = CardSuit.Spades },
+                    new Card() { Value = (CardValue)13, Suit = CardSuit.Hearts }
+                }
+            };
+
+            Assert.AreEqual(winnerParams, CombinationChecker.GetWinner(playersList, boardCards).HandParams);
+        }
+
+        [Test]
+        public void GetWinnerTest6()
+        {
+            List<Card> boardCards = new List<Card>
+            {
+                new Card() { Value = (CardValue)2, Suit = CardSuit.Spades },
+                new Card() { Value = (CardValue)2, Suit = CardSuit.Diamonds },
+                new Card() { Value = (CardValue)4, Suit = CardSuit.Hearts },
+                new Card() { Value = (CardValue)7, Suit = CardSuit.Clubs },
+                new Card() { Value = (CardValue)8, Suit = CardSuit.Spades }
+            };
+
+            var playersList = new List<Player>
+            {
+                new Player()
+                {
+                    PlayerCards = new List<Card>()
+                    {
+                        new Card() { Value = (CardValue)11, Suit = CardSuit.Hearts },
+                        new Card() { Value = (CardValue)3, Suit = CardSuit.Spades }
+                    },
+                    PlayerName = "Player_0"
+                },
+
+                new Player()
+                {
+                    PlayerCards = new List<Card>()
+                    {
+                        new Card() { Value = (CardValue)3, Suit = CardSuit.Hearts },
+                        new Card() { Value = (CardValue)5, Suit = CardSuit.Spades }
+                    },
+                    PlayerName = "Player_1"
+                },
+
+                new Player()
+                {
+                    PlayerCards = new List<Card>()
+                    {
+                        new Card() { Value = (CardValue)14, Suit = CardSuit.Hearts },
+                        new Card() { Value = (CardValue)5, Suit = CardSuit.Hearts }
+                    },
+                    PlayerName = "Player_2"
+                },
+
+                new Player()
+                {
+                    PlayerCards = new List<Card>()
+                    {
+                        new Card() { Value = (CardValue)13, Suit = CardSuit.Diamonds },
+                        new Card() { Value = (CardValue)6, Suit = CardSuit.Clubs }
+                    },
+                    PlayerName = "Player_3"
+                },
+
+                new Player()
+                {
+                    PlayerCards = new List<Card>()
+                    {
+                        new Card() { Value = (CardValue)5, Suit = CardSuit.Diamonds },
+                        new Card() { Value = (CardValue)14, Suit = CardSuit.Clubs  }
+                    },
+                    PlayerName = "Player_4"
+                },
+            };
+
+            var winnerParams = new HandParams
+            {
+                ComboRank = ComboRanks.Draw,
+                HighCard = new Card
+                {
+                    Suit = CardSuit.Hearts,
+                    Value = CardValue.Ace
+                },
+                Combo = new List<Card>
+                {
+                    new Card() { Value = (CardValue)14, Suit = CardSuit.Hearts }
+                }
+            };
+
+            Assert.AreEqual(winnerParams, CombinationChecker.GetWinner(playersList, boardCards).HandParams);
+        }
+
+        [Test]
+        public void GetWinnerTest5()
+        {
+            List<Card> boardCards = new List<Card>
+            {
+                new Card() { Value = (CardValue)3, Suit = CardSuit.Hearts },
+                new Card() { Value = (CardValue)6, Suit = CardSuit.Hearts },
+                new Card() { Value = (CardValue)7, Suit = CardSuit.Diamonds },
+                new Card() { Value = (CardValue)9, Suit = CardSuit.Hearts },
+                new Card() { Value = (CardValue)14, Suit = CardSuit.Hearts }
+            };
+
+            var playersList = new List<Player>
+            {
+                new Player()
+                {
+                    PlayerCards = new List<Card>()
+                    {
+                        new Card() { Value = (CardValue)6, Suit = CardSuit.Clubs },
+                        new Card() { Value = (CardValue)10, Suit = CardSuit.Diamonds }
+                    },
+                    PlayerName = "Player_0"
+                },
+
+                new Player()
+                {
+                    PlayerCards = new List<Card>()
+                    {
+                        new Card() { Value = (CardValue)4, Suit = CardSuit.Diamonds },
+                        new Card() { Value = (CardValue)7, Suit = CardSuit.Hearts }
+                    },
+                    PlayerName = "Player_1"
+                },
+
+                new Player()
+                {
+                    PlayerCards = new List<Card>()
+                    {
+                        new Card() { Value = (CardValue)13, Suit = CardSuit.Spades },
+                        new Card() { Value = (CardValue)5, Suit = CardSuit.Spades }
+                    },
+                    PlayerName = "Player_2"
+                },
+
+                new Player()
+                {
+                    PlayerCards = new List<Card>()
+                    {
+                        new Card() { Value = (CardValue)13, Suit = CardSuit.Diamonds },
+                        new Card() { Value = (CardValue)4, Suit = CardSuit.Hearts }
+                    },
+                    PlayerName = "Player_3"
+                },
+
+                new Player()
+                {
+                    PlayerCards = new List<Card>()
+                    {
+                        new Card() { Value = (CardValue)14, Suit = CardSuit.Diamonds },
+                        new Card() { Value = (CardValue)11, Suit = CardSuit.Diamonds }
+                    },
+                    PlayerName = "Player_4"
+                },
+            };
+
+            var winnerParams = new HandParams
+            {
+                ComboRank = ComboRanks.Flush,
+                HighCard = new Card
+                {
+                    Suit = CardSuit.Hearts,
+                    Value = CardValue.Seven
+                },
+                Combo = new List<Card>
+                {
+                    new Card() { Value = (CardValue)3, Suit = CardSuit.Hearts },
+                    new Card() { Value = (CardValue)6, Suit = CardSuit.Hearts },
+                    new Card() { Value = (CardValue)7, Suit = CardSuit.Hearts },
+                    new Card() { Value = (CardValue)9, Suit = CardSuit.Hearts },
+                    new Card() { Value = (CardValue)14, Suit = CardSuit.Hearts }
+                }
+            };
+
+            Assert.AreEqual(winnerParams, CombinationChecker.GetWinner(playersList, boardCards).HandParams);
+        }
+
+        [Test]
+        public void GetWinnerTest4()
+        {
+            List<Card> boardCards = new List<Card>
+            {
+                new Card() { Value = (CardValue)4, Suit = CardSuit.Clubs },
+                new Card() { Value = (CardValue)6, Suit = CardSuit.Clubs },
+                new Card() { Value = (CardValue)9, Suit = CardSuit.Spades },
+                new Card() { Value = (CardValue)12, Suit = CardSuit.Hearts },
+                new Card() { Value = (CardValue)13, Suit = CardSuit.Spades }
+            };
+
+            var playersList = new List<Player>
+            {
+                new Player()
+                {
+                    PlayerCards = new List<Card>()
+                    {
+                        new Card() { Value = (CardValue)12, Suit = CardSuit.Clubs },
+                        new Card() { Value = (CardValue)5, Suit = CardSuit.Spades }
+                    },
+                    PlayerName = "Player_0"
+                },
+
+                new Player()
+                {
+                    PlayerCards = new List<Card>()
+                    {
+                        new Card() { Value = (CardValue)11, Suit = CardSuit.Clubs },
+                        new Card() { Value = (CardValue)11, Suit = CardSuit.Spades }
+                    },
+                    PlayerName = "Player_1"
+                },
+
+                new Player()
+                {
+                    PlayerCards = new List<Card>()
+                    {
+                        new Card() { Value = (CardValue)10, Suit = CardSuit.Clubs },
+                        new Card() { Value = (CardValue)9, Suit = CardSuit.Clubs }
+                    },
+                    PlayerName = "Player_2"
+                },
+
+                new Player()
+                {
+                    PlayerCards = new List<Card>()
+                    {
+                        new Card() { Value = (CardValue)10, Suit = CardSuit.Hearts },
+                        new Card() { Value = (CardValue)6, Suit = CardSuit.Hearts }
+                    },
+                    PlayerName = "Player_3"
+                }
+            };
+
+            var winnerParams = new HandParams
+            {
+                ComboRank = ComboRanks.Pair,
+                HighCard = new Card
+                {
+                    Suit = CardSuit.Clubs,
+                    Value = CardValue.Queen
+                },
+                Combo = new List<Card>
+                {
+                    new Card() { Value = (CardValue)12, Suit = CardSuit.Hearts },
+                    new Card() { Value = (CardValue)12, Suit = CardSuit.Clubs },
+                }
+            };
+
+            Assert.AreEqual(winnerParams, CombinationChecker.GetWinner(playersList, boardCards).HandParams);
+        }
+
+        [Test]
+        public void GetWinnerTest3()
+        {
+            List<Card> boardCards = new List<Card>
+            {
+                new Card() { Value = (CardValue)5, Suit = CardSuit.Clubs },
+                new Card() { Value = (CardValue)7, Suit = CardSuit.Hearts },
+                new Card() { Value = (CardValue)10, Suit = CardSuit.Diamonds },
+                new Card() { Value = (CardValue)10, Suit = CardSuit.Clubs },
+                new Card() { Value = (CardValue)11, Suit = CardSuit.Diamonds }
+            };
+
+            var playersList = new List<Player>
+            {
+                new Player()
+                {
+                    PlayerCards = new List<Card>()
+                    {
+                        new Card() { Value = (CardValue)8, Suit = CardSuit.Spades },
+                        new Card() { Value = (CardValue)6, Suit = CardSuit.Clubs }
+                    },
+                    PlayerName = "Player_0"
+                },
+
+                new Player()
+                {
+                    PlayerCards = new List<Card>()
+                    {
+                        new Card() { Value = (CardValue)7, Suit = CardSuit.Spades },
+                        new Card() { Value = (CardValue)11, Suit = CardSuit.Spades }
+                    },
+                    PlayerName = "Player_1"
+                },
+
+                new Player()
+                {
+                    PlayerCards = new List<Card>()
+                    {
+                        new Card() { Value = (CardValue)2, Suit = CardSuit.Clubs },
+                        new Card() { Value = (CardValue)6, Suit = CardSuit.Hearts }
+                    },
+                    PlayerName = "Player_2"
+                },
+
+                new Player()
+                {
+                    PlayerCards = new List<Card>()
+                    {
+                        new Card() { Value = (CardValue)3, Suit = CardSuit.Clubs },
+                        new Card() { Value = (CardValue)14, Suit = CardSuit.Hearts }
+                    },
+                    PlayerName = "Player_3"
+                }
+            };
+
+            var winnerParams = new HandParams
+            {
+                ComboRank = ComboRanks.TwoPair,
+                HighCard = new Card
+                {
+                    Suit = CardSuit.Spades,
+                    Value = CardValue.Jack
+                },
+                Combo = new List<Card>
+                {
+                    new Card() { Value = (CardValue)10, Suit = CardSuit.Diamonds },
+                    new Card() { Value = (CardValue)10, Suit = CardSuit.Clubs },
+                    new Card() { Value = (CardValue)11, Suit = CardSuit.Diamonds },
+                    new Card() { Value = (CardValue)11, Suit = CardSuit.Spades }
+                }
+            };
+
+            Assert.AreEqual(winnerParams, CombinationChecker.GetWinner(playersList, boardCards).HandParams);
+        }
+
         [Test]
         public void GetWinnerTest2()
         {
@@ -100,7 +665,6 @@ namespace PokerCombinationHelper
             Assert.AreEqual(winnerParams, CombinationChecker.GetWinner(playersList, boardCards).HandParams);
         }
 
-
         [Test]
         public void GetWinnerTest1()
         {
@@ -173,7 +737,7 @@ namespace PokerCombinationHelper
                 }
             };
 
-            Assert.AreEqual(winnerParams, CombinationChecker.GetWinner(playersList,boardCards).HandParams);
+            Assert.AreEqual(winnerParams, CombinationChecker.GetWinner(playersList, boardCards).HandParams);
         }
 
         //Тест на неповторяющиеся элементы, уникальных карт  
@@ -211,7 +775,7 @@ namespace PokerCombinationHelper
 
         }
 
-        [Test]
+        //        [Test]
         public void CustomTest1()
         {
             List<Card> cardList = new List<Card>
