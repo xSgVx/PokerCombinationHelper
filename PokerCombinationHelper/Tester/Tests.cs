@@ -66,8 +66,8 @@ namespace PokerCombinationHelper
                 ComboRank = ComboRanks.Straight,
                 HighCard = new Card
                 {
-                    Suit = CardSuit.Spades,
-                    Value = CardValue.Eight
+                    Suit = CardSuit.Hearts,
+                    Value = CardValue.Queen
                 },
                 Combo = new List<Card>
                 {
@@ -152,8 +152,8 @@ namespace PokerCombinationHelper
                 ComboRank = ComboRanks.ThreeOfAKind,
                 HighCard = new Card
                 {
-                    Suit = CardSuit.Spades,
-                    Value = CardValue.King
+                    Suit = CardSuit.Clubs,
+                    Value = CardValue.Queen
                 },
                 Combo = new List<Card>
                 {
@@ -322,18 +322,9 @@ namespace PokerCombinationHelper
             var winnerParams = new HandParams
             {
                 ComboRank = ComboRanks.Draw,
-                HighCard = new Card
-                {
-                    Suit = CardSuit.Hearts,
-                    Value = CardValue.Ace
-                },
-                Combo = new List<Card>
-                {
-                    new Card() { Value = (CardValue)14, Suit = CardSuit.Hearts }
-                }
             };
 
-            Assert.AreEqual(winnerParams, CombinationChecker.GetWinner(playersList, boardCards).HandParams);
+            Assert.AreEqual(winnerParams.ComboRank, CombinationChecker.GetWinner(playersList, boardCards).HandParams.ComboRank);
         }
 
         [Test]

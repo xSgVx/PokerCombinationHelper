@@ -28,12 +28,6 @@ namespace PokerCombinationHelper
         [Description("Величина")] Value = 1,
     }
 
-    public enum Params
-    {
-        [Description("Старшее комбо")] HighCombo = 2,
-        [Description("Старшая карта")] HighCard = 1,
-    }
-
     public class CombinationChecker
     {
         public static Player GetWinner(List<Player> playersList, List<Card> boardCards)
@@ -45,9 +39,7 @@ namespace PokerCombinationHelper
             HandParams boardParams = CombinationChecker.GetPlayerHandParams(boardCards);
             List<HandParams> allCardsParams = new List<HandParams>();
 
-            //Блок для случая, в котором комбо находится на столе, а в руках у игроков пусто
-            //В таком случае победитель определяется по старшей карте в руке
-            //--//
+            //Присваиваем игрокам параметры
             for (int i = 0; i < playersList.Count; i++)
             {
                 var allCards = playersList[i].PlayerCards.Concat(boardCards).ToList();
@@ -72,40 +64,7 @@ namespace PokerCombinationHelper
 
             }
 
-            ////Если комбо в руках не найдено
-            //if (match == playersList.Count)
-            //{
-            //    for (int j = 0; j < playersList.Count; j++)
-            //    {
-            //        playersList[j].HandParams = new HandParams()
-            //        {
-            //            Combo = new List<Card>() { HighCard(playersList[j].PlayerCards) },
-            //            HighCard = HighCard(playersList[j].PlayerCards),
-            //            ComboRank = ComboRanks.HighCard
-            //        };
-            //    }
-            //}
-
-            ////Если комбо в руках найдено
-            //if (match != playersList.Count)
-            //{
-            //    for (int i = 0; i < playersList.Count; i++)
-            //    {
-            //        playersList[i].HandParams = allCardsParams[i];
-            //    }
-            //}
-
-            //for (int i = 0;i < playersList.Count; i++)
-            //{
-
-            //}
-            ////--//
-
             var equalComboPlayers = playersList;
-
-            //Старшая карта, та карта которая есть в руке и входит в комбинацию
-            
-            //equalComboPlayers.ForEach(x => x.HandParams.HighCard = ComboHighCard(x));
 
             //Частный случай, если у игроков ничего нет
             if (match == 5)
@@ -120,63 +79,53 @@ namespace PokerCombinationHelper
             }
 
             winner = equalComboPlayers.First();
-            equalComboPlayers.RemoveAt(0);
 
             //Нашли максимальную комбинацию
-            if (!equalComboPlayers.Any(x => x.HandParams.ComboRank == winner.HandParams.ComboRank))
+            if (!equalComboPlayers.Any(x => x.HandParams.ComboRank == winner.HandParams.ComboRank && x.HandParams != winner.HandParams))
             {
                 return winner;
             }
 
             //У нескольких игроков одинаковые комбинации
             //смотрим старшую карту которая входит в комбинацию
-            if (!equalComboPlayers.Any(x => x.HandParams.HighCard.Value == winner.HandParams.HighCard.Value))
+            if (!equalComboPlayers.Any(x => x.HandParams.HighCard.Value == winner.HandParams.HighCard.Value && x.HandParams != winner.HandParams))
             {
                 return winner;
             }
 
             //У нескольких игроков одинаковая комбинация карт и одинаковая старшая карта
-            //смотрим вторую карту в руке
+            //--//
             equalComboPlayers = equalComboPlayers.FindAll(x => x.HandParams.HighCard.Value == winner.HandParams.HighCard.Value);
 
-            var query = (from player in equalComboPlayers
-                         from card in player.PlayerCards
-                         where card.Value != winner.HandParams.HighCard.Value
-                         select card).Distinct(new CardValueComparer()).ToList();
-
-            var winnerSecondCard = (from card in winner.PlayerCards
-                                    where card != winner.HandParams.HighCard
-                                    select card).ToList().First();
-
-            match = 0;
-            for (int i = 0; i < query.Count; i++)
+            //Делаем вторую карту в руке старшей картой
+            for (int i = 0; i < equalComboPlayers.Count; i++)
             {
-                if (query[i].Value > winnerSecondCard.Value)
-                    winner = equalComboPlayers.Find(x => x.PlayerCards.Contains(query[i]));
-
-                winner.PlayerCards.Sort();
-                if (winner.PlayerCards[0].Value.Equals(query[i].Value))
-                    match++;
+                equalComboPlayers[i].HandParams.HighCard = (from card in equalComboPlayers[i].PlayerCards
+                                                            where card != equalComboPlayers[i].HandParams.HighCard
+                                                            select card).ToList().First();
             }
 
-            if ((query.Count != 1) || (match != query.Count))
+            equalComboPlayers = equalComboPlayers.OrderByDescending(x => x.HandParams.HighCard).ToList();
+            winner = equalComboPlayers.First();
+
+            //Смотрим вторую карту в руке у игроков с одинаковой старшей картой
+            if (!equalComboPlayers.Any(x => x.HandParams.HighCard.Value == winner.HandParams.HighCard.Value && x.HandParams != winner.HandParams))
             {
-                equalComboPlayers.Add(winner);
-                return equalComboPlayers.Find(x => x.PlayerCards.Contains(query.Max()));
+                return winner;
             }
-            else
+            //--//
+
+            //Блок ничьи, т.е у игроков одинаковая старшая карта, и вторая карта в руке
+            if (equalComboPlayers.Any())
             {
-                if (match == query.Count)
+                return new Player()
                 {
-                    equalComboPlayers.Add(winner);
-                    return new Player()
-                    {
-                        PlayerCards = winner.PlayerCards,
-                        HandParams = new HandParams() { ComboRank = ComboRanks.Draw },
-                        PlayerName = $"{String.Join(", ", equalComboPlayers.Select(x => x.PlayerName))} "
-                    };
-                }
+                    PlayerCards = winner.PlayerCards,
+                    HandParams = new HandParams() { ComboRank = ComboRanks.Draw },
+                    PlayerName = $"{String.Join(", ", equalComboPlayers.Select(x => x.PlayerName))} "
+                };
             }
+
             return null;
         }
 
@@ -489,46 +438,6 @@ namespace PokerCombinationHelper
 
             return null;
         }
-
-        public static Player EqualComboPlayers(List<Player> playersList, Params @params)
-        {
-            var winner = new Player();
-            var equalComboPlayers = new List<Player>();
-
-            switch (@params)
-            {
-                case Params.HighCombo:
-                    {
-                        playersList = playersList.OrderByDescending(x => x.HandParams.ComboRank).ToList();
-                        winner = playersList.First();
-                        playersList.RemoveAt(0);
-                        equalComboPlayers = (from p in playersList
-                                             where p.HandParams.ComboRank == winner.HandParams.ComboRank
-                                             select p).ToList();
-
-                        break;
-                    }
-                case Params.HighCard:
-                    {
-                        playersList = playersList.OrderByDescending(x => x.HandParams.HighCard).ToList();
-                        winner = playersList.First();
-                        playersList.RemoveAt(0);
-                        equalComboPlayers = (from p in playersList
-                                             where p.HandParams.HighCard == winner.HandParams.HighCard
-                                             select p).ToList();
-
-                        break;
-                    }
-            }
-
-            if (!equalComboPlayers.Any())
-            {
-                return winner;
-            }
-
-            return null;
-        }
-
         public static Card ComboHighCard(Player player)
         {
             var query = (from card in player.HandParams.Combo
