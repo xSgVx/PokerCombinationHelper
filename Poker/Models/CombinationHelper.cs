@@ -76,19 +76,8 @@ namespace Poker.Models
         {
             if (cards.Count() < 5) return false;    //только 5 карт
 
-            if (!_dictByCardSuit.Any())
-                _dictByCardSuit = GetSortedDictionaryByCardSuit(cards);
-
-            if (_dictByCardSuit.Any(kv => kv.Value.Count >= 5))
-            {
-                foreach (var suitAndCards in _dictByCardSuit)
-                {
-                    if (suitAndCards.Value.Count < 5) continue;
-
-                    if (IsStraight(suitAndCards.Value))
-                        return true;
-                }
-            }
+            if (TryGetStraightCombo(cards, true) != null)
+                return true;
 
             return false;
         }
@@ -136,98 +125,67 @@ namespace Poker.Models
         {
             if (cards.Count() < 5) return false;
 
-            if (GetSequenceCardsList(cards)?.Count() == 5)
+            if (TryGetStraightCombo(cards, false) != null)
                 return true;
 
             return false;
         }
-        
-        private static IEnumerable<ICard>? GetSequenceCardsList(IEnumerable<ICard> cards, bool needCheckSuit = false)
+
+
+        private IEnumerable<ICard>? TryGetStraightCombo(IEnumerable<ICard> cards, bool needCheckSuit)
         {
-            var inputCardList = cards.ToList();
-            inputCardList.Sort(new CardValueComparer(OrderBy.Desc));
-
-            for (int i = 0; i < inputCardList.Count; i++)
-            {
-                var matchList = new List<ICard>();
-                int j = i;
-
-                if (needCheckSuit)
-                {
-                    while (inputCardList.Any(card => card.Value == inputCardList[i].Value - j && card.Suit.Equals(inputCardList[i].Suit)))
-                    {
-                        matchList.Add(inputCardList.First(card => card.Value == inputCardList[i].Value - j && card.Suit.Equals(inputCardList[i].Suit)));
-                        j++;
-                    }
-                }
-                else
-                {
-                    while (inputCardList.Any(card => card.Value == inputCardList[i].Value - j))
-                    {
-                        matchList.Add(inputCardList.First(card => card.Value == inputCardList[i].Value - j));
-                        j++;
-                    }
-                }
-                i = j;
-
-                if (matchList.Count == 5)
-                {
-                    return matchList;
-                }
-            }
-
-            return null;
-        }
-        
-        /*
-        private bool GotStraightCombo(IEnumerable<ICard> cards, bool needCheckSuit = false)
-        {
-            if (cards.Count() < 5) 
-                return false; 
+            if (cards.Count() < 5)
+                return null;
 
             if (needCheckSuit)
             {
-                if (!_dictByCardSuit.Any())
-                    _dictByCardSuit = GetSortedDictionaryByCardSuit(cards);
+                //if (!_dictByCardSuit.Any())  с юнит тестами ошибка
+                _dictByCardSuit = GetSortedDictionaryByCardSuit(cards);
 
                 if (_dictByCardSuit.Any(kv => kv.Value.Count >= 5))
                 {
                     foreach (var suitAndCards in _dictByCardSuit)
                     {
+                        if (suitAndCards.Value.Count < 5) continue;
 
-
-
-
+                        return GetSequenceCardsList(suitAndCards.Value);
                     }
                 }
-                else 
-                    return false;
+                else
+                {
+                    return null;
+                }
             }
             else
             {
-
+                return GetSequenceCardsList(cards);
             }
 
-            return false; 
+
+            return null;
         }
-        */
+
+
 
         private IEnumerable<ICard>? GetSequenceCardsList(IEnumerable<ICard> cards)
         {
             var inputCardList = cards.ToList();
+            inputCardList = inputCardList.Distinct(new CardValueComparer()).ToList();
             inputCardList.Sort(new CardValueComparer(OrderBy.Desc));
 
-            for (int i = 0; i < inputCardList.Count; i++)
+            for (int i = 0; i < inputCardList.Count;)
             {
                 var matchList = new List<ICard>();
+                matchList.Add(inputCardList[i]);
 
-                int j = i;
+                int j = 1;
                 while (inputCardList.Any(card => card.Value == inputCardList[i].Value - j))
                 {
                     matchList.Add(inputCardList.First(card => card.Value == inputCardList[i].Value - j));
                     j++;
                 }
 
+                i += j;
                 if (matchList.Count == 5)
                 {
                     return matchList;
@@ -236,8 +194,6 @@ namespace Poker.Models
 
             return null;
         }
-
-
 
         internal bool IsRoyalFlush(IEnumerable<ICard> cards)
         {
@@ -252,29 +208,24 @@ namespace Poker.Models
                 new Card(CardValue.Ten, CardSuit.Hearts)
             };
 
-            var seq = GetSequenceCardsList(cards, true);
+            var straightFlushCombo = TryGetStraightCombo(cards, true);
 
-            var royalFlushPlayerCards = seq?.Distinct(new CardValueComparer())
-                                             .ToList()
-                                             .Select(x => x)
-                                             .Intersect(royalFlushCardList, new CardValueComparer());
-
-            //var royalFlushPlayerCards = cards.Distinct(new CardValueComparer())
-            //                                 .ToList()
-            //                                 .Select(x => x)
-            //                                 .Intersect(royalFlushCardList, new CardValueComparer());
+            var royalFlushPlayerCards = straightFlushCombo?.Distinct(new CardValueComparer())
+                                                           .ToList()
+                                                           .Select(x => x)
+                                                           .Intersect(royalFlushCardList, new CardValueComparer());
 
             if (royalFlushPlayerCards?.Count() == 5) return true;
 
             return false;
         }
 
-        internal ICard GetHighCard(IPlayer player, IBoard board)
-        {
-
-
-            return null;
-        }
+        //internal ICard GetHighCard(IPlayer player, IBoard board)
+        //{
+        //
+        //
+        //    return null;
+        //}
 
 
 
