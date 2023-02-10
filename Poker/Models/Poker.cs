@@ -18,13 +18,11 @@ namespace Poker.Models
     {
         private PokerDeck pokerDeck = new();
         private Board _board;
-        private Stack<ICard> _deck;
         private List<Player> _players;
 
 
         public PokerGame() : base("Poker")
         {
-            _deck = new Stack<ICard>(pokerDeck.Cards);
             _players = CreatePlayers();
         }
         
@@ -54,7 +52,7 @@ namespace Poker.Models
 
         private Player CreateRandomPlayer()
         {
-            return new Player(Guid.NewGuid().ToString(), new Stack<ICard>(_deck.PopRange(2)));
+            return new Player(Guid.NewGuid().ToString(), new Stack<ICard>(pokerDeck.GetCardsFromDeck(2)));
         }
 
 

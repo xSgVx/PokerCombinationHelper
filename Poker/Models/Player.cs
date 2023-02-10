@@ -8,7 +8,7 @@ public class Player : IPlayer
     public string Name { get; }
     public IEnumerable<ICard> Cards { get; }
 
-    public Player(string name, Stack<ICard> cards)
+    public Player(string name, IEnumerable<ICard> cards)
     {
         this.Name = name;
         this.Cards = cards;

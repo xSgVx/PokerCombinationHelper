@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CardGameBase.Models.Comparers
 {
-    internal class CardSuitComparer : EqualityComparer<ICard>
+    public class CardSuitComparer : EqualityComparer<ICard>
     {
         public override bool Equals(ICard? x, ICard? y)
         {
@@ -23,7 +23,7 @@ namespace CardGameBase.Models.Comparers
 
         public override int GetHashCode([DisallowNull] ICard obj)
         {
-            return obj.GetHashCode();
+            return obj.Suit.GetHashCode();
         }
     }
 }

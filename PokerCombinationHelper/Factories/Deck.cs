@@ -10,8 +10,9 @@ namespace CardGameBase.Factories
 {
     public abstract class CardDeck
     {
-        public IEnumerable<ICard> Cards => _cards;
-        private IEnumerable<ICard> _cards = Enumerable.Empty<ICard>();
+        //public IEnumerable<ICard> Cards => _cards;
+        //public ICollection<ICard> Cards => _cards;
+        private IList<ICard> _cards;
         private readonly int _initCardNum;
         private readonly int _lastCardNum;
 
@@ -26,6 +27,7 @@ namespace CardGameBase.Factories
         {
             _initCardNum = initCardNum; 
             _lastCardNum = lastCardNum;
+            _cards = new List<ICard>();
 
             CreateDeck(_initCardNum, _lastCardNum);
         }
@@ -35,53 +37,61 @@ namespace CardGameBase.Factories
         /// </summary>
         public CardDeck(params ICard[] cards)
         {
-            _cards = _cards.Union(cards);
+            _cards = new List<ICard>(cards);
         }
 
         public void RefreshDeck()
         {
+            _cards.Clear();
             CreateDeck(_initCardNum, _lastCardNum);
         }
 
         public void RefreshDeck(params ICard[] cards)
         {
-            _cards = Enumerable.Empty<ICard>(); 
-            _cards = _cards.Union(cards);
+            _cards.Clear();
+            _cards = cards;
+        }
+
+        public IEnumerable<ICard> GetCardsFromDeck(int count)
+        {
+            ICollection<ICard> cardsFromReck = new List<ICard>();
+
+            for (int i = 0; i < count; i++)
+            {
+                cardsFromReck.Add(_cards.First());
+                _cards.Remove(_cards.First());
+            }
+
+            return cardsFromReck;
         }
 
         private void CreateDeck(int initCardNum, int lastCardNum)
         {
-            var deck = new List<ICard>();
-
             for (int i = initCardNum; i <= lastCardNum; i++)
             {
                 for (int j = 1; j <= 4; j++)
                 {
-                    deck.Add(new Card((CardValue)i, (CardSuit)j));
+                    _cards.Add(new Card((CardValue)i, (CardSuit)j));
                 }
             }
 
-            _cards = ShuffleDeck(deck);
+            ShuffleDeck(ref _cards);
         }
 
         /// <summary>
         /// Метод для перемешивания колоды
         /// </summary>
         /// <param name="cards"></param>
-        public IEnumerable<ICard> ShuffleDeck(IEnumerable<ICard> cards)
+        public void ShuffleDeck(ref IList<ICard> cards)
         {
-            List<ICard> shuffledDeck = new(cards);
-
             var rnd = new Random();
-            int n = cards.Count();
+            int n = cards.Count;
             while (n > 1)
             {
                 n--;
                 int x = rnd.Next(n + 1);
-                (shuffledDeck[n], shuffledDeck[x]) = (shuffledDeck[x], shuffledDeck[n]);
+                (cards[n], cards[x]) = (cards[x], cards[n]);
             }
-
-            return shuffledDeck;
         }
     }
 }

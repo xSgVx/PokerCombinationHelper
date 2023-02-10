@@ -4,18 +4,22 @@ using CardGameBase;
 namespace Poker.Models;
 
 public class Board : IBoard
-{ 
-	public IEnumerable<ICard> Cards => _cards;
+{
+    public ICollection<ICard> Cards => _cards;
 
-    private IEnumerable<ICard> _cards;
+    private ICollection<ICard> _cards;
 
-    public Board(IEnumerable<ICard> cards)
-	{
-		this._cards = cards;
-	}
+    public Board(ICollection<ICard> cards)
+    {
+        this._cards = cards;
+    }
 
-	public void AddCards(IEnumerable<ICard> cards)
-	{
-		this._cards = this._cards.Union(cards);
-	}
+    public void AddCards(IEnumerable<ICard> cards)
+    {
+        foreach (var card in cards)
+        {
+            _cards.Add(card);
+        }
+        //this._cards.Union(cards);
+    }
 }

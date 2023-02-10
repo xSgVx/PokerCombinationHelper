@@ -12,11 +12,9 @@ namespace Poker.Models
 {
     internal class PokerDeck : CardDeck
     {
-        public List<ICard> Cards { get; private set; }
-
         public PokerDeck() : base(2,14)
         {
-            this.Cards = new List<ICard>(base.Cards);
+        
         }
     }
 }

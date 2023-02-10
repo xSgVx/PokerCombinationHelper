@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace CardGameBase;
 
-public interface ICard
+public interface ICard : IEquatable<ICard>
 {
     public CardValue Value { get; }
     public CardSuit Suit { get; }
