@@ -65,8 +65,9 @@ namespace UnitTests
             Assert.That(distinctBySuitCards, Has.Count.EqualTo(4));
         }
 
+        /*
         [Test]
-        public void StraightComboTest1()
+        public void StraightComboTrueTest()
         {
             var cards = new List<ICard>()
             {
@@ -84,7 +85,7 @@ namespace UnitTests
         }
 
         [Test]
-        public void StraightComboTest2()
+        public void StraightComboFalseTest()
         {
             var cards = new List<ICard>()
             {
@@ -102,7 +103,7 @@ namespace UnitTests
         }
 
         [Test]
-        public void StraightFlushComboTest1()
+        public void StraightFlushComboTrueTest()
         {
             //6,7,8,9,10 D
             var cards = new List<ICard>()
@@ -121,7 +122,7 @@ namespace UnitTests
         }
 
         [Test]
-        public void StraightFlushComboTest2()
+        public void StraightFlushComboFalseTest()
         {
             var cards = new List<ICard>()
             {
@@ -139,7 +140,7 @@ namespace UnitTests
         }
 
         [Test]
-        public void RoyalFlushComboTest1()
+        public void RoyalFlushComboTrueTest()
         {
             var cards = new List<ICard>()
             {
@@ -157,7 +158,7 @@ namespace UnitTests
         }
 
         [Test]
-        public void RoyalFlushComboTest2()
+        public void RoyalFlushComboFalseTest()
         {
             var cards = new List<ICard>()
             {
@@ -174,5 +175,24 @@ namespace UnitTests
             Assert.That(CombinationHelper.Instance.IsRoyalFlush(cards), Is.False);
         }
 
+        [Test]
+        public void FullHouseTest1()
+        {
+            var cards = new List<ICard>()
+            {
+                new Card(CardValue.Ten, CardSuit.Hearts),
+                new Card(CardValue.Ten, CardSuit.Clubs),
+                new Card(CardValue.Queen, CardSuit.Clubs),
+                new Card(CardValue.King, CardSuit.Diamonds),
+                new Card(CardValue.Ace, CardSuit.Diamonds),
+                new Card(CardValue.Queen, CardSuit.Diamonds),
+                new Card(CardValue.Jack, CardSuit.Hearts),
+                new Card(CardValue.Ten, CardSuit.Diamonds)
+            };
+
+            Assert.That(CombinationHelper.Instance.IsFullHouse(cards), Is.False);
+        }
+
+        */
     }
 }

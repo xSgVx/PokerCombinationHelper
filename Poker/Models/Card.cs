@@ -3,12 +3,6 @@ using System.ComponentModel;
 
 namespace Poker.Models;
 
-public enum CardParams
-{
-    CardValue = 0,
-    CardSuit = 1
-}
-
 public class Card : ICard /*, IComparable<ICard>, IComparable<Card>*/
 {
     public CardValue Value { get; }

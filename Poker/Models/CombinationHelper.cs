@@ -1,19 +1,14 @@
 ﻿using CardGameBase;
-using CardGameBase.Interfaces;
 using CardGameBase.Models.Comparers;
-using Poker.Models;
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.ComponentModel;
 using System.Linq;
-using System.Reflection.Metadata;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-[assembly: InternalsVisibleTo("UnitTests")]
 namespace Poker.Models
 {
     public enum PokerCombinations
@@ -31,58 +26,101 @@ namespace Poker.Models
         [Description("Ничья")] Draw = 0,
     }
 
-
     internal class CombinationHelper
     {
-        private static readonly Lazy<CombinationHelper> lazy =
-            new Lazy<CombinationHelper>(() => new CombinationHelper());
+        public PokerCombinations Combination { get; private set; }
+        public IEnumerable<ICard> WinnerCards { get; private set; }
 
         private Dictionary<CardSuit, List<ICard>> _dictByCardSuit = new();
         private Dictionary<CardValue, List<ICard>> _dictByCardValue = new();
+        private IEnumerable<ICard> _royalFlush;
+        private IEnumerable<ICard> _straightFlush;
+        private IEnumerable<ICard> _fourOfAKind;
+        private IEnumerable<ICard> _fullHouse;
+        private IEnumerable<ICard> _flush;
+        private IEnumerable<ICard> _straight;
+        private IEnumerable<ICard> _threeOfAKind;
+        private IEnumerable<ICard> _twoPair;
+        private IEnumerable<ICard> _pair;
 
-        public static CombinationHelper Instance { get { return lazy.Value; } }
-
-        public Player? GetWinner(IList<IPlayer> players, IBoard board)
+        public CombinationHelper(IEnumerable<ICard> playerCards, IEnumerable<ICard> boardCards)
         {
-            Player winner = null;
-            PokerCombinations winnerCombo = PokerCombinations.Draw;
+            var cards = playerCards.Concat(boardCards);
+            _dictByCardValue = GetSortedDictionaryByCardValue(cards);
+            _dictByCardSuit = GetSortedDictionaryByCardSuit(cards);
+            FindCombinationAndWinnerCards(cards);
+        }
 
-            foreach (var player in players)
+        private void FindCombinationAndWinnerCards(IEnumerable<ICard> cards)
+        {
+            if (IsRoyalFlush(cards))
             {
-                var allCards = player.Cards.Union(board.Cards);
-                _dictByCardSuit = GetSortedDictionaryByCardSuit(allCards);
-                _dictByCardValue = GetSortedDictionaryByCardValue(allCards);
-                var playerCombo = GetPlayerCombination(allCards);
-
-
-
+                WinnerCards = _royalFlush;
+                Combination = PokerCombinations.RoyalFlush;
+                return;
             }
 
-            return winner;
+            if (IsStraightFlush(cards))
+            {
+                WinnerCards = _straightFlush;
+                Combination = PokerCombinations.StraightFlush;
+                return;
+            }
+
+            if (IsFourOfAKind(cards))
+            {
+                WinnerCards = _fourOfAKind;
+                Combination = PokerCombinations.FourOfAKind;
+                return;
+            }
+
+            if (IsFullHouse(cards))
+            {
+                WinnerCards = _fullHouse;
+                Combination = PokerCombinations.FullHouse;
+                return;
+            }
+
+            if (IsFlush(cards))
+            {
+                WinnerCards = _flush;
+                Combination = PokerCombinations.Flush;
+                return;
+            }
+
+            if (IsStraight(cards))
+            {
+                WinnerCards = _straight;
+                Combination = PokerCombinations.Straight;
+                return;
+            }
+
+            if (IsThreeOfAKind(cards))
+            {
+                WinnerCards = _royalFlush;
+                Combination = PokerCombinations.ThreeOfAKind;
+                return;
+            }
+
+            if (IsTwoPair(cards))
+            {
+                WinnerCards = _twoPair;
+                Combination = PokerCombinations.TwoPair;
+                return;
+            }
+
+            if (IsPair(cards))
+            {
+                WinnerCards = _pair;
+                Combination = PokerCombinations.Pair;
+                return;
+            }
+
+            WinnerCards = new[] { GetHighCard(cards) };
+            Combination = PokerCombinations.HighCard;
         }
 
-        internal PokerCombinations GetPlayerCombination(IEnumerable<ICard> cards)
-        {
-            if (IsRoyalFlush(cards)) return PokerCombinations.RoyalFlush;
-            if (IsStraightFlush(cards)) return PokerCombinations.StraightFlush;
-
-            if (IsStraight(cards)) return PokerCombinations.Straight;
-
-
-            return PokerCombinations.Draw;
-        }
-
-        internal bool IsStraightFlush(IEnumerable<ICard> cards)
-        {
-            if (cards.Count() < 5) return false;    //только 5 карт
-
-            if (TryGetStraightCombo(cards, true) != null)
-                return true;
-
-            return false;
-        }
-
-        internal Dictionary<CardSuit, List<ICard>> GetSortedDictionaryByCardSuit(IEnumerable<ICard> cards)
+        private Dictionary<CardSuit, List<ICard>> GetSortedDictionaryByCardSuit(IEnumerable<ICard> cards)
         {
             var dict = new Dictionary<CardSuit, List<ICard>>();
 
@@ -104,7 +142,7 @@ namespace Poker.Models
             return dict;
         }
 
-        internal Dictionary<CardValue, List<ICard>> GetSortedDictionaryByCardValue(IEnumerable<ICard> cards)
+        private Dictionary<CardValue, List<ICard>> GetSortedDictionaryByCardValue(IEnumerable<ICard> cards)
         {
             var dict = new Dictionary<CardValue, List<ICard>>();
 
@@ -118,57 +156,62 @@ namespace Poker.Models
                 dict[card.Value].Add(card);
             }
 
-            return dict;
+            return dict.OrderByDescending(x => x.Key)
+                       .ToDictionary(x => x.Key, x => x.Value);
         }
 
-        internal bool IsStraight(IEnumerable<ICard> cards)
+        internal ICard GetHighCard(IEnumerable<ICard> cards)
         {
-            if (cards.Count() < 5) return false;
+            return cards.Max(new CardValueComparer());
+        }
 
-            if (TryGetStraightCombo(cards, false) != null)
+        private bool IsRoyalFlush(IEnumerable<ICard> cards)
+        {
+            if (!IsStraight(cards))
+                return false;
+
+            var royalFlushCardList = new List<ICard>()
+            {
+                new Card(CardValue.Ace, CardSuit.Hearts),
+                new Card(CardValue.King, CardSuit.Hearts),
+                new Card(CardValue.Queen, CardSuit.Hearts),
+                new Card(CardValue.Jack, CardSuit.Hearts),
+                new Card(CardValue.Ten, CardSuit.Hearts)
+            };
+
+            var royalFlushPlayerCards = cards?.Distinct(new CardValueComparer())
+                                              .ToList()
+                                              .Select(x => x)
+                                              .Intersect(royalFlushCardList, new CardValueComparer());
+
+            if (royalFlushPlayerCards?.Count() == 5)
+            {
+                _royalFlush = royalFlushPlayerCards;
                 return true;
+            }
 
             return false;
         }
 
-
-        private IEnumerable<ICard>? TryGetStraightCombo(IEnumerable<ICard> cards, bool needCheckSuit)
+        private bool IsStraightFlush(IEnumerable<ICard> cards)
         {
-            if (cards.Count() < 5)
-                return null;
+            if (!IsFlush(cards))
+                return false;
 
-            if (needCheckSuit)
+            if (IsStraight(_flush))
             {
-                //if (!_dictByCardSuit.Any())  с юнит тестами ошибка
-                _dictByCardSuit = GetSortedDictionaryByCardSuit(cards);
-
-                if (_dictByCardSuit.Any(kv => kv.Value.Count >= 5))
-                {
-                    foreach (var suitAndCards in _dictByCardSuit)
-                    {
-                        if (suitAndCards.Value.Count < 5) continue;
-
-                        return GetSequenceCardsList(suitAndCards.Value);
-                    }
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            else
-            {
-                return GetSequenceCardsList(cards);
+                _straightFlush = _flush;
+                return true;
             }
 
-
-            return null;
+            return false;
         }
 
-
-
-        private IEnumerable<ICard>? GetSequenceCardsList(IEnumerable<ICard> cards)
+        private bool IsStraight(IEnumerable<ICard> cards)
         {
+            if (cards.Count() < 5)
+                return false;
+
             var inputCardList = cards.ToList();
             inputCardList = inputCardList.Distinct(new CardValueComparer()).ToList();
             inputCardList.Sort(new CardValueComparer(OrderBy.Desc));
@@ -186,50 +229,122 @@ namespace Poker.Models
                 }
 
                 i += j;
-                if (matchList.Count == 5)
+                if (matchList.Count >= 5)
                 {
-                    return matchList;
+                    _straight = matchList;
+                    return true;
                 }
+            }
+
+            return false;
+        }
+
+        private bool IsFourOfAKind(IEnumerable<ICard> cards)
+        {
+            var fourCards = TryGetOneValueCards(4);
+
+            if (fourCards != null)
+            {
+                _fourOfAKind = fourCards;
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool IsFullHouse(IEnumerable<ICard> cards)
+        {
+            if (IsThreeOfAKind(cards) && IsPair(cards))
+            {
+                _fullHouse = _threeOfAKind.Concat(_pair);
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool IsFlush(IEnumerable<ICard> cards)
+        {
+            var flushCards = TryGetOneSuitCards(5);
+
+            if (flushCards != null)
+            {
+                _flush = flushCards;
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool IsThreeOfAKind(IEnumerable<ICard> cards)
+        {
+            var threeCards = TryGetOneValueCards(3);
+
+            if (threeCards != null)
+            {
+                _threeOfAKind = threeCards;
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool IsPair(IEnumerable<ICard> cards)
+        {
+            var twoCards = TryGetOneValueCards(2);
+
+            if (twoCards != null)
+            {
+                _pair = twoCards;
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool IsTwoPair(IEnumerable<ICard> cards)
+        {
+            if (_pair == null)
+                return false;
+
+            var secondPair = TryGetOneValueCards(2);
+
+            if (secondPair != null)
+            {
+                _twoPair = _pair.Concat(secondPair);
+                return true;
+            }
+
+            return false;
+        }
+
+        private IEnumerable<ICard>? TryGetOneValueCards(int oneValueCardsCount)
+        {
+            if (_dictByCardValue.Any(kv => kv.Value.Count() >= oneValueCardsCount))
+            {
+                var valueAndCards = _dictByCardValue.First(kv => kv.Value.Count() >= oneValueCardsCount);
+                _dictByCardValue.Remove(valueAndCards.Key);
+                return valueAndCards.Value;
             }
 
             return null;
         }
 
-        internal bool IsRoyalFlush(IEnumerable<ICard> cards)
+        private IEnumerable<ICard>? TryGetOneSuitCards(int oneValueCardsCount)
         {
-            if (!IsStraightFlush(cards)) return false;
-
-            var royalFlushCardList = new List<ICard>()
+            if (_dictByCardSuit.Any(kv => kv.Value.Count() >= oneValueCardsCount))
             {
-                new Card(CardValue.Ace, CardSuit.Hearts),
-                new Card(CardValue.King, CardSuit.Hearts),
-                new Card(CardValue.Queen, CardSuit.Hearts),
-                new Card(CardValue.Jack, CardSuit.Hearts),
-                new Card(CardValue.Ten, CardSuit.Hearts)
-            };
+                var valueAndCards = _dictByCardSuit.First(kv => kv.Value.Count() >= oneValueCardsCount);
+                _dictByCardSuit.Remove(valueAndCards.Key);
+                return valueAndCards.Value;
+            }
 
-            var straightFlushCombo = TryGetStraightCombo(cards, true);
-
-            var royalFlushPlayerCards = straightFlushCombo?.Distinct(new CardValueComparer())
-                                                           .ToList()
-                                                           .Select(x => x)
-                                                           .Intersect(royalFlushCardList, new CardValueComparer());
-
-            if (royalFlushPlayerCards?.Count() == 5) return true;
-
-            return false;
+            return null;
         }
 
-        //internal ICard GetHighCard(IPlayer player, IBoard board)
-        //{
-        //
-        //
-        //    return null;
-        //}
-
-
-
-
-
+        internal IPlayer TryGetSecondWinnerHighCard(IEnumerable<ICard> winnerCards)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
