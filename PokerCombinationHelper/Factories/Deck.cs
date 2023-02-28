@@ -10,8 +10,6 @@ namespace CardGameBase.Factories
 {
     public abstract class CardDeck
     {
-        //public IEnumerable<ICard> Cards => _cards;
-        //public ICollection<ICard> Cards => _cards;
         private IList<ICard> _cards;
         private readonly int _initCardNum;
         private readonly int _lastCardNum;

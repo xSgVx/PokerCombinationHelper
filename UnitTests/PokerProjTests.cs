@@ -9,11 +9,13 @@ namespace UnitTests
     public class PokerProjTests
     {
         PokerDeck pokerdeck;
+        CardCreator cardCreator;
 
         [SetUp]
         public void Setup()
         {
             pokerdeck = new();
+            cardCreator = new();
         }
 
         [Test]
@@ -33,7 +35,7 @@ namespace UnitTests
             {
                 if (!ascSortedCards[i].Equals(descSortedCards[i]))
                 {
-                    isSortedListsNotEqual = true; 
+                    isSortedListsNotEqual = true;
                     break;
                 }
             }
@@ -65,134 +67,102 @@ namespace UnitTests
             Assert.That(distinctBySuitCards, Has.Count.EqualTo(4));
         }
 
-        /*
         [Test]
-        public void StraightComboTrueTest()
+        public void StraightComboTest1()
         {
-            var cards = new List<ICard>()
-            {
-                new Card(CardValue.Six, CardSuit.Hearts),
-                new Card(CardValue.Seven, CardSuit.Diamonds),
-                new Card(CardValue.Seven, CardSuit.Hearts),
-                new Card(CardValue.Queen, CardSuit.Hearts),
-                new Card(CardValue.Nine, CardSuit.Hearts),
-                new Card(CardValue.Six, CardSuit.Diamonds),
-                new Card(CardValue.Eight, CardSuit.Hearts),
-                new Card(CardValue.Ten, CardSuit.Hearts)
-            };
-            
-            Assert.That(CombinationHelper.Instance.IsStraight(cards), Is.True);
+            var cards = cardCreator.CreateCardsFromString("6c 7d 7h Qh 9h 6s 8h 10c");
+
+            var helper = new CombinationHelper(cards);
+
+            Assert.That(helper.Combination, Is.EqualTo(PokerCombinations.Straight));
         }
 
         [Test]
-        public void StraightComboFalseTest()
+        public void StraightComboTest2()
         {
-            var cards = new List<ICard>()
-            {
-                new Card(CardValue.Six, CardSuit.Hearts),
-                new Card(CardValue.Six, CardSuit.Spades),
-                new Card(CardValue.Seven, CardSuit.Clubs),
-                new Card(CardValue.Ace, CardSuit.Diamonds),
-                new Card(CardValue.Nine, CardSuit.Hearts),
-                new Card(CardValue.Queen, CardSuit.Spades),
-                new Card(CardValue.Jack, CardSuit.Clubs),
-                new Card(CardValue.Ten, CardSuit.Diamonds)
-            };
+            var cards = cardCreator.CreateCardsFromString("5c 7d 7h 3h 9h 6s 8h 4s");
 
-            Assert.That(CombinationHelper.Instance.IsStraight(cards), Is.False);
+            var helper = new CombinationHelper(cards);
+            Assert.That(helper.Combination, Is.EqualTo(PokerCombinations.Straight));
         }
 
         [Test]
-        public void StraightFlushComboTrueTest()
+        public void StraightFlushComboTest()
         {
-            //6,7,8,9,10 D
-            var cards = new List<ICard>()
-            {
-                new Card(CardValue.Six, CardSuit.Hearts),
-                new Card(CardValue.Nine, CardSuit.Diamonds),
-                new Card(CardValue.Eight, CardSuit.Clubs),
-                new Card(CardValue.Eight, CardSuit.Diamonds),
-                new Card(CardValue.Ace, CardSuit.Hearts),
-                new Card(CardValue.Seven, CardSuit.Diamonds),
-                new Card(CardValue.Ten, CardSuit.Diamonds),
-                new Card(CardValue.Six, CardSuit.Diamonds)
-            };
+            var cards = cardCreator.CreateCardsFromString("5h 7d 7h 3s 9h 6h 8h 9d");
 
-            Assert.That(CombinationHelper.Instance.IsStraightFlush(cards), Is.True);
+            var helper = new CombinationHelper(cards);
+            Assert.That(helper.Combination, Is.EqualTo(PokerCombinations.StraightFlush));
         }
 
         [Test]
-        public void StraightFlushComboFalseTest()
+        public void FullHouseComboTest()
         {
-            var cards = new List<ICard>()
-            {
-                new Card(CardValue.Two, CardSuit.Hearts),
-                new Card(CardValue.Five, CardSuit.Diamonds),
-                new Card(CardValue.Seven, CardSuit.Hearts),
-                new Card(CardValue.Eight, CardSuit.Hearts),
-                new Card(CardValue.Ace, CardSuit.Hearts),
-                new Card(CardValue.Nine, CardSuit.Hearts),
-                new Card(CardValue.Queen, CardSuit.Clubs),
-                new Card(CardValue.Ten, CardSuit.Diamonds)
-            };
+            var cards = cardCreator.CreateCardsFromString("7c 7d 7h Jh Jd 6s Js 6h");
 
-            Assert.That(CombinationHelper.Instance.IsStraightFlush(cards), Is.False);
+            var helper = new CombinationHelper(cards);
+            Assert.That(helper.Combination, Is.EqualTo(PokerCombinations.FullHouse));
         }
 
         [Test]
-        public void RoyalFlushComboTrueTest()
+        public void OneWinnerWithStraightTest()
         {
-            var cards = new List<ICard>()
-            {
-                new Card(CardValue.Ten, CardSuit.Hearts),
-                new Card(CardValue.Queen, CardSuit.Hearts),
-                new Card(CardValue.Seven, CardSuit.Clubs),
-                new Card(CardValue.King, CardSuit.Diamonds),
-                new Card(CardValue.Ace, CardSuit.Diamonds),
-                new Card(CardValue.Queen, CardSuit.Diamonds),
-                new Card(CardValue.Jack, CardSuit.Diamonds),
-                new Card(CardValue.Ten, CardSuit.Diamonds)
-            };
+            var board = new Board(cardCreator.CreateCardsFromString("3c 6d 5h"));
+            var p1 = new Player("p1", cardCreator.CreateCardsFromString("2c 4d"));
+            var p2 = new Player("p2", cardCreator.CreateCardsFromString("6c 6h"));
+            var p3 = new Player("p3", cardCreator.CreateCardsFromString("5c Qd"));
 
-            Assert.That(CombinationHelper.Instance.IsRoyalFlush(cards), Is.True);
+            var winners = PokerGameAssistant.Instance.GetWinner(new[] { p1, p2, p3 }, board);
+
+            Assert.That(winners.Count() == 1 && winners.First().Equals(p1));
         }
 
         [Test]
-        public void RoyalFlushComboFalseTest()
+        public void OneWinnerFromTwoPlayersWithFlushTest()
         {
-            var cards = new List<ICard>()
-            {
-                new Card(CardValue.Ten, CardSuit.Hearts),
-                new Card(CardValue.Queen, CardSuit.Hearts),
-                new Card(CardValue.Seven, CardSuit.Clubs),
-                new Card(CardValue.King, CardSuit.Diamonds),
-                new Card(CardValue.Ace, CardSuit.Diamonds),
-                new Card(CardValue.Queen, CardSuit.Diamonds),
-                new Card(CardValue.Jack, CardSuit.Hearts),
-                new Card(CardValue.Ten, CardSuit.Diamonds)
-            };
+            var board = new Board(cardCreator.CreateCardsFromString("3h 6h 5h"));
+            var p1 = new Player("p1", cardCreator.CreateCardsFromString("2c 2d"));
+            var p2 = new Player("p2", cardCreator.CreateCardsFromString("6c 6h"));
+            var p3 = new Player("p3", cardCreator.CreateCardsFromString("Jh 5h"));  //win1 hk=J
+            var p4 = new Player("p4", cardCreator.CreateCardsFromString("5c Qd"));
+            var p5 = new Player("p5", cardCreator.CreateCardsFromString("5h Qh"));  //win2 hk=Q
 
-            Assert.That(CombinationHelper.Instance.IsRoyalFlush(cards), Is.False);
+            var winners = PokerGameAssistant.Instance.GetWinner(new[] { p1, p2, p3, p4, p5 }, board);
+
+            Assert.That(winners.Count() == 1 && winners.Contains(p5));
         }
 
         [Test]
-        public void FullHouseTest1()
+        public void OneWinnerFromTwoPlayersWithStraightFlushTest()
         {
-            var cards = new List<ICard>()
-            {
-                new Card(CardValue.Ten, CardSuit.Hearts),
-                new Card(CardValue.Ten, CardSuit.Clubs),
-                new Card(CardValue.Queen, CardSuit.Clubs),
-                new Card(CardValue.King, CardSuit.Diamonds),
-                new Card(CardValue.Ace, CardSuit.Diamonds),
-                new Card(CardValue.Queen, CardSuit.Diamonds),
-                new Card(CardValue.Jack, CardSuit.Hearts),
-                new Card(CardValue.Ten, CardSuit.Diamonds)
-            };
+            var board = new Board(cardCreator.CreateCardsFromString("Jc Qc 10c"));
+            var p1 = new Player("p1", cardCreator.CreateCardsFromString("8c 9c"));  //win1 hk=9
+            var p2 = new Player("p2", cardCreator.CreateCardsFromString("6c 6h"));
+            var p3 = new Player("p3", cardCreator.CreateCardsFromString("9c Kc"));  //win2 hk=K
+            var p4 = new Player("p4", cardCreator.CreateCardsFromString("5c Qd"));
+            var p5 = new Player("p5", cardCreator.CreateCardsFromString("5c Qd"));
 
-            Assert.That(CombinationHelper.Instance.IsFullHouse(cards), Is.False);
+            var winners = PokerGameAssistant.Instance.GetWinner(new[] { p1, p2, p3, p4, p5 }, board);
+
+            Assert.That(winners.Count() == 1 && winners.Contains(p3));
         }
 
-        */
+
+        [Test]
+        public void TwoWinnersWithFullHouseTest()
+        {
+            //same cards = two winners
+            var board = new Board(cardCreator.CreateCardsFromString("Jc Js 5d 6c 7s"));
+            var p1 = new Player("p1", cardCreator.CreateCardsFromString("Ac 9c"));
+            var p2 = new Player("p2", cardCreator.CreateCardsFromString("Jh 5h"));  //win1 hk=5,J
+            var p3 = new Player("p3", cardCreator.CreateCardsFromString("9s Kc"));
+            var p4 = new Player("p4", cardCreator.CreateCardsFromString("5c Jd"));  //win2 hk=5,J
+            var p5 = new Player("p5", cardCreator.CreateCardsFromString("Ks Ad"));
+
+            var winners = PokerGameAssistant.Instance.GetWinner(new[] { p1, p2, p3, p4, p5 }, board);
+
+            Assert.That(winners.Count() == 2 && winners.Contains(p2) && winners.Contains(p4));
+        }
+
     }
 }

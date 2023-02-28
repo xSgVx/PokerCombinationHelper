@@ -9,9 +9,9 @@ public class Board : IBoard
 
     private ICollection<ICard> _cards;
 
-    public Board(ICollection<ICard> cards)
+    public Board(IEnumerable<ICard> cards)
     {
-        this._cards = cards;
+        this._cards = cards.ToList();
     }
 
     public void AddCards(IEnumerable<ICard> cards)

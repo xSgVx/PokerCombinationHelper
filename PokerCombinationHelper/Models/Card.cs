@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CardGameBase.Models
 {
-    class Card : ICard
+    internal class Card : ICard
     {
         public CardValue Value { get; }
         public CardSuit Suit { get; }

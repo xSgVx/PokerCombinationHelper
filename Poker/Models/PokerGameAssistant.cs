@@ -23,50 +23,43 @@ namespace Poker.Models
 
         public static PokerGameAssistant Instance { get { return lazy.Value; } }
 
-        public IEnumerable<IPlayer> GetWinner(IList<IPlayer> players, IBoard board)
+        public IEnumerable<IPlayer> GetWinner(IEnumerable<IPlayer> players, IBoard board)
         {
             //IPlayer winner;
             List<IPlayer> winners = new List<IPlayer>();
             PokerCombinations currentWinnerCombination = PokerCombinations.Draw;
-            IEnumerable<ICard> currentWinnerCards = null;
+            IList<ICard> currentWinnerCards = null;
 
             foreach (var player in players)
             {
-                var allCards = player.Cards.Concat(board.Cards);
+                var curPlayerComboHelper = new CombinationHelper(player.Cards, board.Cards);
 
-                var comboHelper = new CombinationHelper(player.Cards, board.Cards);
-
-                if (currentWinnerCombination < comboHelper.Combination)
+                if (currentWinnerCombination < curPlayerComboHelper.Combination)
                 {
-                    currentWinnerCombination = comboHelper.Combination;
-                    currentWinnerCards = comboHelper.WinnerCards;
+                    currentWinnerCombination = curPlayerComboHelper.Combination;
+                    currentWinnerCards = curPlayerComboHelper.PlayerCards;
                     winners.Clear();
                     winners.Add(player);
                     continue;
                 }
 
-                if (currentWinnerCombination == comboHelper.Combination) 
+                if (currentWinnerCombination == curPlayerComboHelper.Combination) 
                 {
-                    var secondWinner = comboHelper.TryGetSecondWinnerHighCard(currentWinnerCards);
-
-                    if (secondWinner == null)   //несколько победителей с одинаковой highcard
+                    if (curPlayerComboHelper.HasEqualCards(currentWinnerCards))
                     {
                         winners.Add(player);
+                        continue;
                     }
-                    else    //победитель один
+
+                    if (curPlayerComboHelper.HasGreaterCard(currentWinnerCards))
                     {
                         winners.Clear();
-                        winners.Add(secondWinner);
+                        winners.Add(player);
                     }
                 }
             }
 
             return winners;
         }
-
-
-
-
-
     }
 }

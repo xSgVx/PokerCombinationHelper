@@ -6,9 +6,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
+[assembly: InternalsVisibleTo("UnitTests")]
 namespace Poker.Models
 {
     public enum PokerCombinations
@@ -29,7 +31,8 @@ namespace Poker.Models
     internal class CombinationHelper
     {
         public PokerCombinations Combination { get; private set; }
-        public IEnumerable<ICard> WinnerCards { get; private set; }
+        public IEnumerable<ICard> WinnerCards { get; private set; } //по сути не нужно
+        public IList<ICard> PlayerCards { get; private set; }
 
         private Dictionary<CardSuit, List<ICard>> _dictByCardSuit = new();
         private Dictionary<CardValue, List<ICard>> _dictByCardValue = new();
@@ -45,7 +48,16 @@ namespace Poker.Models
 
         public CombinationHelper(IEnumerable<ICard> playerCards, IEnumerable<ICard> boardCards)
         {
+            PlayerCards = new List<ICard>(playerCards);
             var cards = playerCards.Concat(boardCards);
+            _dictByCardValue = GetSortedDictionaryByCardValue(cards);
+            _dictByCardSuit = GetSortedDictionaryByCardSuit(cards);
+            FindCombinationAndWinnerCards(cards);
+        }
+
+        //для тестов отдельных функций
+        internal CombinationHelper(IEnumerable<ICard> cards)
+        {
             _dictByCardValue = GetSortedDictionaryByCardValue(cards);
             _dictByCardSuit = GetSortedDictionaryByCardSuit(cards);
             FindCombinationAndWinnerCards(cards);
@@ -53,6 +65,7 @@ namespace Poker.Models
 
         private void FindCombinationAndWinnerCards(IEnumerable<ICard> cards)
         {
+
             if (IsRoyalFlush(cards))
             {
                 WinnerCards = _royalFlush;
@@ -167,7 +180,7 @@ namespace Poker.Models
 
         private bool IsRoyalFlush(IEnumerable<ICard> cards)
         {
-            if (!IsStraight(cards))
+            if (!IsStraightFlush(cards))
                 return false;
 
             var royalFlushCardList = new List<ICard>()
@@ -180,8 +193,6 @@ namespace Poker.Models
             };
 
             var royalFlushPlayerCards = cards?.Distinct(new CardValueComparer())
-                                              .ToList()
-                                              .Select(x => x)
                                               .Intersect(royalFlushCardList, new CardValueComparer());
 
             if (royalFlushPlayerCards?.Count() == 5)
@@ -265,6 +276,9 @@ namespace Poker.Models
 
         private bool IsFlush(IEnumerable<ICard> cards)
         {
+            if (_flush != null)
+                return true;
+
             var flushCards = TryGetOneSuitCards(5);
 
             if (flushCards != null)
@@ -278,6 +292,9 @@ namespace Poker.Models
 
         private bool IsThreeOfAKind(IEnumerable<ICard> cards)
         {
+            if (_threeOfAKind != null)
+                return true;
+
             var threeCards = TryGetOneValueCards(3);
 
             if (threeCards != null)
@@ -342,9 +359,18 @@ namespace Poker.Models
             return null;
         }
 
-        internal IPlayer TryGetSecondWinnerHighCard(IEnumerable<ICard> winnerCards)
+        internal bool HasEqualCards(IEnumerable<ICard> anotherWinnerCards)
         {
-            throw new NotImplementedException();
+            var equalCards = PlayerCards.Intersect(anotherWinnerCards, new CardValueComparer());
+            return (equalCards.Count() == 2);
+        }
+
+        internal bool HasGreaterCard(IList<ICard> anotherWinnerCards)
+        {
+            return (PlayerCards[0].Value > anotherWinnerCards[0].Value &&
+                    PlayerCards[0].Value > anotherWinnerCards[1].Value) ||
+                    (PlayerCards[1].Value > anotherWinnerCards[0].Value &&
+                    PlayerCards[1].Value > anotherWinnerCards[1].Value);
         }
     }
 }
