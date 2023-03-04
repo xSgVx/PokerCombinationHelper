@@ -4,7 +4,14 @@ internal class Program
 {
     private static void Main(string[] args)
     {
-        CardGame poker = new PokerGame();
+        var poker = new PokerGame();
+
+        poker.MessagesHandler += DisplayMessage;
+        poker.SetPlayersCount(5);
+        poker.StartGame();
+
+
 
     }
+    static void DisplayMessage(string message) => Console.WriteLine(message);
 }

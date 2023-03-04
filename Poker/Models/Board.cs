@@ -14,12 +14,26 @@ public class Board : IBoard
         this._cards = cards.ToList();
     }
 
+    public Board()
+    {
+       this._cards = new List<ICard>();
+    }
+
     public void AddCards(IEnumerable<ICard> cards)
     {
+        if (_cards == null)
+        {
+            _cards = new List<ICard>();
+        }
+
         foreach (var card in cards)
         {
             _cards.Add(card);
         }
-        //this._cards.Union(cards);
+    }
+
+    public void Clear()
+    {
+        _cards.Clear();
     }
 }

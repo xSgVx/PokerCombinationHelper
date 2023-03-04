@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CardGameBase.Extensions
 {
-    internal static class EnumExtension
+    public static class EnumExtension
     {
         public static string GetDescription(this Enum enumElement)
         {

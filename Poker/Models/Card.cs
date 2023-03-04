@@ -1,10 +1,12 @@
 using CardGameBase;
+using CardGameBase.Extensions;
 using System.ComponentModel;
 
 namespace Poker.Models;
 
 public class Card : ICard
 {
+
     public CardValue Value { get; }
     public CardSuit Suit { get; }
 
@@ -22,5 +24,10 @@ public class Card : ICard
         }
 
         return false;
+    }
+
+    public override string ToString()
+    {
+        return new string(this.Value.GetDescription() + this.Suit.GetDescription());
     }
 }

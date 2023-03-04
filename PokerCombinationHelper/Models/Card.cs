@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CardGameBase.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CardGameBase.Models
 {
-    internal class Card : ICard
+    class Card : ICard
     {
         public CardValue Value { get; }
         public CardSuit Suit { get; }
@@ -26,5 +27,11 @@ namespace CardGameBase.Models
 
             return false;
         }
+        
+        public override string ToString()
+        {
+            return new string(this.Value.GetDescription() + this.Suit.GetDescription());
+        }
+        
     }
 }

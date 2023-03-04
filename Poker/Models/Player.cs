@@ -13,4 +13,11 @@ public class Player : IPlayer
         this.Name = name;
         this.Cards = cards;
     }
+
+    public override string ToString()
+    {
+        return new string($"player: {this.Name}, " +
+                          $"cards: {String.Join(", ", 
+                          this.Cards.Select(card => card.ToString()))}");
+    }
 }

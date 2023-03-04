@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CardGameBase.Extensions
 {
-    internal static class StackExtension
+    public static class StackExtension
     {
         public static IEnumerable<T> PopRange<T>(this Stack<T> stack, int amount)
         {

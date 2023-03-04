@@ -6,65 +6,14 @@ using Poker.Models;
 
 namespace UnitTests
 {
-    public class PokerProjTests
+    public class CombinationHelperTests
     {
-        PokerDeck pokerdeck;
         CardCreator cardCreator;
 
         [SetUp]
         public void Setup()
         {
-            pokerdeck = new();
             cardCreator = new();
-        }
-
-        [Test]
-        public void SortingDeckTest()
-        {
-            pokerdeck.RefreshDeck();
-            var cards = new List<ICard>(pokerdeck.GetCardsFromDeck(7));
-
-            cards.Sort(new CardValueComparer(OrderBy.Asc));
-            List<ICard> ascSortedCards = new List<ICard>(cards);
-
-            cards.Sort(new CardValueComparer(OrderBy.Desc));
-            List<ICard> descSortedCards = new List<ICard>(cards);
-
-            bool isSortedListsNotEqual = false;
-            for (int i = 0; i < cards.Count; i++)
-            {
-                if (!ascSortedCards[i].Equals(descSortedCards[i]))
-                {
-                    isSortedListsNotEqual = true;
-                    break;
-                }
-            }
-
-            Assert.That(isSortedListsNotEqual, Is.True);
-        }
-
-        [Test]
-        public void CardValueComparerTest()
-        {
-            pokerdeck.RefreshDeck();
-            var cards = new List<ICard>(pokerdeck.GetCardsFromDeck(52));
-            cards.Sort(new CardValueComparer(OrderBy.Asc));
-
-            var distinctByValueCards = cards.Distinct(new CardValueComparer()).ToList();
-
-            Assert.That(distinctByValueCards, Has.Count.EqualTo(13));
-        }
-
-        [Test]
-        public void CardSuitComparerTest()
-        {
-            pokerdeck.RefreshDeck();
-            var cards = new List<ICard>(pokerdeck.GetCardsFromDeck(52));
-            cards.Sort(new CardValueComparer(OrderBy.Asc));
-
-            var distinctBySuitCards = cards.Distinct(new CardSuitComparer()).ToList();
-
-            Assert.That(distinctBySuitCards, Has.Count.EqualTo(4));
         }
 
         [Test]
@@ -108,7 +57,7 @@ namespace UnitTests
         public void OneWinnerWithStraightTest()
         {
             var board = new Board(cardCreator.CreateCardsFromString("3c 6d 5h"));
-            var p1 = new Player("p1", cardCreator.CreateCardsFromString("2c 4d"));
+            var p1 = new Player("p1", cardCreator.CreateCardsFromString("2c 4d"));  //win combo=2,3,4,5,6
             var p2 = new Player("p2", cardCreator.CreateCardsFromString("6c 6h"));
             var p3 = new Player("p3", cardCreator.CreateCardsFromString("5c Qd"));
 
@@ -147,7 +96,6 @@ namespace UnitTests
             Assert.That(winners.Count() == 1 && winners.Contains(p3));
         }
 
-
         [Test]
         public void TwoWinnersWithFullHouseTest()
         {
@@ -163,6 +111,5 @@ namespace UnitTests
 
             Assert.That(winners.Count() == 2 && winners.Contains(p2) && winners.Contains(p4));
         }
-
     }
 }

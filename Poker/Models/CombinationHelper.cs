@@ -34,8 +34,8 @@ namespace Poker.Models
         public IEnumerable<ICard> WinnerCards { get; private set; } //по сути не нужно
         public IList<ICard> PlayerCards { get; private set; }
 
-        private Dictionary<CardSuit, List<ICard>> _dictByCardSuit = new();
-        private Dictionary<CardValue, List<ICard>> _dictByCardValue = new();
+        private Dictionary<CardSuit, List<ICard>> _dictByCardSuit;
+        private Dictionary<CardValue, List<ICard>> _dictByCardValue;
         private IEnumerable<ICard> _royalFlush;
         private IEnumerable<ICard> _straightFlush;
         private IEnumerable<ICard> _fourOfAKind;
