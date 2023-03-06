@@ -1,6 +1,5 @@
 ﻿using Poker.Models;
 using Poker.Source;
-using System.Net.Http.Headers;
 
 internal class Program
 {

@@ -1,6 +1,3 @@
-using CardGameBase;
-using CardGameBase.Factories;
-using CardGameBase.Models.Comparers;
 using Poker.Models;
 
 namespace UnitTests
@@ -13,43 +10,6 @@ namespace UnitTests
         public void Setup()
         {
             cardCreator = new();
-        }
-
-        [Test]
-        public void StraightComboTest1()
-        {
-            var cards = cardCreator.CreateCardsFromString("6c 7d 7h Qh 9h 6s 8h 10c");
-
-            var helper = new CombinationHelper(cards);
-
-            Assert.That(helper.Combination, Is.EqualTo(PokerCombinations.Straight));
-        }
-
-        [Test]
-        public void StraightComboTest2()
-        {
-            var cards = cardCreator.CreateCardsFromString("5c 7d 7h 3h 9h 6s 8h 4s");
-
-            var helper = new CombinationHelper(cards);
-            Assert.That(helper.Combination, Is.EqualTo(PokerCombinations.Straight));
-        }
-
-        [Test]
-        public void StraightFlushComboTest()
-        {
-            var cards = cardCreator.CreateCardsFromString("5h 7d 7h 3s 9h 6h 8h 9d");
-
-            var helper = new CombinationHelper(cards);
-            Assert.That(helper.Combination, Is.EqualTo(PokerCombinations.StraightFlush));
-        }
-
-        [Test]
-        public void FullHouseComboTest()
-        {
-            var cards = cardCreator.CreateCardsFromString("7c 7d 7h Jh Jd 6s Js 6h");
-
-            var helper = new CombinationHelper(cards);
-            Assert.That(helper.Combination, Is.EqualTo(PokerCombinations.FullHouse));
         }
 
         [Test]

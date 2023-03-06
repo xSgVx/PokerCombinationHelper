@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PokerCombinationHelper\CardGameBase.csproj" />
+    <ProjectReference Include="..\CardGameBase\CardGameBase.csproj" />
     <ProjectReference Include="..\Poker\Poker.csproj" />
   </ItemGroup>
 
