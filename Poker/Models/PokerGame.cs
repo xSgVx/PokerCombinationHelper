@@ -1,20 +1,11 @@
 ﻿using CardGameBase;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Configuration;
-using System.Runtime.CompilerServices;
-using System.Collections.Immutable;
 using CardGameBase.Factories;
-using Poker.Extensions;
-using System.Reflection.Metadata.Ecma335;
+using Poker.Source;
+using CardGameBase.Extensions;
 
 namespace Poker.Models
 {
-    public class PokerGame : CardGame
+    internal class PokerGame : CardGame
     {
         public delegate void MessageHandler(string message);
         public event MessageHandler? MessagesHandler;
@@ -44,8 +35,7 @@ namespace Poker.Models
         {
             if (!_readyForStart)
             {
-                MessagesHandler?.Invoke("Не готово к запуску.\n" +
-                    "Необходимо указать число игроков");
+                MessagesHandler?.Invoke(Messages.NotReadyToLaunch);
                 return;
             }
 
@@ -67,61 +57,43 @@ namespace Poker.Models
             if (_board.Cards.Count < 5)
             {
                 _board.AddCards(_pokerDeck.GetCardsFromDeck(count));
-                MessagesHandler?.Invoke("Карты на столе:\n" + CollectionToString(_board.Cards, ", "));
+                MessagesHandler?.Invoke(Messages.CardOnBoard + 
+                    Helpers.CollectionToString(_board.Cards, ", "));
                 winnerCalculate?.Invoke();
             }
             else
             {
-                MessagesHandler?.Invoke("Ошибка при добавлении кард на стол.\n" +
-                    $"Текущее количество кард на столе: {_board.Cards.Count}.\n" +
-                    "Максимальное количество кард на столе: 5");
+                MessagesHandler?.Invoke(Messages.ErrorAddingBoardCards);
             }
         }
 
         private void CalculateWinner()
         {
-            _winners = PokerGameAssistant.Instance.GetWinner(_players, _board);
+            var winnersAndCombo = PokerGameAssistant.Instance.GetWinnersAndComboName(_players, _board);
+            _winners = winnersAndCombo.Item1;
 
             if (_winners.Count() > 1)
-                MessagesHandler?.Invoke("Победители:");
+                MessagesHandler?.Invoke(Messages.WinnersWithCombo + winnersAndCombo.Item2.GetDescription()) ;
             else
-                MessagesHandler?.Invoke("Победитель:");
+                MessagesHandler?.Invoke(Messages.WinnerWithCombo + winnersAndCombo.Item2.GetDescription());
 
-            MessagesHandler?.Invoke(CollectionToString(_winners));
+            MessagesHandler?.Invoke(Helpers.CollectionToString(_winners));
         }
-        /*
-        private ICollection<IPlayer> CreatePlayersCollection(int count)
-        {
-            var players = new List<IPlayer>();
 
-            for (int i = 0; i < count; i++)
-            {
-                players.Add(CreateRandomPlayer());
-            }
-
-            return players;
-        }
-        */
         public void SetPlayersCount(byte count)
         {
             if (count < 0 || count > _maxPlayersCount)
             {
-                MessagesHandler?.Invoke($"Максимальное количество игроков: {_maxPlayersCount}, " +
-                    $"введите другое число");
+                MessagesHandler?.Invoke(Messages.ErrorOnSettingPlayersCount);
             }
             else
             {
-                MessagesHandler?.Invoke($"Участвует {count} игроков");
+                MessagesHandler?.Invoke(Messages.PlayersCountInfo + count);
 
                 _initPlayersCount = count;
             }
 
             _readyForStart = true;
-        }
-
-        private string CollectionToString<T>(IEnumerable<T> collection, string separator = "\n")
-        {
-            return String.Join(separator, collection.Select(x => x?.ToString()));
         }
 
         public void AddPlayers(int count = 1)
@@ -132,13 +104,12 @@ namespace Poker.Models
                 {
                     var player = CreateRandomPlayer();
                     _players.Add(player);
-                    MessagesHandler?.Invoke("Добавлен игрок: " + player.ToString());
+                    MessagesHandler?.Invoke(Messages.PlayerAdded + player.ToString());
                 }
             }
             else
             {
-                MessagesHandler?.Invoke("Ошибка при попытке добавления игрока.\n" +
-                    $"Максимальное количество игроков: {_maxPlayersCount}");
+                MessagesHandler?.Invoke(Messages.ErrorAddingPlayer + _maxPlayersCount);
             }
         }
 
@@ -151,8 +122,7 @@ namespace Poker.Models
             }
             else
             {
-                MessagesHandler?.Invoke("Ошибка при попытке удалить игрока.\n" +
-                    $"Текущее количество игроков: {_players?.Count}");
+                MessagesHandler?.Invoke(Messages.ErrorDeletingPlayer + _players?.Count);
             }
         }
 
@@ -161,8 +131,5 @@ namespace Poker.Models
             return new Player(Guid.NewGuid().ToString(),
                    new Stack<ICard>(_pokerDeck.GetCardsFromDeck(2)));
         }
-
-
-
     }
 }

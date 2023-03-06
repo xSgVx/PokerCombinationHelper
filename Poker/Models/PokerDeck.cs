@@ -1,12 +1,4 @@
-﻿using CardGameBase;
-using CardGameBase.Factories;
-using CardGameBase.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CardGameBase.Factories;
 
 namespace Poker.Models
 {

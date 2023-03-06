@@ -1,17 +1,6 @@
 ﻿using CardGameBase;
 using CardGameBase.Interfaces;
-using CardGameBase.Models.Comparers;
-using Poker.Models;
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.ComponentModel;
-using System.Linq;
-using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 [assembly: InternalsVisibleTo("UnitTests")]
 namespace Poker.Models
@@ -23,7 +12,7 @@ namespace Poker.Models
 
         public static PokerGameAssistant Instance { get { return lazy.Value; } }
 
-        public IEnumerable<IPlayer> GetWinner(IEnumerable<IPlayer> players, IBoard board)
+        public (IEnumerable<IPlayer>, PokerCombinations) GetWinnersAndComboName(IEnumerable<IPlayer> players, IBoard board)
         {
             //IPlayer winner;
             List<IPlayer> winners = new List<IPlayer>();
@@ -43,7 +32,7 @@ namespace Poker.Models
                     continue;
                 }
 
-                if (currentWinnerCombination == curPlayerComboHelper.Combination) 
+                if (currentWinnerCombination == curPlayerComboHelper.Combination)
                 {
                     if (curPlayerComboHelper.HasEqualCards(currentWinnerCards))
                     {
@@ -59,7 +48,7 @@ namespace Poker.Models
                 }
             }
 
-            return winners;
+            return (winners, currentWinnerCombination);
         }
     }
 }

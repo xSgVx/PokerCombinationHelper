@@ -1,6 +1,4 @@
-﻿using CardGameBase.Models;
-
-namespace CardGameBase.Interfaces
+﻿namespace CardGameBase.Interfaces
 {
     public interface IBoard
     {

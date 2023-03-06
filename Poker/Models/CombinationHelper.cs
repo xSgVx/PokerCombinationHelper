@@ -1,14 +1,7 @@
 ﻿using CardGameBase;
 using CardGameBase.Models.Comparers;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Net;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 [assembly: InternalsVisibleTo("UnitTests")]
 namespace Poker.Models
@@ -66,70 +59,70 @@ namespace Poker.Models
         private void FindCombinationAndWinnerCards(IEnumerable<ICard> cards)
         {
 
-            if (IsRoyalFlush(cards))
+            if (IsRoyalFlush(cards) && _royalFlush.Intersect(PlayerCards).Any())
             {
                 WinnerCards = _royalFlush;
                 Combination = PokerCombinations.RoyalFlush;
                 return;
             }
 
-            if (IsStraightFlush(cards))
+            if (IsStraightFlush(cards) && _straightFlush.Intersect(PlayerCards).Any())
             {
                 WinnerCards = _straightFlush;
                 Combination = PokerCombinations.StraightFlush;
                 return;
             }
 
-            if (IsFourOfAKind(cards))
+            if (IsFourOfAKind(cards) && _fourOfAKind.Intersect(PlayerCards).Any())
             {
                 WinnerCards = _fourOfAKind;
                 Combination = PokerCombinations.FourOfAKind;
                 return;
             }
 
-            if (IsFullHouse(cards))
+            if (IsFullHouse(cards) && _fullHouse.Intersect(PlayerCards).Any())
             {
                 WinnerCards = _fullHouse;
                 Combination = PokerCombinations.FullHouse;
                 return;
             }
 
-            if (IsFlush(cards))
+            if (IsFlush(cards) && _flush.Intersect(PlayerCards).Any())
             {
                 WinnerCards = _flush;
                 Combination = PokerCombinations.Flush;
                 return;
             }
 
-            if (IsStraight(cards))
+            if (IsStraight(cards) && _straight.Intersect(PlayerCards).Any())
             {
                 WinnerCards = _straight;
                 Combination = PokerCombinations.Straight;
                 return;
             }
 
-            if (IsThreeOfAKind(cards))
+            if (IsThreeOfAKind(cards) && _threeOfAKind.Intersect(PlayerCards).Any())
             {
-                WinnerCards = _royalFlush;
+                WinnerCards = _threeOfAKind;
                 Combination = PokerCombinations.ThreeOfAKind;
                 return;
             }
 
-            if (IsTwoPair(cards))
+            if (IsTwoPair(cards) && _twoPair.Intersect(PlayerCards).Any())   
             {
                 WinnerCards = _twoPair;
                 Combination = PokerCombinations.TwoPair;
                 return;
             }
 
-            if (IsPair(cards))
+            if (IsPair(cards) && _pair.Intersect(PlayerCards).Any())
             {
                 WinnerCards = _pair;
                 Combination = PokerCombinations.Pair;
                 return;
             }
 
-            WinnerCards = new[] { GetHighCard(cards) };
+            WinnerCards = new[] { GetHighCard(PlayerCards) };
             Combination = PokerCombinations.HighCard;
         }
 
@@ -265,7 +258,7 @@ namespace Poker.Models
 
         private bool IsFullHouse(IEnumerable<ICard> cards)
         {
-            if (IsThreeOfAKind(cards) && IsPair(cards))
+            if (IsThreeOfAKind(cards) & IsPair(cards))
             {
                 _fullHouse = _threeOfAKind.Concat(_pair);
                 return true;
@@ -308,6 +301,9 @@ namespace Poker.Models
 
         private bool IsPair(IEnumerable<ICard> cards)
         {
+            if (_pair != null)
+                return true;
+
             var twoCards = TryGetOneValueCards(2);
 
             if (twoCards != null)

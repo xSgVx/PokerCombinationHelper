@@ -1,9 +1,9 @@
 using CardGameBase;
-using System.Collections.Immutable;
+using Poker.Source;
 
 namespace Poker.Models;
 
-public class Player : IPlayer
+internal class Player : IPlayer
 {
     public string Name { get; }
     public IEnumerable<ICard> Cards { get; }
@@ -17,7 +17,7 @@ public class Player : IPlayer
     public override string ToString()
     {
         return new string($"player: {this.Name}, " +
-                          $"cards: {String.Join(", ", 
-                          this.Cards.Select(card => card.ToString()))}");
+                          $"cards: " + Helpers.CollectionToString(this.Cards, ", "));
     }
+
 }

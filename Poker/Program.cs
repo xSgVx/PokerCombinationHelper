@@ -1,17 +1,43 @@
-﻿using CardGameBase.Factories;
-using Poker.Models;
+﻿using Poker.Models;
+using Poker.Source;
+using System.Net.Http.Headers;
+
 internal class Program
 {
     private static void Main(string[] args)
     {
+        ConsoleKeyInfo responce;
         var poker = new PokerGame();
+        poker.MessagesHandler += Helpers.DisplayMessage;
 
-        poker.MessagesHandler += DisplayMessage;
-        poker.SetPlayersCount(5);
-        poker.StartGame();
+        while (true)
+        {
+            poker.SetPlayersCount(Helpers.GetNumberOfPlayersFromConsole());
+            poker.StartGame();
 
+            while (true)
+            {
+                responce = Helpers.GetConsoleResponce(Messages.NextActionButton);
 
+                if (responce.Key == ConsoleKey.A)
+                {
+                    poker.AddCardToBoard();
+                }
 
+                if (responce.Key == ConsoleKey.R)
+                {
+                    break;
+                }
+
+                if (responce.Key == ConsoleKey.Escape)
+                {
+                    return;
+                }
+                else
+                {
+                    Helpers.DisplayMessage(Messages.InputError);
+                }
+            }
+        }
     }
-    static void DisplayMessage(string message) => Console.WriteLine(message);
 }

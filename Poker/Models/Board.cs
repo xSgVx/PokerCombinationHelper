@@ -3,7 +3,7 @@ using CardGameBase;
 
 namespace Poker.Models;
 
-public class Board : IBoard
+internal class Board : IBoard
 {
     public ICollection<ICard> Cards => _cards;
 

@@ -6,7 +6,6 @@ namespace Poker.Models;
 
 public class Card : ICard
 {
-
     public CardValue Value { get; }
     public CardSuit Suit { get; }
 

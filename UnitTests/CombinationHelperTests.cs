@@ -1,7 +1,6 @@
 using CardGameBase;
 using CardGameBase.Factories;
 using CardGameBase.Models.Comparers;
-using Poker.Extensions;
 using Poker.Models;
 
 namespace UnitTests
@@ -61,9 +60,9 @@ namespace UnitTests
             var p2 = new Player("p2", cardCreator.CreateCardsFromString("6c 6h"));
             var p3 = new Player("p3", cardCreator.CreateCardsFromString("5c Qd"));
 
-            var winners = PokerGameAssistant.Instance.GetWinner(new[] { p1, p2, p3 }, board);
+            var winners = PokerGameAssistant.Instance.GetWinnersAndComboName(new[] { p1, p2, p3 }, board);
 
-            Assert.That(winners.Count() == 1 && winners.First().Equals(p1));
+            Assert.That(winners.Item1.Count() == 1 && winners.Item1.First().Equals(p1));
         }
 
         [Test]
@@ -76,9 +75,9 @@ namespace UnitTests
             var p4 = new Player("p4", cardCreator.CreateCardsFromString("5c Qd"));
             var p5 = new Player("p5", cardCreator.CreateCardsFromString("5h Qh"));  //win2 hk=Q
 
-            var winners = PokerGameAssistant.Instance.GetWinner(new[] { p1, p2, p3, p4, p5 }, board);
+            var winners = PokerGameAssistant.Instance.GetWinnersAndComboName(new[] { p1, p2, p3, p4, p5 }, board);
 
-            Assert.That(winners.Count() == 1 && winners.Contains(p5));
+            Assert.That(winners.Item1.Count() == 1 && winners.Item1.Contains(p5));
         }
 
         [Test]
@@ -91,9 +90,9 @@ namespace UnitTests
             var p4 = new Player("p4", cardCreator.CreateCardsFromString("5c Qd"));
             var p5 = new Player("p5", cardCreator.CreateCardsFromString("5c Qd"));
 
-            var winners = PokerGameAssistant.Instance.GetWinner(new[] { p1, p2, p3, p4, p5 }, board);
+            var winners = PokerGameAssistant.Instance.GetWinnersAndComboName(new[] { p1, p2, p3, p4, p5 }, board);
 
-            Assert.That(winners.Count() == 1 && winners.Contains(p3));
+            Assert.That(winners.Item1.Count() == 1 && winners.Item1.Contains(p3));
         }
 
         [Test]
@@ -107,9 +106,24 @@ namespace UnitTests
             var p4 = new Player("p4", cardCreator.CreateCardsFromString("5c Jd"));  //win2 hk=5,J
             var p5 = new Player("p5", cardCreator.CreateCardsFromString("Ks Ad"));
 
-            var winners = PokerGameAssistant.Instance.GetWinner(new[] { p1, p2, p3, p4, p5 }, board);
+            var winners = PokerGameAssistant.Instance.GetWinnersAndComboName(new[] { p1, p2, p3, p4, p5 }, board);
 
-            Assert.That(winners.Count() == 2 && winners.Contains(p2) && winners.Contains(p4));
+            Assert.That(winners.Item1.Count() == 2 && winners.Item1.Contains(p2) && winners.Item1.Contains(p4));
+        }
+
+        [Test]
+        public void TwoPairWinnerTest()
+        {
+            //same cards = two winners
+            var board = new Board(cardCreator.CreateCardsFromString("Ks 9d Js"));
+            var p1 = new Player("p1", cardCreator.CreateCardsFromString("2d 6c"));
+            var p2 = new Player("p2", cardCreator.CreateCardsFromString("Kh 9h"));  //win1 twopair=K,9
+            var p3 = new Player("p3", cardCreator.CreateCardsFromString("7d 4h"));
+            var p4 = new Player("p4", cardCreator.CreateCardsFromString("8s Qd"));  
+
+            var winners = PokerGameAssistant.Instance.GetWinnersAndComboName(new[] { p1, p2, p3, p4 }, board);
+
+            Assert.That(winners.Item1.Count() == 1 && winners.Item1.Contains(p2));
         }
     }
 }
