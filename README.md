@@ -12,5 +12,4 @@
 * **[Poker](https://github.com/xSgVx/PokerCombinationHelper/tree/master/Poker)** - проект созданный на основе CardGameBase, реализующий его интерфейсы и абстрактные классы.<br>
 Содержит в себе модель для определения комбинаций ([Models/CombinationHelper](https://github.com/xSgVx/PokerCombinationHelper/blob/master/Poker/Models/CombinationHelper.cs)).<br>
 На данный момент вывод победителя происходит в консоль.<br>
-<br>
 * **[UnitTests](https://github.com/xSgVx/PokerCombinationHelper/tree/master/UnitTests)** - юнит тесты
